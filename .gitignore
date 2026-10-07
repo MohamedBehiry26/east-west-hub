@@ -1,0 +1,40 @@
+# Local configuration
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+**/appsettings.Development.json
+/work/
+**/work/
+**/work/review-bin/
+
+# .NET
+**/bin/
+**/obj/
+**/TestResults/
+*.user
+*.suo
+
+# Angular / Node
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+*.tsbuildinfo
+npm-debug.log*
+
+# Editors and OS
+.idea/
+.vs/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+*.pfx
+*.p12
+*.pem
+*.key
+*.log
+logs/
+tmp/
+temp/

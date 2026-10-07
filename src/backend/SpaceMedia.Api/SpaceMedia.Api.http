@@ -1,0 +1,6 @@
+@SpaceMedia.Api_HostAddress = http://localhost:5080
+
+GET {{SpaceMedia.Api_HostAddress}}/api/v1/health
+Accept: application/json
+
+###

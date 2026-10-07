@@ -1,0 +1,61 @@
+<section class="cinema-hero-shell">
+<div class="cinema-hero ew-container">
+  <div class="hero-topline"><span>{{ copy.eyebrow }}</span><span class="hero-index" aria-hidden="true">01 / EW</span></div>
+  <div class="hero-composition">
+    <div class="hero-copy" ewReveal>
+      <h1 class="hero-headline">@for (line of design.headline; track line) {<span>{{ line }}</span>}</h1>
+      <p class="hero-intro">{{ copy.intro }}</p>
+      <div class="ew-actions"><a routerLink="watch" class="ew-button">{{ copy.primaryCta }} <span class="directional-icon" aria-hidden="true">↗</span></a><a routerLink="services" class="ew-link">{{ copy.secondaryCta }} <span class="directional-icon" aria-hidden="true">↗</span></a></div>
+    </div>
+    <div class="media-stage" ewMediaDepth>
+      <div class="media-stack">
+        <div class="media-plane plane-back" aria-hidden="true"><span>EW / 03</span></div>
+        <div class="media-plane plane-middle" aria-hidden="true"><div class="waveform">@for (bar of waveform; track $index) {<i [style.height.%]="bar"></i>}</div></div>
+        <div class="media-plane plane-front">
+          <img ewImage src="/assets/demo/east-west-studio.svg" [alt]="copy.heroImageAlt" width="1200" height="1400" fetchpriority="high" decoding="async" />
+          <div class="viewfinder" aria-hidden="true"><span>EW / STUDIO</span><span class="record-mark"></span></div>
+          <div class="frame-caption"><span>{{ copy.heroLabel }}</span><span aria-hidden="true">16:9</span></div>
+        </div>
+        <div class="timeline-plane" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><span>01:24:08</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bottom"><a [routerLink]="'/' + language" fragment="selected-media" class="scroll-cue">↓ <span>{{ design.scroll }}</span></a><span>{{ copy.heroFoot }}</span></div>
+</div>
+</section>
+
+<section id="selected-media" class="ew-section ew-container featured-section" ewReveal>
+  <div class="section-heading"><div><p class="eyebrow">02 / {{ copy.featuredKicker }}</p><h2>{{ copy.featuredTitle }}</h2></div><a routerLink="watch" class="ew-link">{{ copy.allVideos }} <span class="directional-icon" aria-hidden="true">↗</span></a></div>
+  @if (loading()) {<div class="media-skeleton" role="status"><span>{{ design.loading }}</span></div>}
+  @else if (featuredVideo(); as featured) {
+    <a [routerLink]="'/' + language + '/watch/' + featured.slug" class="featured-film">
+      <div class="featured-image"><img ewImage [src]="featured.thumbnailUrl || '/assets/demo/east-west-studio.svg'" [alt]="featured.title" width="1280" height="720" loading="lazy" decoding="async" />@if (featured.youTubeVideoId) {<span class="media-play" aria-hidden="true">▶</span>}<span class="media-caption">{{ featured.category.name }} @if (featured.duration) { · {{ featured.duration }} }</span></div>
+      <div class="feature-caption"><span class="eyebrow">{{ copy.featuredFilm }}</span><h3>{{ featured.title }}</h3><span class="ew-link">{{ featured.youTubeVideoId ? copy.watchStory : design.posterOnly }} <span class="directional-icon" aria-hidden="true">↗</span></span></div>
+    </a>
+  } @else {<div class="empty-feature"><p>{{ failed() ? design.loadError : design.noFeatured }}</p>@if (failed()) {<button class="ew-link" (click)="load()">{{ design.retry }}</button>}<a routerLink="watch" class="ew-link">{{ copy.allVideos }} <span class="directional-icon" aria-hidden="true">↗</span></a></div>}
+</section>
+
+<section class="capability-statement ew-section" ewReveal><div class="ew-container statement-grid"><p class="eyebrow">03 / {{ copy.aboutKicker }}</p><div><h2>{{ copy.aboutTitle }}</h2><p>{{ siteSettings()?.agencyDescription || copy.aboutBody }}</p><a routerLink="about" class="ew-link">{{ design.aboutLink }} <span class="directional-icon" aria-hidden="true">↗</span></a></div></div></section>
+
+@if (latestVideos().length) {
+  <section class="ew-container ew-section" ewReveal><div class="section-heading"><div><p class="eyebrow">04 / {{ copy.latestKicker }}</p><h2>{{ copy.latestTitle }}</h2></div><a routerLink="watch" class="ew-link">{{ copy.allVideos }} <span class="directional-icon" aria-hidden="true">↗</span></a></div><div class="editorial-media-grid">
+    @for (video of latestVideos(); track video.id) {<a [routerLink]="'/' + language + '/watch/' + video.slug" class="editorial-card"><div class="editorial-image"><img ewImage [src]="video.thumbnailUrl || '/assets/demo/east-west-studio.svg'" [alt]="video.title" width="1280" height="720" loading="lazy" decoding="async" />@if (video.youTubeVideoId) {<span class="media-play small" aria-hidden="true">▶</span>}@if (video.duration) {<span class="media-caption">{{ video.duration }}</span>}</div><p class="eyebrow">{{ video.category.name }}</p><h3>{{ video.title }}</h3><p class="card-summary">{{ video.description }}</p></a>}
+  </div>@if (categories().length) {<nav class="category-strip" [attr.aria-label]="copy.discoverTitle"><span class="eyebrow">{{ copy.discoverTitle }}</span>@for (category of categories(); track category.id) {<a [routerLink]="'/' + language + '/categories/' + category.slug">{{ category.name }} <span class="directional-icon" aria-hidden="true">↗</span></a>}</nav>}</section>
+}
+
+<section class="podcast-band ew-section" ewReveal><div class="ew-container"><div class="section-heading"><div><p class="eyebrow">05 / {{ copy.podcastKicker }}</p><h2>{{ design.podcastStatement }}</h2></div><a routerLink="podcasts" class="ew-link">{{ copy.allPodcasts }} <span class="directional-icon" aria-hidden="true">↗</span></a></div>
+  @if (featuredPodcast(); as podcast) {<a [routerLink]="'/' + language + '/podcasts/' + podcast.slug" class="podcast-feature"><div class="podcast-art"><img ewImage [src]="podcast.thumbnailUrl || '/assets/demo/east-west-studio.svg'" [alt]="podcast.title" width="800" height="800" loading="lazy" decoding="async" />@if (podcast.youTubeVideoId) {<span class="media-play" aria-hidden="true">▶</span>}</div><div><p class="eyebrow">{{ copy.podcastEpisode }} @if (podcast.episodeNumber) { / {{ podcast.episodeNumber }} }</p><h3>{{ podcast.title }}</h3>@if (podcast.guestName) {<p>{{ podcast.guestName }}</p>}<p class="card-summary">{{ podcast.description }}</p><div class="waveform" aria-hidden="true">@for (bar of waveform; track $index) {<i [style.height.%]="bar"></i>}</div><span class="ew-link">{{ podcast.youTubeVideoId ? copy.listenNow : design.posterOnly }} <span class="directional-icon" aria-hidden="true">↗</span></span></div></a>}
+  @else {<div class="podcast-empty"><div class="waveform" aria-hidden="true">@for (bar of waveform; track $index) {<i [style.height.%]="bar"></i>}</div><p>{{ design.noPodcasts }}</p></div>}
+</div></section>
+
+<section class="ew-section ew-container" ewReveal><div class="section-heading"><div><p class="eyebrow">06 / {{ copy.servicesKicker }}</p><h2>{{ copy.servicesTitle }}</h2></div><a routerLink="services" class="ew-link">{{ copy.exploreServices }} <span class="directional-icon" aria-hidden="true">↗</span></a></div>
+  <div class="service-rows">@for (service of services(); track service.id) {<a [routerLink]="'/' + language + '/services/' + service.slug" class="service-row"><span class="service-number">{{ formatNumber($index + 1) }}</span><div><h3>{{ service.title }}</h3><p>{{ service.shortDescription || service.description }}</p></div><span class="directional-icon service-arrow" aria-hidden="true">↗</span></a>} @empty {<p class="empty-line">{{ design.noServices }}</p>}</div>
+</section>
+
+@if (projects().length) {<section class="project-band ew-section" ewReveal><div class="ew-container"><div class="section-heading"><div><p class="eyebrow">07 / {{ copy.workKicker }}</p><h2>{{ copy.workTitle }}</h2></div><a routerLink="projects" class="ew-link">{{ copy.allWork }} <span class="directional-icon" aria-hidden="true">↗</span></a></div><div class="project-showcase">@for (project of projects(); track project.id) {<a [routerLink]="'/' + language + '/projects/' + project.slug" class="project-item"><div class="editorial-image"><img ewImage [src]="project.coverImageUrl || '/assets/demo/east-west-studio.svg'" [alt]="project.title" width="1200" height="900" loading="lazy" decoding="async" /></div><div class="project-caption"><div><p class="eyebrow">{{ project.category || copy.selectedWork }}</p><h3>{{ project.title }}</h3></div><span class="directional-icon" aria-hidden="true">↗</span></div></a>}</div></div></section>}
+
+<section class="brand-moment ew-container ew-section" ewReveal><p class="eyebrow">{{ copy.heroFoot }}</p><h2>{{ copy.heroTitle }}</h2><div class="brand-rule" aria-hidden="true"><span>EAST</span><i></i><span>WEST</span></div></section>
+
+@if (articles().length) {<section class="ew-section ew-container" ewReveal><div class="section-heading"><div><p class="eyebrow">09 / {{ copy.journalKicker }}</p><h2>{{ copy.journalTitle }}</h2></div><a routerLink="insights" class="ew-link">{{ copy.readJournal }} <span class="directional-icon" aria-hidden="true">↗</span></a></div><div class="insight-grid">@for (article of articles(); track article.id) {<a [routerLink]="'/' + language + '/insights/' + article.slug" class="editorial-card"><div class="editorial-image"><img ewImage [src]="article.coverImageUrl || '/assets/demo/east-west-studio.svg'" [alt]="article.title" width="960" height="600" loading="lazy" decoding="async" /></div><p class="eyebrow">{{ article.authorName }} @if (article.publishedAt) { · <time [attr.datetime]="article.publishedAt">{{ formatDate(article.publishedAt) }}</time>}</p><h3>{{ article.title }}</h3><p class="card-summary">{{ article.excerpt }}</p></a>}</div></section>}
+
+<section id="contact" class="contact-finale ew-section" ewReveal><div class="ew-container"><p class="eyebrow">10 / {{ copy.contactKicker }}</p><h2>{{ copy.contactTitle }}</h2><div class="finale-bottom"><p>{{ copy.contactBody }}</p><a [routerLink]="'/' + language + '/contact'" class="ew-button">{{ copy.contactCta }} <span class="directional-icon" aria-hidden="true">↗</span></a></div></div></section>

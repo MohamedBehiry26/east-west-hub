@@ -1,0 +1,1503 @@
+{
+  "Categories": [
+    {
+      "Id": "00000100-0000-0000-0000-000000000100",
+      "NameEn": "Programs",
+      "NameAr": "البرامج",
+      "SlugEn": "programs",
+      "SlugAr": "programs-ar",
+      "DescriptionEn": "Development collection: Programs. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: البرامج. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 0,
+      "ImageUrl": "/assets/demo/media/script.svg"
+    },
+    {
+      "Id": "00000101-0000-0000-0000-000000000101",
+      "NameEn": "Interviews",
+      "NameAr": "المقابلات",
+      "SlugEn": "interviews",
+      "SlugAr": "interviews-ar",
+      "DescriptionEn": "Development collection: Interviews. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: المقابلات. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 1,
+      "ImageUrl": "/assets/demo/media/camera.svg"
+    },
+    {
+      "Id": "00000102-0000-0000-0000-000000000102",
+      "NameEn": "Campaigns",
+      "NameAr": "الحملات",
+      "SlugEn": "campaigns",
+      "SlugAr": "campaigns-ar",
+      "DescriptionEn": "Development collection: Campaigns. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: الحملات. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 2,
+      "ImageUrl": "/assets/demo/media/campaign.svg"
+    },
+    {
+      "Id": "00000103-0000-0000-0000-000000000103",
+      "NameEn": "Original Content",
+      "NameAr": "المحتوى الأصلي",
+      "SlugEn": "original-content",
+      "SlugAr": "original-content-ar",
+      "DescriptionEn": "Development collection: Original Content. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: المحتوى الأصلي. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 3,
+      "ImageUrl": "/assets/demo/media/broadcast.svg"
+    },
+    {
+      "Id": "00000104-0000-0000-0000-000000000104",
+      "NameEn": "Documentaries",
+      "NameAr": "الأفلام الوثائقية",
+      "SlugEn": "documentaries",
+      "SlugAr": "documentaries-ar",
+      "DescriptionEn": "Development collection: Documentaries. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: الأفلام الوثائقية. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 4,
+      "ImageUrl": "/assets/demo/media/digital.svg"
+    },
+    {
+      "Id": "00000105-0000-0000-0000-000000000105",
+      "NameEn": "Events",
+      "NameAr": "الفعاليات",
+      "SlugEn": "events",
+      "SlugAr": "events-ar",
+      "DescriptionEn": "Development collection: Events. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: الفعاليات. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 5,
+      "ImageUrl": "/assets/demo/media/microphone.svg"
+    },
+    {
+      "Id": "00000106-0000-0000-0000-000000000106",
+      "NameEn": "Branded Content",
+      "NameAr": "المحتوى الإعلاني",
+      "SlugEn": "branded-content",
+      "SlugAr": "branded-content-ar",
+      "DescriptionEn": "Development collection: Branded Content. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: المحتوى الإعلاني. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 6,
+      "ImageUrl": "/assets/demo/media/screens.svg"
+    },
+    {
+      "Id": "00000107-0000-0000-0000-000000000107",
+      "NameEn": "Social Content",
+      "NameAr": "محتوى السوشيال ميديا",
+      "SlugEn": "social-content",
+      "SlugAr": "social-content-ar",
+      "DescriptionEn": "Development collection: Social Content. Fictional QA content, not company work.",
+      "DescriptionAr": "مجموعة تطوير: محتوى السوشيال ميديا. محتوى خيالي للفحص، لا يمثل أعمال الشركة.",
+      "IsPublished": true,
+      "DisplayOrder": 7,
+      "ImageUrl": "/assets/demo/media/stage.svg"
+    }
+  ],
+  "Tags": [
+    {
+      "Id": "00000700-0000-0000-0000-000000000700",
+      "NameEn": "Media",
+      "NameAr": "إعلام",
+      "SlugEn": "media",
+      "SlugAr": "إعلام"
+    },
+    {
+      "Id": "00000701-0000-0000-0000-000000000701",
+      "NameEn": "Production",
+      "NameAr": "إنتاج",
+      "SlugEn": "production",
+      "SlugAr": "إنتاج"
+    },
+    {
+      "Id": "00000702-0000-0000-0000-000000000702",
+      "NameEn": "Creative",
+      "NameAr": "إبداع",
+      "SlugEn": "creative",
+      "SlugAr": "إبداع"
+    },
+    {
+      "Id": "00000703-0000-0000-0000-000000000703",
+      "NameEn": "Business",
+      "NameAr": "أعمال",
+      "SlugEn": "business",
+      "SlugAr": "أعمال"
+    },
+    {
+      "Id": "00000704-0000-0000-0000-000000000704",
+      "NameEn": "Marketing",
+      "NameAr": "تسويق",
+      "SlugEn": "marketing",
+      "SlugAr": "تسويق"
+    },
+    {
+      "Id": "00000705-0000-0000-0000-000000000705",
+      "NameEn": "Culture",
+      "NameAr": "ثقافة",
+      "SlugEn": "culture",
+      "SlugAr": "ثقافة"
+    },
+    {
+      "Id": "00000706-0000-0000-0000-000000000706",
+      "NameEn": "Technology",
+      "NameAr": "تقنية",
+      "SlugEn": "technology",
+      "SlugAr": "تقنية"
+    },
+    {
+      "Id": "00000707-0000-0000-0000-000000000707",
+      "NameEn": "Events",
+      "NameAr": "فعاليات",
+      "SlugEn": "events",
+      "SlugAr": "فعاليات"
+    },
+    {
+      "Id": "00000708-0000-0000-0000-000000000708",
+      "NameEn": "Interview",
+      "NameAr": "مقابلة",
+      "SlugEn": "interview",
+      "SlugAr": "مقابلة"
+    },
+    {
+      "Id": "00000709-0000-0000-0000-000000000709",
+      "NameEn": "Podcast",
+      "NameAr": "بودكاست",
+      "SlugEn": "podcast",
+      "SlugAr": "بودكاست"
+    },
+    {
+      "Id": "00000710-0000-0000-0000-000000000710",
+      "NameEn": "Campaign",
+      "NameAr": "حملة",
+      "SlugEn": "campaign",
+      "SlugAr": "حملة"
+    },
+    {
+      "Id": "00000711-0000-0000-0000-000000000711",
+      "NameEn": "Digital",
+      "NameAr": "رقمي",
+      "SlugEn": "digital",
+      "SlugAr": "رقمي"
+    },
+    {
+      "Id": "00000712-0000-0000-0000-000000000712",
+      "NameEn": "Storytelling",
+      "NameAr": "سرد القصص",
+      "SlugEn": "storytelling",
+      "SlugAr": "سرد-القصص"
+    }
+  ],
+  "Media": [
+    {
+      "Id": "00000300-0000-0000-0000-000000000300",
+      "YouTubeVideoId": "M7lc1UVf-VE",
+      "TitleEn": "Demo playback — YouTube IFrame API example",
+      "TitleAr": "تشغيل تجريبي — مثال واجهة مشغّل يوتيوب",
+      "SlugEn": "demo-media-01",
+      "SlugAr": "demo-media-01-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Behind the Story. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Playback uses the third-party example linked in Google’s YouTube IFrame documentation, not an East West Hub production.",
+      "DescriptionAr": "محتوى تطوير خيالي — خلف الحكاية. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. يستخدم التشغيل مثال يوتيوب الخارجي الوارد في توثيق جوجل، وليس إنتاج إيست ويست هب.",
+      "ThumbnailUrl": "/assets/demo/media/script.svg",
+      "CategoryId": "00000100-0000-0000-0000-000000000100",
+      "ContentType": 0,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 1,
+      "PublishedAt": "2026-09-28T12:00:00Z",
+      "Duration": "00:02:15",
+      "SeoTitleEn": "Demo playback — YouTube IFrame API example",
+      "SeoTitleAr": "تشغيل تجريبي — مثال واجهة مشغّل يوتيوب",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000300-0000-0000-0000-000000000300",
+          "TagId": "00000700-0000-0000-0000-000000000700"
+        },
+        {
+          "VideoId": "00000300-0000-0000-0000-000000000300",
+          "TagId": "00000702-0000-0000-0000-000000000702"
+        }
+      ]
+    },
+    {
+      "Id": "00000301-0000-0000-0000-000000000301",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Creative Minds",
+      "TitleAr": "تجريبي: عقول تصنع الأفكار",
+      "SlugEn": "demo-media-02",
+      "SlugAr": "demo-media-02-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Creative Minds. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — عقول تصنع الأفكار. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/camera.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 2,
+      "IsPublished": true,
+      "IsFeatured": true,
+      "DisplayOrder": 2,
+      "PublishedAt": "2026-09-27T12:00:00Z",
+      "Duration": "00:05:15",
+      "SeoTitleEn": "Demo: Creative Minds",
+      "SeoTitleAr": "تجريبي: عقول تصنع الأفكار",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000301-0000-0000-0000-000000000301",
+          "TagId": "00000701-0000-0000-0000-000000000701"
+        },
+        {
+          "VideoId": "00000301-0000-0000-0000-000000000301",
+          "TagId": "00000703-0000-0000-0000-000000000703"
+        }
+      ]
+    },
+    {
+      "Id": "00000302-0000-0000-0000-000000000302",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Inside the Campaign",
+      "TitleAr": "تجريبي: من داخل الحملة",
+      "SlugEn": "demo-media-03",
+      "SlugAr": "demo-media-03-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Inside the Campaign. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — من داخل الحملة. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/campaign.svg",
+      "CategoryId": "00000102-0000-0000-0000-000000000102",
+      "ContentType": 4,
+      "IsPublished": true,
+      "IsFeatured": true,
+      "DisplayOrder": 3,
+      "PublishedAt": "2026-09-26T12:00:00Z",
+      "Duration": "00:08:15",
+      "SeoTitleEn": "Demo: Inside the Campaign",
+      "SeoTitleAr": "تجريبي: من داخل الحملة",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000302-0000-0000-0000-000000000302",
+          "TagId": "00000702-0000-0000-0000-000000000702"
+        },
+        {
+          "VideoId": "00000302-0000-0000-0000-000000000302",
+          "TagId": "00000704-0000-0000-0000-000000000704"
+        }
+      ]
+    },
+    {
+      "Id": "00000303-0000-0000-0000-000000000303",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: The Making Of",
+      "TitleAr": "تجريبي: كيف صُنع المشهد",
+      "SlugEn": "demo-media-04",
+      "SlugAr": "demo-media-04-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — The Making Of. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — كيف صُنع المشهد. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/broadcast.svg",
+      "CategoryId": "00000103-0000-0000-0000-000000000103",
+      "ContentType": 6,
+      "IsPublished": true,
+      "IsFeatured": true,
+      "DisplayOrder": 4,
+      "PublishedAt": "2026-09-25T12:00:00Z",
+      "Duration": "00:11:15",
+      "SeoTitleEn": "Demo: The Making Of",
+      "SeoTitleAr": "تجريبي: كيف صُنع المشهد",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000303-0000-0000-0000-000000000303",
+          "TagId": "00000703-0000-0000-0000-000000000703"
+        },
+        {
+          "VideoId": "00000303-0000-0000-0000-000000000303",
+          "TagId": "00000705-0000-0000-0000-000000000705"
+        }
+      ]
+    },
+    {
+      "Id": "00000304-0000-0000-0000-000000000304",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Industry Conversations",
+      "TitleAr": "تجريبي: حوارات من المهنة",
+      "SlugEn": "demo-media-05",
+      "SlugAr": "demo-media-05-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Industry Conversations. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — حوارات من المهنة. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/digital.svg",
+      "CategoryId": "00000104-0000-0000-0000-000000000104",
+      "ContentType": 3,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 5,
+      "PublishedAt": "2026-09-24T12:00:00Z",
+      "Duration": "00:14:15",
+      "SeoTitleEn": "Demo: Industry Conversations",
+      "SeoTitleAr": "تجريبي: حوارات من المهنة",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000304-0000-0000-0000-000000000304",
+          "TagId": "00000704-0000-0000-0000-000000000704"
+        },
+        {
+          "VideoId": "00000304-0000-0000-0000-000000000304",
+          "TagId": "00000706-0000-0000-0000-000000000706"
+        }
+      ]
+    },
+    {
+      "Id": "00000305-0000-0000-0000-000000000305",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Digital Stories",
+      "TitleAr": "تجريبي: حكايات رقمية",
+      "SlugEn": "demo-media-06",
+      "SlugAr": "demo-media-06-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Digital Stories. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — حكايات رقمية. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/microphone.svg",
+      "CategoryId": "00000105-0000-0000-0000-000000000105",
+      "ContentType": 8,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 6,
+      "PublishedAt": "2026-09-23T12:00:00Z",
+      "Duration": "00:17:15",
+      "SeoTitleEn": "Demo: Digital Stories",
+      "SeoTitleAr": "تجريبي: حكايات رقمية",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000305-0000-0000-0000-000000000305",
+          "TagId": "00000705-0000-0000-0000-000000000705"
+        },
+        {
+          "VideoId": "00000305-0000-0000-0000-000000000305",
+          "TagId": "00000707-0000-0000-0000-000000000707"
+        }
+      ]
+    },
+    {
+      "Id": "00000306-0000-0000-0000-000000000306",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Behind the Lens",
+      "TitleAr": "تجريبي: خلف العدسة",
+      "SlugEn": "demo-media-07",
+      "SlugAr": "demo-media-07-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Behind the Lens. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — خلف العدسة. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/screens.svg",
+      "CategoryId": "00000106-0000-0000-0000-000000000106",
+      "ContentType": 5,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 7,
+      "PublishedAt": "2026-09-22T12:00:00Z",
+      "Duration": "00:20:15",
+      "SeoTitleEn": "Demo: Behind the Lens",
+      "SeoTitleAr": "تجريبي: خلف العدسة",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000306-0000-0000-0000-000000000306",
+          "TagId": "00000706-0000-0000-0000-000000000706"
+        },
+        {
+          "VideoId": "00000306-0000-0000-0000-000000000306",
+          "TagId": "00000708-0000-0000-0000-000000000708"
+        }
+      ]
+    },
+    {
+      "Id": "00000307-0000-0000-0000-000000000307",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Event Highlights",
+      "TitleAr": "تجريبي: مشاهد من الفعالية",
+      "SlugEn": "demo-media-08",
+      "SlugAr": "demo-media-08-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Event Highlights. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — مشاهد من الفعالية. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/stage.svg",
+      "CategoryId": "00000107-0000-0000-0000-000000000107",
+      "ContentType": 7,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 8,
+      "PublishedAt": "2026-09-21T12:00:00Z",
+      "Duration": "00:23:15",
+      "SeoTitleEn": "Demo: Event Highlights",
+      "SeoTitleAr": "تجريبي: مشاهد من الفعالية",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000307-0000-0000-0000-000000000307",
+          "TagId": "00000707-0000-0000-0000-000000000707"
+        },
+        {
+          "VideoId": "00000307-0000-0000-0000-000000000307",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        }
+      ]
+    },
+    {
+      "Id": "00000308-0000-0000-0000-000000000308",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: The Creative Process",
+      "TitleAr": "تجريبي: رحلة الفكرة الإبداعية",
+      "SlugEn": "demo-media-09",
+      "SlugAr": "demo-media-09-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — The Creative Process. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — رحلة الفكرة الإبداعية. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/portrait.svg",
+      "CategoryId": "00000100-0000-0000-0000-000000000100",
+      "ContentType": 0,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 9,
+      "PublishedAt": "2026-09-20T12:00:00Z",
+      "Duration": "00:26:15",
+      "SeoTitleEn": "Demo: The Creative Process",
+      "SeoTitleAr": "تجريبي: رحلة الفكرة الإبداعية",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000308-0000-0000-0000-000000000308",
+          "TagId": "00000708-0000-0000-0000-000000000708"
+        },
+        {
+          "VideoId": "00000308-0000-0000-0000-000000000308",
+          "TagId": "00000710-0000-0000-0000-000000000710"
+        }
+      ]
+    },
+    {
+      "Id": "00000309-0000-0000-0000-000000000309",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Stories in Motion",
+      "TitleAr": "تجريبي: حكايات تتحرك",
+      "SlugEn": "demo-media-10",
+      "SlugAr": "demo-media-10-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Stories in Motion. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — حكايات تتحرك. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/storyboard.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 2,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 10,
+      "PublishedAt": "2026-09-19T12:00:00Z",
+      "Duration": "00:29:15",
+      "SeoTitleEn": "Demo: Stories in Motion",
+      "SeoTitleAr": "تجريبي: حكايات تتحرك",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000309-0000-0000-0000-000000000309",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        },
+        {
+          "VideoId": "00000309-0000-0000-0000-000000000309",
+          "TagId": "00000711-0000-0000-0000-000000000711"
+        }
+      ]
+    },
+    {
+      "Id": "00000310-0000-0000-0000-000000000310",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: From Brief to Frame",
+      "TitleAr": "تجريبي: من التكليف إلى الكادر",
+      "SlugEn": "demo-media-11",
+      "SlugAr": "demo-media-11-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — From Brief to Frame. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — من التكليف إلى الكادر. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/script.svg",
+      "CategoryId": "00000102-0000-0000-0000-000000000102",
+      "ContentType": 4,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 11,
+      "PublishedAt": "2026-09-18T12:00:00Z",
+      "Duration": "00:32:15",
+      "SeoTitleEn": "Demo: From Brief to Frame",
+      "SeoTitleAr": "تجريبي: من التكليف إلى الكادر",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000310-0000-0000-0000-000000000310",
+          "TagId": "00000710-0000-0000-0000-000000000710"
+        },
+        {
+          "VideoId": "00000310-0000-0000-0000-000000000310",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        }
+      ]
+    },
+    {
+      "Id": "00000311-0000-0000-0000-000000000311",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: Editing a Conversation",
+      "TitleAr": "تجريبي: مونتاج الحوار",
+      "SlugEn": "demo-media-12",
+      "SlugAr": "demo-media-12-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — Editing a Conversation. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — مونتاج الحوار. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/camera.svg",
+      "CategoryId": "00000103-0000-0000-0000-000000000103",
+      "ContentType": 6,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 12,
+      "PublishedAt": "2026-09-17T12:00:00Z",
+      "Duration": "00:35:15",
+      "SeoTitleEn": "Demo: Editing a Conversation",
+      "SeoTitleAr": "تجريبي: مونتاج الحوار",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000311-0000-0000-0000-000000000311",
+          "TagId": "00000711-0000-0000-0000-000000000711"
+        },
+        {
+          "VideoId": "00000311-0000-0000-0000-000000000311",
+          "TagId": "00000700-0000-0000-0000-000000000700"
+        }
+      ]
+    },
+    {
+      "Id": "00000312-0000-0000-0000-000000000312",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: A Day in Production",
+      "TitleAr": "تجريبي: يوم في الإنتاج",
+      "SlugEn": "demo-media-13",
+      "SlugAr": "demo-media-13-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — A Day in Production. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — يوم في الإنتاج. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/campaign.svg",
+      "CategoryId": "00000104-0000-0000-0000-000000000104",
+      "ContentType": 3,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 13,
+      "PublishedAt": "2026-09-16T12:00:00Z",
+      "Duration": "00:38:15",
+      "SeoTitleEn": "Demo: A Day in Production",
+      "SeoTitleAr": "تجريبي: يوم في الإنتاج",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000312-0000-0000-0000-000000000312",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        },
+        {
+          "VideoId": "00000312-0000-0000-0000-000000000312",
+          "TagId": "00000701-0000-0000-0000-000000000701"
+        }
+      ]
+    },
+    {
+      "Id": "00000313-0000-0000-0000-000000000313",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: One Frame",
+      "TitleAr": "تجريبي: كادر",
+      "SlugEn": "demo-media-14",
+      "SlugAr": "demo-media-14-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — One Frame. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — كادر. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/broadcast.svg",
+      "CategoryId": "00000105-0000-0000-0000-000000000105",
+      "ContentType": 8,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 14,
+      "PublishedAt": "2026-09-15T12:00:00Z",
+      "Duration": "00:41:15",
+      "SeoTitleEn": "Demo: One Frame",
+      "SeoTitleAr": "تجريبي: كادر",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000313-0000-0000-0000-000000000313",
+          "TagId": "00000700-0000-0000-0000-000000000700"
+        },
+        {
+          "VideoId": "00000313-0000-0000-0000-000000000313",
+          "TagId": "00000702-0000-0000-0000-000000000702"
+        }
+      ]
+    },
+    {
+      "Id": "00000314-0000-0000-0000-000000000314",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: A long conversation about the decisions that shape a complete digital production from preparation to publishing",
+      "TitleAr": "تجريبي: حوار مطوّل حول القرارات التي تصنع تجربة إنتاج رقمي متكاملة من الإعداد الأول إلى النشر على المنصات",
+      "SlugEn": "demo-media-15",
+      "SlugAr": "demo-media-15-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — A long conversation about the decisions that shape a complete digital production from preparation to publishing. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": null,
+      "ThumbnailUrl": null,
+      "CategoryId": "00000106-0000-0000-0000-000000000106",
+      "ContentType": 5,
+      "IsPublished": false,
+      "IsFeatured": false,
+      "DisplayOrder": 15,
+      "PublishedAt": "2026-09-14T12:00:00Z",
+      "Duration": "00:44:15",
+      "SeoTitleEn": "Demo: A long conversation about the decisions that shape a complete digital production from preparation to publishing",
+      "SeoTitleAr": "تجريبي: حوار مطوّل حول القرارات التي تصنع تجربة إنتاج رقمي متكاملة من الإعداد الأول إلى النشر على المنصات",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000314-0000-0000-0000-000000000314",
+          "TagId": "00000701-0000-0000-0000-000000000701"
+        },
+        {
+          "VideoId": "00000314-0000-0000-0000-000000000314",
+          "TagId": "00000703-0000-0000-0000-000000000703"
+        }
+      ]
+    },
+    {
+      "Id": "00000315-0000-0000-0000-000000000315",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo: The Next Format",
+      "TitleAr": "تجريبي: صيغة قادمة",
+      "SlugEn": "demo-media-16",
+      "SlugAr": "demo-media-16-ar",
+      "DescriptionEn": "DEVELOPMENT DEMO — The Next Format. A fictional production study exploring media, creative planning, campaign content and digital storytelling. This record is for layout and search testing; it is not a completed East West Hub project. Poster only: a real company video is required before production.",
+      "DescriptionAr": "محتوى تطوير خيالي — صيغة قادمة. دراسة إنتاج تجريبية لاستكشاف الإعلام والإبداع والحملة والمحتوى الرقمي وسرد قصة بالفيديو. الغرض اختبار العرض والبحث، ولا تمثل عملاً منجزاً للشركة. صورة فقط: يلزم توفير فيديو حقيقي قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/media/microphone.svg",
+      "CategoryId": "00000107-0000-0000-0000-000000000107",
+      "ContentType": 7,
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 16,
+      "PublishedAt": "2099-01-01T12:00:00Z",
+      "Duration": "00:47:15",
+      "SeoTitleEn": "Demo: The Next Format",
+      "SeoTitleAr": "تجريبي: صيغة قادمة",
+      "SeoDescriptionEn": "Fictional development media study. Replace before production.",
+      "SeoDescriptionAr": "دراسة إعلامية خيالية للتطوير. تُستبدل قبل النشر النهائي.",
+      "VideoTags": [
+        {
+          "VideoId": "00000315-0000-0000-0000-000000000315",
+          "TagId": "00000702-0000-0000-0000-000000000702"
+        },
+        {
+          "VideoId": "00000315-0000-0000-0000-000000000315",
+          "TagId": "00000704-0000-0000-0000-000000000704"
+        }
+      ]
+    },
+    {
+      "Id": "00000330-0000-0000-0000-000000000330",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo podcast: Behind the Idea",
+      "TitleAr": "بودكاست تجريبي: خلف الفكرة",
+      "SlugEn": "demo-podcast-01",
+      "SlugAr": "demo-podcast-01-ar",
+      "DescriptionEn": "Fictional development conversation: Behind the Idea. A podcast production discussion about media, creative decisions, digital publishing and how a story finds its format. The guest role is fictional. Artwork only; replace with a real episode before production.",
+      "DescriptionAr": "حوار خيالي للتطوير: خلف الفكرة. يناقش هذا البودكاست التجريبي الإنتاج والإعلام والاختيارات الإبداعية والنشر الرقمي وطريقة تقديم قصة. صفة الضيف خيالية. صورة فقط، وتُستبدل بحلقة حقيقية قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/podcasts/episode-1.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 1,
+      "EpisodeNumber": 1,
+      "SeasonNumber": 1,
+      "GuestNameEn": "Fictional Creative Director",
+      "GuestNameAr": "مخرج إبداعي (شخصية خيالية)",
+      "IsPublished": true,
+      "IsFeatured": true,
+      "DisplayOrder": 1,
+      "PublishedAt": "2026-09-20T12:00:00Z",
+      "Duration": "00:25:00",
+      "SeoTitleEn": "Behind the Idea",
+      "SeoTitleAr": "خلف الفكرة",
+      "SeoDescriptionEn": "Fictional development podcast. Artwork preview only.",
+      "SeoDescriptionAr": "بودكاست خيالي للتطوير، معاينة بالصورة فقط.",
+      "VideoTags": [
+        {
+          "VideoId": "00000330-0000-0000-0000-000000000330",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        },
+        {
+          "VideoId": "00000330-0000-0000-0000-000000000330",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        }
+      ]
+    },
+    {
+      "Id": "00000331-0000-0000-0000-000000000331",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo podcast: Building a Media Brand",
+      "TitleAr": "بودكاست تجريبي: بناء علامة إعلامية",
+      "SlugEn": "demo-podcast-02",
+      "SlugAr": "demo-podcast-02-ar",
+      "DescriptionEn": "Fictional development conversation: Building a Media Brand. A podcast production discussion about media, creative decisions, digital publishing and how a story finds its format. The guest role is fictional. Artwork only; replace with a real episode before production.",
+      "DescriptionAr": "حوار خيالي للتطوير: بناء علامة إعلامية. يناقش هذا البودكاست التجريبي الإنتاج والإعلام والاختيارات الإبداعية والنشر الرقمي وطريقة تقديم قصة. صفة الضيف خيالية. صورة فقط، وتُستبدل بحلقة حقيقية قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/podcasts/episode-2.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 1,
+      "EpisodeNumber": 2,
+      "SeasonNumber": 1,
+      "GuestNameEn": "Fictional Media Producer",
+      "GuestNameAr": "منتج إعلامي (شخصية خيالية)",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 2,
+      "PublishedAt": "2026-09-19T12:00:00Z",
+      "Duration": "00:29:00",
+      "SeoTitleEn": "Building a Media Brand",
+      "SeoTitleAr": "بناء علامة إعلامية",
+      "SeoDescriptionEn": "Fictional development podcast. Artwork preview only.",
+      "SeoDescriptionAr": "بودكاست خيالي للتطوير، معاينة بالصورة فقط.",
+      "VideoTags": [
+        {
+          "VideoId": "00000331-0000-0000-0000-000000000331",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        },
+        {
+          "VideoId": "00000331-0000-0000-0000-000000000331",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        }
+      ]
+    },
+    {
+      "Id": "00000332-0000-0000-0000-000000000332",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo podcast: The Future of Digital Content",
+      "TitleAr": "بودكاست تجريبي: مستقبل المحتوى الرقمي",
+      "SlugEn": "demo-podcast-03",
+      "SlugAr": "demo-podcast-03-ar",
+      "DescriptionEn": "Fictional development conversation: The Future of Digital Content. A podcast production discussion about media, creative decisions, digital publishing and how a story finds its format. The guest role is fictional. Artwork only; replace with a real episode before production.",
+      "DescriptionAr": "حوار خيالي للتطوير: مستقبل المحتوى الرقمي. يناقش هذا البودكاست التجريبي الإنتاج والإعلام والاختيارات الإبداعية والنشر الرقمي وطريقة تقديم قصة. صفة الضيف خيالية. صورة فقط، وتُستبدل بحلقة حقيقية قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/podcasts/episode-3.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 1,
+      "EpisodeNumber": 3,
+      "SeasonNumber": 1,
+      "GuestNameEn": "Fictional Content Strategist",
+      "GuestNameAr": "استراتيجي محتوى (شخصية خيالية)",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 3,
+      "PublishedAt": "2026-09-18T12:00:00Z",
+      "Duration": "00:33:00",
+      "SeoTitleEn": "The Future of Digital Content",
+      "SeoTitleAr": "مستقبل المحتوى الرقمي",
+      "SeoDescriptionEn": "Fictional development podcast. Artwork preview only.",
+      "SeoDescriptionAr": "بودكاست خيالي للتطوير، معاينة بالصورة فقط.",
+      "VideoTags": [
+        {
+          "VideoId": "00000332-0000-0000-0000-000000000332",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        },
+        {
+          "VideoId": "00000332-0000-0000-0000-000000000332",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        }
+      ]
+    },
+    {
+      "Id": "00000333-0000-0000-0000-000000000333",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo podcast: From Story to Screen",
+      "TitleAr": "بودكاست تجريبي: من الحكاية إلى الشاشة",
+      "SlugEn": "demo-podcast-04",
+      "SlugAr": "demo-podcast-04-ar",
+      "DescriptionEn": "Fictional development conversation: From Story to Screen. A podcast production discussion about media, creative decisions, digital publishing and how a story finds its format. The guest role is fictional. Artwork only; replace with a real episode before production.",
+      "DescriptionAr": "حوار خيالي للتطوير: من الحكاية إلى الشاشة. يناقش هذا البودكاست التجريبي الإنتاج والإعلام والاختيارات الإبداعية والنشر الرقمي وطريقة تقديم قصة. صفة الضيف خيالية. صورة فقط، وتُستبدل بحلقة حقيقية قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/podcasts/episode-4.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 1,
+      "EpisodeNumber": 4,
+      "SeasonNumber": 1,
+      "GuestNameEn": "Fictional Film Director",
+      "GuestNameAr": "مخرج (شخصية خيالية)",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 4,
+      "PublishedAt": "2026-09-17T12:00:00Z",
+      "Duration": "00:37:00",
+      "SeoTitleEn": "From Story to Screen",
+      "SeoTitleAr": "من الحكاية إلى الشاشة",
+      "SeoDescriptionEn": "Fictional development podcast. Artwork preview only.",
+      "SeoDescriptionAr": "بودكاست خيالي للتطوير، معاينة بالصورة فقط.",
+      "VideoTags": [
+        {
+          "VideoId": "00000333-0000-0000-0000-000000000333",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        },
+        {
+          "VideoId": "00000333-0000-0000-0000-000000000333",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        }
+      ]
+    },
+    {
+      "Id": "00000334-0000-0000-0000-000000000334",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo podcast: Inside Modern Production",
+      "TitleAr": "بودكاست تجريبي: داخل الإنتاج المعاصر",
+      "SlugEn": "demo-podcast-05",
+      "SlugAr": "demo-podcast-05-ar",
+      "DescriptionEn": "Fictional development conversation: Inside Modern Production. A podcast production discussion about media, creative decisions, digital publishing and how a story finds its format. The guest role is fictional. Artwork only; replace with a real episode before production.",
+      "DescriptionAr": "حوار خيالي للتطوير: داخل الإنتاج المعاصر. يناقش هذا البودكاست التجريبي الإنتاج والإعلام والاختيارات الإبداعية والنشر الرقمي وطريقة تقديم قصة. صفة الضيف خيالية. صورة فقط، وتُستبدل بحلقة حقيقية قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/podcasts/episode-5.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 1,
+      "EpisodeNumber": 5,
+      "SeasonNumber": 1,
+      "GuestNameEn": "Fictional Digital Creator",
+      "GuestNameAr": "صانع محتوى (شخصية خيالية)",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 5,
+      "PublishedAt": "2026-09-16T12:00:00Z",
+      "Duration": "00:41:00",
+      "SeoTitleEn": "Inside Modern Production",
+      "SeoTitleAr": "داخل الإنتاج المعاصر",
+      "SeoDescriptionEn": "Fictional development podcast. Artwork preview only.",
+      "SeoDescriptionAr": "بودكاست خيالي للتطوير، معاينة بالصورة فقط.",
+      "VideoTags": [
+        {
+          "VideoId": "00000334-0000-0000-0000-000000000334",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        },
+        {
+          "VideoId": "00000334-0000-0000-0000-000000000334",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        }
+      ]
+    },
+    {
+      "Id": "00000335-0000-0000-0000-000000000335",
+      "YouTubeVideoId": null,
+      "TitleEn": "Demo podcast: How Creative Teams Build Ideas",
+      "TitleAr": "بودكاست تجريبي: كيف تطوّر الفرق الإبداعية أفكارها",
+      "SlugEn": "demo-podcast-06",
+      "SlugAr": "demo-podcast-06-ar",
+      "DescriptionEn": "Fictional development conversation: How Creative Teams Build Ideas. A podcast production discussion about media, creative decisions, digital publishing and how a story finds its format. The guest role is fictional. Artwork only; replace with a real episode before production.",
+      "DescriptionAr": "حوار خيالي للتطوير: كيف تطوّر الفرق الإبداعية أفكارها. يناقش هذا البودكاست التجريبي الإنتاج والإعلام والاختيارات الإبداعية والنشر الرقمي وطريقة تقديم قصة. صفة الضيف خيالية. صورة فقط، وتُستبدل بحلقة حقيقية قبل النشر النهائي.",
+      "ThumbnailUrl": "/assets/demo/podcasts/episode-6.svg",
+      "CategoryId": "00000101-0000-0000-0000-000000000101",
+      "ContentType": 1,
+      "EpisodeNumber": null,
+      "SeasonNumber": 1,
+      "GuestNameEn": null,
+      "GuestNameAr": null,
+      "IsPublished": false,
+      "IsFeatured": false,
+      "DisplayOrder": 6,
+      "PublishedAt": "2026-09-15T12:00:00Z",
+      "Duration": "00:45:00",
+      "SeoTitleEn": "How Creative Teams Build Ideas",
+      "SeoTitleAr": "كيف تطوّر الفرق الإبداعية أفكارها",
+      "SeoDescriptionEn": "Fictional development podcast. Artwork preview only.",
+      "SeoDescriptionAr": "بودكاست خيالي للتطوير، معاينة بالصورة فقط.",
+      "VideoTags": [
+        {
+          "VideoId": "00000335-0000-0000-0000-000000000335",
+          "TagId": "00000709-0000-0000-0000-000000000709"
+        },
+        {
+          "VideoId": "00000335-0000-0000-0000-000000000335",
+          "TagId": "00000712-0000-0000-0000-000000000712"
+        }
+      ]
+    }
+  ],
+  "Projects": [
+    {
+      "Id": "00000501-0000-0000-0000-000000000501",
+      "TitleEn": "Demo study: The Studio Notebook",
+      "TitleAr": "دراسة تجريبية: دفتر الاستوديو",
+      "SlugEn": "demo-project-01",
+      "SlugAr": "demo-project-01-ar",
+      "Client": null,
+      "CategoryEn": "Content Production",
+      "CategoryAr": "إنتاج المحتوى",
+      "DescriptionEn": "Fictional development case study: The Studio Notebook. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: دفتر الاستوديو. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-1.svg",
+      "ProjectDate": "2026-08-10",
+      "IsPublished": true,
+      "IsFeatured": true,
+      "DisplayOrder": 1,
+      "Images": [
+        {
+          "Id": "00008000-0000-0000-0000-000000008000",
+          "PortfolioProjectId": "00000501-0000-0000-0000-000000000501",
+          "ImageUrl": "/assets/demo/services/script.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008001-0000-0000-0000-000000008001",
+          "PortfolioProjectId": "00000501-0000-0000-0000-000000000501",
+          "ImageUrl": "/assets/demo/services/camera.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000400-0000-0000-0000-000000000400",
+          "PortfolioProjectId": "00000501-0000-0000-0000-000000000501"
+        },
+        {
+          "ServiceId": "00000401-0000-0000-0000-000000000401",
+          "PortfolioProjectId": "00000501-0000-0000-0000-000000000501"
+        }
+      ]
+    },
+    {
+      "Id": "00000502-0000-0000-0000-000000000502",
+      "TitleEn": "Demo study: A Conversation in Layers",
+      "TitleAr": "دراسة تجريبية: حوار على طبقات",
+      "SlugEn": "demo-project-02",
+      "SlugAr": "demo-project-02-ar",
+      "Client": null,
+      "CategoryEn": "Video Production & Editing",
+      "CategoryAr": "إنتاج ومونتاج الفيديو",
+      "DescriptionEn": "Fictional development case study: A Conversation in Layers. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: حوار على طبقات. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-2.svg",
+      "ProjectDate": "2026-08-11",
+      "IsPublished": true,
+      "IsFeatured": true,
+      "DisplayOrder": 2,
+      "Images": [
+        {
+          "Id": "00008002-0000-0000-0000-000000008002",
+          "PortfolioProjectId": "00000502-0000-0000-0000-000000000502",
+          "ImageUrl": "/assets/demo/services/camera.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008003-0000-0000-0000-000000008003",
+          "PortfolioProjectId": "00000502-0000-0000-0000-000000000502",
+          "ImageUrl": "/assets/demo/services/campaign.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000401-0000-0000-0000-000000000401",
+          "PortfolioProjectId": "00000502-0000-0000-0000-000000000502"
+        },
+        {
+          "ServiceId": "00000402-0000-0000-0000-000000000402",
+          "PortfolioProjectId": "00000502-0000-0000-0000-000000000502"
+        }
+      ]
+    },
+    {
+      "Id": "00000503-0000-0000-0000-000000000503",
+      "TitleEn": "Demo study: Campaign in Frames",
+      "TitleAr": "دراسة تجريبية: حملة في كادرات",
+      "SlugEn": "demo-project-03",
+      "SlugAr": "demo-project-03-ar",
+      "Client": null,
+      "CategoryEn": "Advertising Campaigns",
+      "CategoryAr": "الحملات الإعلانية",
+      "DescriptionEn": "Fictional development case study: Campaign in Frames. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: حملة في كادرات. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-3.svg",
+      "ProjectDate": "2026-08-12",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 3,
+      "Images": [
+        {
+          "Id": "00008004-0000-0000-0000-000000008004",
+          "PortfolioProjectId": "00000503-0000-0000-0000-000000000503",
+          "ImageUrl": "/assets/demo/services/campaign.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008005-0000-0000-0000-000000008005",
+          "PortfolioProjectId": "00000503-0000-0000-0000-000000000503",
+          "ImageUrl": "/assets/demo/services/broadcast.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000402-0000-0000-0000-000000000402",
+          "PortfolioProjectId": "00000503-0000-0000-0000-000000000503"
+        },
+        {
+          "ServiceId": "00000403-0000-0000-0000-000000000403",
+          "PortfolioProjectId": "00000503-0000-0000-0000-000000000503"
+        }
+      ]
+    },
+    {
+      "Id": "00000504-0000-0000-0000-000000000504",
+      "TitleEn": "Demo study: An Evening on Stage",
+      "TitleAr": "دراسة تجريبية: أمسية على المسرح",
+      "SlugEn": "demo-project-04",
+      "SlugAr": "demo-project-04-ar",
+      "Client": null,
+      "CategoryEn": "Media Campaigns",
+      "CategoryAr": "الحملات الإعلامية",
+      "DescriptionEn": "Fictional development case study: An Evening on Stage. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: أمسية على المسرح. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-4.svg",
+      "ProjectDate": "2026-08-13",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 4,
+      "Images": [
+        {
+          "Id": "00008006-0000-0000-0000-000000008006",
+          "PortfolioProjectId": "00000504-0000-0000-0000-000000000504",
+          "ImageUrl": "/assets/demo/services/broadcast.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008007-0000-0000-0000-000000008007",
+          "PortfolioProjectId": "00000504-0000-0000-0000-000000000504",
+          "ImageUrl": "/assets/demo/services/digital.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000403-0000-0000-0000-000000000403",
+          "PortfolioProjectId": "00000504-0000-0000-0000-000000000504"
+        },
+        {
+          "ServiceId": "00000404-0000-0000-0000-000000000404",
+          "PortfolioProjectId": "00000504-0000-0000-0000-000000000504"
+        }
+      ]
+    },
+    {
+      "Id": "00000911-0000-0000-0000-000000000911",
+      "TitleEn": "Demo study: Digital Editorial Desk",
+      "TitleAr": "دراسة تجريبية: مكتب التحرير الرقمي",
+      "SlugEn": "demo-project-05",
+      "SlugAr": "demo-project-05-ar",
+      "Client": null,
+      "CategoryEn": "Marketing Campaigns",
+      "CategoryAr": "الحملات التسويقية",
+      "DescriptionEn": "Fictional development case study: Digital Editorial Desk. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: مكتب التحرير الرقمي. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-5.svg",
+      "ProjectDate": "2026-08-14",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 5,
+      "Images": [
+        {
+          "Id": "00008008-0000-0000-0000-000000008008",
+          "PortfolioProjectId": "00000911-0000-0000-0000-000000000911",
+          "ImageUrl": "/assets/demo/services/digital.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008009-0000-0000-0000-000000008009",
+          "PortfolioProjectId": "00000911-0000-0000-0000-000000000911",
+          "ImageUrl": "/assets/demo/services/microphone.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000404-0000-0000-0000-000000000404",
+          "PortfolioProjectId": "00000911-0000-0000-0000-000000000911"
+        },
+        {
+          "ServiceId": "00000405-0000-0000-0000-000000000405",
+          "PortfolioProjectId": "00000911-0000-0000-0000-000000000911"
+        }
+      ]
+    },
+    {
+      "Id": "00000913-0000-0000-0000-000000000913",
+      "TitleEn": "Demo study: A Story in Sound",
+      "TitleAr": "دراسة تجريبية: حكاية بالصوت",
+      "SlugEn": "demo-project-06",
+      "SlugAr": "demo-project-06-ar",
+      "Client": null,
+      "CategoryEn": "Public Relations & Media Relations",
+      "CategoryAr": "العلاقات العامة والتواصل الإعلامي",
+      "DescriptionEn": "Fictional development case study: A Story in Sound. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: حكاية بالصوت. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-6.svg",
+      "ProjectDate": "2026-08-15",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 6,
+      "Images": [
+        {
+          "Id": "00008010-0000-0000-0000-000000008010",
+          "PortfolioProjectId": "00000913-0000-0000-0000-000000000913",
+          "ImageUrl": "/assets/demo/services/microphone.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008011-0000-0000-0000-000000008011",
+          "PortfolioProjectId": "00000913-0000-0000-0000-000000000913",
+          "ImageUrl": "/assets/demo/services/screens.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000405-0000-0000-0000-000000000405",
+          "PortfolioProjectId": "00000913-0000-0000-0000-000000000913"
+        },
+        {
+          "ServiceId": "00000406-0000-0000-0000-000000000406",
+          "PortfolioProjectId": "00000913-0000-0000-0000-000000000913"
+        }
+      ]
+    },
+    {
+      "Id": "00000507-0000-0000-0000-000000000507",
+      "TitleEn": "Demo study: The Format Workshop",
+      "TitleAr": "دراسة تجريبية: ورشة الصيغ",
+      "SlugEn": "demo-project-07",
+      "SlugAr": "demo-project-07-ar",
+      "Client": null,
+      "CategoryEn": "Digital Platform Management",
+      "CategoryAr": "إدارة المنصات الرقمية",
+      "DescriptionEn": "Fictional development case study: The Format Workshop. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: ورشة الصيغ. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-7.svg",
+      "ProjectDate": "2026-08-16",
+      "IsPublished": true,
+      "IsFeatured": false,
+      "DisplayOrder": 7,
+      "Images": [
+        {
+          "Id": "00008012-0000-0000-0000-000000008012",
+          "PortfolioProjectId": "00000507-0000-0000-0000-000000000507",
+          "ImageUrl": "/assets/demo/services/screens.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008013-0000-0000-0000-000000008013",
+          "PortfolioProjectId": "00000507-0000-0000-0000-000000000507",
+          "ImageUrl": "/assets/demo/services/stage.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000406-0000-0000-0000-000000000406",
+          "PortfolioProjectId": "00000507-0000-0000-0000-000000000507"
+        },
+        {
+          "ServiceId": "00000407-0000-0000-0000-000000000407",
+          "PortfolioProjectId": "00000507-0000-0000-0000-000000000507"
+        }
+      ]
+    },
+    {
+      "Id": "00000508-0000-0000-0000-000000000508",
+      "TitleEn": "Demo study: Tomorrow’s Launch",
+      "TitleAr": "دراسة تجريبية: إطلاق الغد",
+      "SlugEn": "demo-project-08",
+      "SlugAr": "demo-project-08-ar",
+      "Client": null,
+      "CategoryEn": "Events, Conferences & Exhibitions",
+      "CategoryAr": "الفعاليات والمؤتمرات والمعارض",
+      "DescriptionEn": "Fictional development case study: Tomorrow’s Launch. Designed to test a bilingual media portfolio; no real client, commission or achievement is represented.",
+      "DescriptionAr": "دراسة حالة خيالية للتطوير: إطلاق الغد. أُعدّت لفحص عرض المشروعات الإعلامية باللغتين، ولا تمثل عميلاً أو تكليفاً أو إنجازاً حقيقياً.",
+      "ChallengeEn": "In this fictional brief, the team needs a clear narrative across several content formats while keeping the scope manageable.",
+      "ChallengeAr": "في هذا التكليف الخيالي يحتاج الفريق إلى سرد واضح عبر صيغ متعددة، مع الحفاظ على نطاق عمل قابل للتنفيذ.",
+      "ApproachEn": "The sample treatment starts with an audience question, sketches a sequence of scenes and links each deliverable to the intended platform.",
+      "ApproachAr": "تبدأ المعالجة التجريبية بسؤال يهم الجمهور، ثم تُرسم مشاهد متتابعة ويُربط كل مخرج بالمنصة المناسبة.",
+      "SolutionEn": "A fictional production plan combines an interview setup, supporting footage, editorial notes and platform-specific versions. Gallery images are temporary illustrations.",
+      "SolutionAr": "تجمع خطة الإنتاج الخيالية إعداد الحوار واللقطات المساندة والملاحظات التحريرية ونسخ المنصات. صور المعرض رسومات توضيحية مؤقتة.",
+      "ResultsEn": "Illustrative outcome only: a coherent set of draft materials ready for an internal creative review. No audience or performance results are claimed.",
+      "ResultsAr": "نتيجة توضيحية فقط: مجموعة مسودات متسقة جاهزة لمراجعة إبداعية داخلية، دون ادعاء نتائج تخص الجمهور أو الأداء.",
+      "CoverImageUrl": "/assets/demo/projects/project-8.svg",
+      "ProjectDate": "2026-08-17",
+      "IsPublished": false,
+      "IsFeatured": false,
+      "DisplayOrder": 8,
+      "Images": [
+        {
+          "Id": "00008014-0000-0000-0000-000000008014",
+          "PortfolioProjectId": "00000508-0000-0000-0000-000000000508",
+          "ImageUrl": "/assets/demo/services/stage.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 0
+        },
+        {
+          "Id": "00008015-0000-0000-0000-000000008015",
+          "PortfolioProjectId": "00000508-0000-0000-0000-000000000508",
+          "ImageUrl": "/assets/demo/services/portrait.svg",
+          "AltTextEn": "Temporary production illustration",
+          "AltTextAr": "رسم إنتاج توضيحي مؤقت",
+          "DisplayOrder": 1
+        }
+      ],
+      "ServicesUsed": [
+        {
+          "ServiceId": "00000407-0000-0000-0000-000000000407",
+          "PortfolioProjectId": "00000508-0000-0000-0000-000000000508"
+        },
+        {
+          "ServiceId": "00000408-0000-0000-0000-000000000408",
+          "PortfolioProjectId": "00000508-0000-0000-0000-000000000508"
+        }
+      ]
+    }
+  ],
+  "Articles": [
+    {
+      "Id": "00000601-0000-0000-0000-000000000601",
+      "TitleEn": "Demo insight: The Evolution of Digital Content",
+      "TitleAr": "رؤية تجريبية: كيف يتطوّر المحتوى الرقمي",
+      "SlugEn": "demo-insight-01",
+      "SlugAr": "demo-insight-01-ar",
+      "ExcerptEn": "A fictional editorial exercise on the evolution of digital content, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول كيف يتطوّر المحتوى الرقمي والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## The Evolution of Digital Content\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## كيف يتطوّر المحتوى الرقمي\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-1.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2026-09-15T12:00:00Z",
+      "IsPublished": true,
+      "SeoTitleEn": "The Evolution of Digital Content",
+      "SeoTitleAr": "كيف يتطوّر المحتوى الرقمي",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    },
+    {
+      "Id": "00000602-0000-0000-0000-000000000602",
+      "TitleEn": "Demo insight: Short-Form Video and Brand Communication",
+      "TitleAr": "رؤية تجريبية: الفيديو القصير وتواصل العلامات",
+      "SlugEn": "demo-insight-02",
+      "SlugAr": "demo-insight-02-ar",
+      "ExcerptEn": "A fictional editorial exercise on short-form video and brand communication, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول الفيديو القصير وتواصل العلامات والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## Short-Form Video and Brand Communication\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## الفيديو القصير وتواصل العلامات\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-2.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2026-09-14T12:00:00Z",
+      "IsPublished": true,
+      "SeoTitleEn": "Short-Form Video and Brand Communication",
+      "SeoTitleAr": "الفيديو القصير وتواصل العلامات",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    },
+    {
+      "Id": "00000603-0000-0000-0000-000000000603",
+      "TitleEn": "Demo insight: Preparing a Video Production",
+      "TitleAr": "رؤية تجريبية: التحضير لإنتاج الفيديو",
+      "SlugEn": "demo-insight-03",
+      "SlugAr": "demo-insight-03-ar",
+      "ExcerptEn": "A fictional editorial exercise on preparing a video production, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول التحضير لإنتاج الفيديو والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## Preparing a Video Production\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## التحضير لإنتاج الفيديو\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-3.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2026-09-13T12:00:00Z",
+      "IsPublished": true,
+      "SeoTitleEn": "Preparing a Video Production",
+      "SeoTitleAr": "التحضير لإنتاج الفيديو",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    },
+    {
+      "Id": "00000604-0000-0000-0000-000000000604",
+      "TitleEn": "Demo insight: A Podcast Starts with Listening",
+      "TitleAr": "رؤية تجريبية: البودكاست يبدأ بالاستماع",
+      "SlugEn": "demo-insight-04",
+      "SlugAr": "demo-insight-04-ar",
+      "ExcerptEn": "A fictional editorial exercise on a podcast starts with listening, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول البودكاست يبدأ بالاستماع والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## A Podcast Starts with Listening\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## البودكاست يبدأ بالاستماع\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-4.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2026-09-12T12:00:00Z",
+      "IsPublished": true,
+      "SeoTitleEn": "A Podcast Starts with Listening",
+      "SeoTitleAr": "البودكاست يبدأ بالاستماع",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    },
+    {
+      "Id": "00000605-0000-0000-0000-000000000605",
+      "TitleEn": "Demo insight: Building a Consistent Digital Presence",
+      "TitleAr": "رؤية تجريبية: بناء حضور رقمي متسق",
+      "SlugEn": "demo-insight-05",
+      "SlugAr": "demo-insight-05-ar",
+      "ExcerptEn": "A fictional editorial exercise on building a consistent digital presence, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول بناء حضور رقمي متسق والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## Building a Consistent Digital Presence\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## بناء حضور رقمي متسق\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-5.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2026-09-11T12:00:00Z",
+      "IsPublished": true,
+      "SeoTitleEn": "Building a Consistent Digital Presence",
+      "SeoTitleAr": "بناء حضور رقمي متسق",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    },
+    {
+      "Id": "00000921-0000-0000-0000-000000000921",
+      "TitleEn": "Demo insight: From Creative Idea to Campaign",
+      "TitleAr": "رؤية تجريبية: من الفكرة الإبداعية إلى الحملة",
+      "SlugEn": "demo-insight-06",
+      "SlugAr": "demo-insight-06-ar",
+      "ExcerptEn": "A fictional editorial exercise on from creative idea to campaign, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول من الفكرة الإبداعية إلى الحملة والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## From Creative Idea to Campaign\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## من الفكرة الإبداعية إلى الحملة\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-6.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2026-09-10T12:00:00Z",
+      "IsPublished": true,
+      "SeoTitleEn": "From Creative Idea to Campaign",
+      "SeoTitleAr": "من الفكرة الإبداعية إلى الحملة",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    },
+    {
+      "Id": "00000922-0000-0000-0000-000000000922",
+      "TitleEn": "Demo insight: Storytelling in Modern Media",
+      "TitleAr": "رؤية تجريبية: سرد القصص في الإعلام المعاصر",
+      "SlugEn": "demo-insight-07",
+      "SlugAr": "demo-insight-07-ar",
+      "ExcerptEn": "A fictional editorial exercise on storytelling in modern media, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول سرد القصص في الإعلام المعاصر والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## Storytelling in Modern Media\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## سرد القصص في الإعلام المعاصر\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-7.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2026-09-09T12:00:00Z",
+      "IsPublished": false,
+      "SeoTitleEn": "Storytelling in Modern Media",
+      "SeoTitleAr": "سرد القصص في الإعلام المعاصر",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    },
+    {
+      "Id": "00000608-0000-0000-0000-000000000608",
+      "TitleEn": "Demo insight: The Relationship Between Media and Platforms",
+      "TitleAr": "رؤية تجريبية: العلاقة بين الإعلام والمنصات",
+      "SlugEn": "demo-insight-08",
+      "SlugAr": "demo-insight-08-ar",
+      "ExcerptEn": "A fictional editorial exercise on the relationship between media and platforms, media production, creative choices and digital storytelling.",
+      "ExcerptAr": "تمرين تحريري خيالي حول العلاقة بين الإعلام والمنصات والإنتاج الإعلامي والاختيارات الإبداعية وسرد القصص الرقمية.",
+      "ContentEn": "Development editorial sample — not an official company article.\n\n## The Relationship Between Media and Platforms\n\nA useful production brief begins with a question: what should the audience understand after this story? This fictional editorial exercise considers how media, creative work and digital distribution connect. It is intended for typography, localization and reading tests.\n\nThe starting point is the intended conversation, not the number of assets. A short video may introduce an idea, while an interview or podcast gives the subject more room. Each format needs a clear reason to exist and enough preparation to make that reason visible.\n\n## From preparation to production\n\nWrite the central question before planning scenes. List the material that supports it and identify which parts depend on an interview, a demonstration or an editorial explanation. An organised outline gives the production team a shared point of reference.\n\n- Define the audience and the purpose.\n- Prepare a treatment and a practical filming plan.\n- Review language, captions and publishing formats.\n- Keep editorial decisions visible through the review process.\n\n## Editing for a platform\n\nEditing changes the order in which information reaches the viewer. A deliberate opening, clear transitions and room for the speaker can make a complex topic easier to follow. Platform versions should preserve the story even when the running time changes.\n\n> An editorial prompt for this fictional exercise: make every scene earn its place.\n\n## Review before release\n\nRead the Arabic and English versions as independent pieces of communication. Check titles, images, subtitles and the order of ideas. This sample makes no claim about campaign performance or audience growth; the exercise ends with a reviewable draft rather than invented results.",
+      "ContentAr": "عينة تحريرية للتطوير — ليست مقالاً رسمياً للشركة.\n\n## العلاقة بين الإعلام والمنصات\n\nيبدأ التكليف الإنتاجي المفيد بسؤال: ما الذي نريد أن يفهمه الجمهور بعد هذه القصة؟ يناقش هذا التمرين التحريري الخيالي العلاقة بين الإعلام والعمل الإبداعي والنشر الرقمي. أُعدّ لاختبار الخطوط والتعريب وتجربة القراءة.\n\nنقطة البداية هي الحوار المقصود، وليست كثرة المواد. قد يقدّم فيديو قصير فكرة أولية، بينما يمنح الحوار أو البودكاست الموضوع مساحة أوسع. لكل صيغة سبب واضح واحتياج مختلف من التحضير.\n\n## من الإعداد إلى الإنتاج\n\nاكتب السؤال الرئيسي قبل تخطيط المشاهد. حدّد المواد التي تدعمه، وميّز بين ما يحتاج إلى مقابلة أو عرض عملي أو شرح تحريري. تمنح المعالجة المنظمة فريق الإنتاج مرجعاً مشتركاً طوال العمل.\n\n- تحديد الجمهور والغرض من المحتوى.\n- إعداد المعالجة وخطة تصوير قابلة للتنفيذ.\n- مراجعة اللغة والعناوين ونسخ النشر.\n- توثيق القرارات التحريرية خلال المراجعة.\n\n## مونتاج يناسب المنصة\n\nيغيّر المونتاج ترتيب وصول المعلومات إلى المشاهد. تساعد البداية الواضحة والانتقالات المدروسة والمساحة المناسبة للمتحدث على متابعة الموضوع. ويجب أن تحافظ نسخ المنصات على الحكاية حتى مع اختلاف المدة.\n\n> سؤال تحريري لهذا التمرين الخيالي: ما الذي يضيفه كل مشهد إلى القصة؟\n\n## المراجعة قبل النشر\n\nتُقرأ النسختان العربية والإنجليزية بوصفهما تجربتين مستقلتين في التواصل. تُراجع العناوين والصور والترجمة وتسلسل الأفكار. لا تدّعي هذه العينة نتائج لحملة أو نمواً للجمهور؛ ينتهي التمرين بمسودة قابلة للمراجعة.",
+      "CoverImageUrl": "/assets/demo/insights/insight-8.svg",
+      "AuthorId": "00000200-0000-0000-0000-000000000200",
+      "PublishedAt": "2099-02-01T12:00:00Z",
+      "IsPublished": true,
+      "SeoTitleEn": "The Relationship Between Media and Platforms",
+      "SeoTitleAr": "العلاقة بين الإعلام والمنصات",
+      "SeoDescriptionEn": "Development editorial sample, not an official company article.",
+      "SeoDescriptionAr": "عينة تحريرية للتطوير، وليست مقالاً رسمياً للشركة."
+    }
+  ]
+}
