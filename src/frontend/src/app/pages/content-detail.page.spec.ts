@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
-import { BehaviorSubject, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { BehaviorSubject, of, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ContentDetailPage } from './content-pages';
 import { PublicContentApi } from '../core/public-content-api.service';
 import { SeoMetadataService } from '../core/seo-metadata.service';
@@ -52,10 +54,50 @@ describe('video detail page', () => {
     expect(iframe).not.toBeNull();
     expect(iframe.src).toContain('https://www.youtube-nocookie.com/embed/Abc12345678');
 
+    // Angular must not write src again during scroll/resize or unrelated state updates.
+    const setSource = vi.spyOn(iframe, 'src', 'set');
+    const stableSource = fixture.componentInstance.videoEmbedSource();
+    for (let index = 0; index < 3; index++) {
+      window.dispatchEvent(new Event('scroll'));
+      window.dispatchEvent(new Event('resize'));
+      fixture.componentInstance.shareMessage.set(`Message ${index}`);
+      fixture.detectChanges();
+    }
+    expect(fixture.nativeElement.querySelector('iframe')).toBe(iframe);
+    expect(fixture.componentInstance.videoEmbedSource()).toBe(stableSource);
+    expect(setSource).not.toHaveBeenCalled();
+
     routeParams.next(convertToParamMap({ slug: 'second-story' }));
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('h1')?.textContent).toContain('Changed story');
     expect(fixture.nativeElement.querySelector('iframe')).toBeNull();
     expect(api.getVideo).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('service detail language switching', () => {
+  const service = (slug: string, alternateSlug: string, title: string) => ({ id:'service-1',slug,alternateSlug,title,shortDescription:null,description:'Body',features:null,process:null,imageUrl:null,seoTitle:null,seoDescription:null,displayOrder:0,relatedProjects:[] });
+  function setup(url: string, slug: string) {
+    const params = new BehaviorSubject(convertToParamMap({ slug }));
+    const router = { url };
+    const api = { getService: vi.fn((locale: string, currentSlug: string) => of(locale === 'ar' ? service(currentSlug,'english-service','خدمة') : service(currentSlug,'خدمة-عربية','Service'))) };
+    const alternate = { set: vi.fn() };
+    TestBed.configureTestingModule({imports:[ContentDetailPage],providers:[
+      {provide: Router,useValue:router},
+      {provide: ActivatedRoute,useValue:{snapshot:{data:{kind:'services',section:'services'},paramMap:convertToParamMap({slug})},paramMap:params.asObservable(),parent:{snapshot:{routeConfig:{path:url.startsWith('/ar')?'ar':'en'}}}}},
+      {provide: PublicContentApi,useValue:api},{provide: SeoMetadataService,useValue:{update:vi.fn()}},{provide: AlternateRouteService,useValue:alternate}
+    ]});
+    const fixture=TestBed.createComponent(ContentDetailPage);fixture.detectChanges();return {fixture,params,router,api,alternate};
+  }
+  it('switches Arabic service details to the raw English alternate slug',()=>{const x=setup('/ar/services/خدمة-عربية','خدمة-عربية');expect(x.api.getService).toHaveBeenCalledWith('ar','خدمة-عربية');expect(x.alternate.set).toHaveBeenLastCalledWith('/en/services/english-service');x.router.url='/en/services/english-service';x.params.next(convertToParamMap({slug:'english-service'}));x.fixture.detectChanges();expect(x.api.getService).toHaveBeenLastCalledWith('en','english-service');});
+  it('switches English service details to the raw Arabic alternate slug',()=>{const x=setup('/en/services/english-service','english-service');expect(x.alternate.set).toHaveBeenLastCalledWith('/ar/services/خدمة-عربية');x.router.url='/ar/services/خدمة-عربية';x.params.next(convertToParamMap({slug:'خدمة-عربية'}));x.fixture.detectChanges();expect(x.api.getService).toHaveBeenLastCalledWith('ar','خدمة-عربية');});
+  it('replaces successful detail metadata with noindex when the next detail is missing', () => {
+    const x = setup('/en/services/english-service', 'english-service');
+    const seo = TestBed.inject(SeoMetadataService);
+    x.api.getService.mockImplementationOnce(() => throwError(() => new HttpErrorResponse({status:404})));
+    x.params.next(convertToParamMap({slug:'missing-service'})); x.fixture.detectChanges();
+    expect(x.fixture.componentInstance.notFound).toBe(true);
+    expect(seo.update).toHaveBeenLastCalledWith('en', '/en/services/missing-service', expect.any(String), '', null, undefined, null, false);
+    expect(x.fixture.nativeElement.querySelector('h1')).toBeNull();
   });
 });

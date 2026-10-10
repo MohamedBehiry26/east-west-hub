@@ -356,3 +356,31 @@ a:hover .media-play { background: var(--ew-accent); color: var(--ew-black); scal
 .service-hero-scene img { inline-size: 100%; block-size: clamp(16rem, 28vw, 30rem); object-fit: cover; transform: rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); transition: transform .2s; }
 .service-hero-scene > span { position: absolute; inset-inline-end: 5%; inset-block-end: 10%; z-index: 1; font-size: clamp(2rem,8vw,7rem); color: #d4a077; }
 @media(prefers-reduced-motion:reduce) { .service-hero-scene img { transform:none; transition:none; } }
+
+.public-site .watch-search { display:flex; align-items:center; gap:8px; min-width:0; padding:6px; background:#ffffff06; border:1px solid #ffffff25; border-radius:8px; }
+.public-site .watch-search:focus-within { border-color:var(--ew-accent); }
+.public-site .watch-search-input { display:flex; flex:1; min-width:0; align-items:center; gap:10px; padding-inline:8px; }
+.public-site .watch-search-input svg { width:18px; height:18px; flex:none; fill:none; stroke:var(--ew-accent); stroke-width:1.7; }
+.public-site .watch-search-input input { min-width:0; width:100%; min-height:42px; background:transparent; color:var(--ew-white); border:0; font-size:14px; }
+.public-site .watch-search-input input:focus-visible { outline:none; }
+.public-site .watch-search-input input::placeholder { color:#999; }
+.public-site .watch-search-clear { min-width:32px; min-height:36px; font-size:22px; color:#bbb; }
+.public-site .watch-search-submit { min-height:42px; padding:8px 18px; border-radius:5px; background:var(--ew-accent); color:#111; font-size:13px; font-weight:600; white-space:nowrap; }
+@media(min-width:768px) { .public-site .filter-bar:has(.watch-search) { grid-template-columns:minmax(0,1fr) 170px 160px 140px; } .public-site .filter-bar:has(.watch-search) .watch-search { grid-column:1 / -1; } }
+@media(min-width:1200px) { .public-site .filter-bar:has(.watch-search) { grid-template-columns:minmax(0,1fr) 170px 160px 140px; } .public-site .filter-bar:has(.watch-search) .watch-search { grid-column:auto; } }
+
+/* Give media pages room for artwork and the player on wide screens. */
+.public-site .public-collection[data-kind="podcasts"],
+.public-site .detail-page[data-kind="videos"],
+.public-site .detail-page[data-kind="podcasts"] {
+  max-inline-size: 1920px;
+  padding-inline: clamp(1rem, 2.5vw, 3rem);
+}
+.public-site .hero-video-poster { position:absolute; inset:0; width:100%; height:100%; }
+.public-site .hero-video-player { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.public-site .hero-playing .media-stack { transform:none; }
+.public-site .hero-playing .plane-front { transform:none; inset:0; }
+.public-site .hero-playing .viewfinder, .public-site .hero-playing .frame-caption, .public-site .hero-playing .timeline-plane { display:none; }
+.public-site .hero-playing .media-stack { aspect-ratio:16/9; }
+
+

@@ -3,10 +3,10 @@ import { MediaDepthDirective } from '../shared/media-depth.directive';
 import { RevealDirective } from '../shared/reveal.directive';
 import { ImageFallbackDirective } from '../shared/image-fallback.directive';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { catchError, distinctUntilChanged, map, Observable, of, Subscription, switchMap } from 'rxjs';
 import { PublicContentApi } from '../core/public-content-api.service';
@@ -82,11 +82,11 @@ export class ContentListPage implements OnInit {
       .subscribe(result => { this.cards.set(result.cards); this.totalPages.set(result.totalPages); this.loading.set(false); });
   }
 
-  private categoryCard(item: PublicCategory): ContentCard { return { title: item.name, summary: item.description, imageUrl: item.imageUrl, href: `/${this.locale}/categories/${encodeURIComponent(item.slug)}`, eyebrow: null }; }
-  private videoCard(item: PublicVideo): ContentCard { return { playable: !!item.youTubeVideoId, title: item.title, summary: item.description, imageUrl: item.thumbnailUrl, href: `/${this.locale}/${this.section}/${encodeURIComponent(item.slug)}`, eyebrow: [item.episodeNumber ? `${this.text.episode} ${new Intl.NumberFormat(this.locale).format(item.episodeNumber)}` : '', item.guestName, item.duration, item.category.name].filter(Boolean).join(' · ') }; }
-  private serviceCard(item: PublicService): ContentCard { return { title: item.title, summary: item.shortDescription ?? item.description, imageUrl: item.imageUrl, href: `/${this.locale}/${this.section}/${encodeURIComponent(item.slug)}`, eyebrow: null }; }
-  private projectCard(item: PublicPortfolioProject): ContentCard { return { title: item.title, summary: item.description, imageUrl: item.coverImageUrl, href: `/${this.locale}/${this.section}/${encodeURIComponent(item.slug)}`, eyebrow: item.category || (item.isFeatured ? this.text.featured : item.client) }; }
-  private articleCard(item: PublicArticle): ContentCard { return { title: item.title, summary: item.excerpt, imageUrl: item.coverImageUrl, href: `/${this.locale}/${this.section}/${encodeURIComponent(item.slug)}`, eyebrow: item.authorName, publishedAt: item.publishedAt }; }
+  private categoryCard(item: PublicCategory): ContentCard { return { title: item.name, summary: item.description, imageUrl: item.imageUrl, href: `/${this.locale}/categories/${item.slug}`, eyebrow: null }; }
+  private videoCard(item: PublicVideo): ContentCard { return { playable: !!item.youTubeVideoId, title: item.title, summary: item.description, imageUrl: item.thumbnailUrl, href: `/${this.locale}/${this.section}/${item.slug}`, eyebrow: [item.episodeNumber ? `${this.text.episode} ${new Intl.NumberFormat(this.locale).format(item.episodeNumber)}` : '', item.guestName, item.duration, item.category.name].filter(Boolean).join(' · ') }; }
+  private serviceCard(item: PublicService): ContentCard { return { title: item.title, summary: item.shortDescription ?? item.description, imageUrl: item.imageUrl, href: `/${this.locale}/${this.section}/${item.slug}`, eyebrow: null }; }
+  private projectCard(item: PublicPortfolioProject): ContentCard { return { title: item.title, summary: item.description, imageUrl: item.coverImageUrl, href: `/${this.locale}/${this.section}/${item.slug}`, eyebrow: item.category || (item.isFeatured ? this.text.featured : item.client) }; }
+  private articleCard(item: PublicArticle): ContentCard { return { title: item.title, summary: item.excerpt, imageUrl: item.coverImageUrl, href: `/${this.locale}/${this.section}/${item.slug}`, eyebrow: item.authorName, publishedAt: item.publishedAt }; }
 }
 
 @Component({
@@ -109,7 +109,7 @@ export class ContentListPage implements OnInit {
         @if (item.videoId) {
           <div class="detail-player mt-10 overflow-hidden bg-black">
             @if (embedStarted()) {
-              <iframe [src]="videoEmbedUrl(item.videoId)" [title]="text.videoTitle" class="aspect-video w-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe [src]="videoEmbedSource()" [title]="text.videoTitle" class="aspect-video w-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             } @else {
               <button type="button" (click)="playVideo()" [attr.aria-label]="text.videoTitle" class="group relative block aspect-video w-full overflow-hidden bg-[#111111] focus-visible:outline focus-visible:outline-4 focus-visible:outline-[var(--ew-accent)]">
                 @if (item.imageUrl) { <img ewImage [src]="item.imageUrl" [alt]="''" width="1280" height="720" fetchpriority="high" decoding="async" class="absolute inset-0 size-full object-cover" /> }
@@ -156,17 +156,22 @@ export class ContentListPage implements OnInit {
 })
 export class ContentDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly api = inject(PublicContentApi);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly seo = inject(SeoMetadataService);
   private readonly alternateRoute = inject(AlternateRouteService);
-  readonly locale: Locale = this.route.parent?.snapshot.routeConfig?.path === 'ar' ? 'ar' : 'en';
+  locale: Locale = this.route.parent?.snapshot.routeConfig?.path === 'ar' ? 'ar' : 'en';
   readonly kind = this.route.snapshot.data['kind'] as Exclude<ContentKind, 'categories'>;
   readonly section = (this.route.snapshot.data['section'] as string | undefined) ?? this.kind;
-  readonly text = labels[this.locale];
+  get text() { return labels[this.locale]; }
   readonly detail = signal<ContentDetail | null>(null);
   readonly embedStarted = signal(false);
+  readonly videoEmbedSource = computed(() => {
+    const id = this.detail()?.videoId;
+    return id ? this.videoEmbedUrl(id) : null;
+  });
   readonly loading = signal(true);
   readonly failed = signal(false);
   notFound = false;
@@ -192,6 +197,7 @@ export class ContentDetailPage implements OnInit {
   playVideo(): void { this.embedStarted.set(true); }
 
   load(slug: string | null = this.route.snapshot.paramMap.get('slug')): void {
+    this.locale = this.router.url.startsWith('/ar/') || this.router.url === '/ar' ? 'ar' : 'en';
     this.detailLoad?.unsubscribe();
     this.loading.set(true); this.failed.set(false); this.notFound = false; this.embedStarted.set(false); this.detail.set(null);
     if (!slug) { this.failed.set(true); this.loading.set(false); this.notFound = true; return; }
@@ -209,10 +215,10 @@ export class ContentDetailPage implements OnInit {
       this.detail.set(detail);
       this.loading.set(false);
       if (detail) {
-        const title = detail.seoTitle || detail.title;
+        const title = (detail.seoTitle || detail.title).replace(/(?:\s*\|\s*East West Hub)+$/i, '').trim();
         const description = detail.seoDescription || detail.summary || '';
         const path = `/${this.locale}/${this.section}/${encodeURIComponent(slug)}`;
-        const alternate = `/${this.locale === 'ar' ? 'en' : 'ar'}/${this.section}/${encodeURIComponent(detail.alternateSlug || slug)}`;
+        const alternate = `/${this.locale === 'ar' ? 'en' : 'ar'}/${this.section}/${detail.alternateSlug || slug}`;
         this.alternateRoute.set(alternate);
         const pageSchema = this.kind === 'videos' && detail.videoId ? {
           '@type': 'VideoObject', name: detail.title, description,
@@ -231,6 +237,8 @@ export class ContentDetailPage implements OnInit {
           author: { '@type': 'Organization', name: 'East West Hub' }, publisher: { '@type': 'Organization', name: 'East West Hub' }
         } : null;
         this.seo.update(this.locale, path, `${title} | East West Hub`, description, detail.imageUrl, alternate, pageSchema);
+      } else {
+        this.seo.update(this.locale, `/${this.locale}/${this.section}/${encodeURIComponent(slug)}`, `${this.notFound ? this.text.notFound : this.text.loadError} | East West Hub`, '', null, undefined, null, false);
       }
     });
   }
@@ -258,14 +266,14 @@ export class ContentDetailPage implements OnInit {
     )));
   }
   formatPublishedDate(value: string): string { return new Intl.DateTimeFormat(this.locale === 'ar' ? 'ar-EG-u-ca-gregory' : 'en-US', { dateStyle: 'medium' }).format(new Date(value)); }
-  private videoDetail(item: PublicVideo, related: PublicVideo[] = []): ContentDetail { return { title: item.title, alternateSlug: item.alternateSlug, seoTitle: item.seoTitle, seoDescription: item.seoDescription, summary: item.description, imageUrl: item.thumbnailUrl, eyebrow: item.category.name, sections: item.contentType === 'podcast' ? [{ title: this.text.podcastDetails, body: [item.episodeNumber ? `${this.text.episode} ${item.episodeNumber}` : '', item.seasonNumber ? `${this.text.season} ${item.seasonNumber}` : '', item.guestName ? `${this.text.guest}: ${item.guestName}` : ''].filter(Boolean).join(' · ') }].filter(section => section.body) : [], videoId: item.youTubeVideoId, episodeNumber: item.episodeNumber, relatedProjects: [], relatedVideos: related.map(video => ({ title: video.title, href: `/${this.locale}/${this.section}/${encodeURIComponent(video.slug)}`, imageUrl: video.thumbnailUrl })), tags: item.tags ?? [], publishedAt: item.publishedAt, gallery: [], showContactCta: false }; }
+  private videoDetail(item: PublicVideo, related: PublicVideo[] = []): ContentDetail { return { title: item.title, alternateSlug: item.alternateSlug, seoTitle: item.seoTitle, seoDescription: item.seoDescription, summary: item.description, imageUrl: item.thumbnailUrl, eyebrow: item.category.name, sections: item.contentType === 'podcast' ? [{ title: this.text.podcastDetails, body: [item.episodeNumber ? `${this.text.episode} ${item.episodeNumber}` : '', item.seasonNumber ? `${this.text.season} ${item.seasonNumber}` : '', item.guestName ? `${this.text.guest}: ${item.guestName}` : ''].filter(Boolean).join(' · ') }].filter(section => section.body) : [], videoId: item.youTubeVideoId, episodeNumber: item.episodeNumber, relatedProjects: [], relatedVideos: related.map(video => ({ title: video.title, href: `/${this.locale}/${this.section}/${video.slug}`, imageUrl: video.thumbnailUrl })), tags: item.tags ?? [], publishedAt: item.publishedAt, gallery: [], showContactCta: false }; }
   private serviceDetail(item: PublicService): ContentDetail {
     const sections: { title: string; body: string }[] = [];
     if (item.description) sections.push({ title: item.title, body: item.description });
     if (item.features) sections.push({ title: this.text.capabilities, body: item.features });
     if (item.process) sections.push({ title: this.text.process, body: item.process });
     return { title: item.title, alternateSlug: item.alternateSlug, seoTitle: item.seoTitle, seoDescription: item.seoDescription, summary: item.shortDescription, imageUrl: item.imageUrl, eyebrow: null, sections, videoId: null, relatedVideos: [], tags: [], publishedAt: null,
-      relatedProjects: item.relatedProjects.map(project => ({ title: project.title, href: `/${this.locale}/projects/${encodeURIComponent(project.slug)}`, imageUrl: project.coverImageUrl })), gallery: [], showContactCta: true };
+      relatedProjects: item.relatedProjects.map(project => ({ title: project.title, href: `/${this.locale}/projects/${project.slug}`, imageUrl: project.coverImageUrl })), gallery: [], showContactCta: true };
   }
   private projectDetail(item: PublicPortfolioProject): ContentDetail {
     const sections: DetailSection[] = [];

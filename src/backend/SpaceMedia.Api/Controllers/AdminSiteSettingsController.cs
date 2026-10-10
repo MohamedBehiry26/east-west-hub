@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SpaceMedia.Api.Contracts;
 using SpaceMedia.Application.Content;
 using SpaceMedia.Infrastructure.Identity;
+using SpaceMedia.Infrastructure.Content;
 
 namespace SpaceMedia.Api.Controllers;
 
@@ -16,6 +17,9 @@ public sealed class AdminSiteSettingsController(IAdminSiteSettingsManager manage
         (await manager.GetAsync(ct)) is { } settings ? Ok(settings) : NotFound();
 
     [HttpPut]
-    public async Task<ActionResult<AdminSiteSettingsContent>> Save(SaveAdminSiteSettingsRequest request, CancellationToken ct) =>
-        Ok(await manager.SaveAsync(request.ToModel(), ct));
+    public async Task<ActionResult<AdminSiteSettingsContent>> Save(SaveAdminSiteSettingsRequest request, CancellationToken ct)
+    {
+        try { return Ok(await manager.SaveAsync(request.ToModel(), ct)); }
+        catch (VideoAdministrationConflictException ex) { return BadRequest(new ProblemDetails { Title = ex.Message }); }
+    }
 }

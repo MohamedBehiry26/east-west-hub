@@ -33,6 +33,25 @@ describe('public content API', () => {
     expect(secondTotal).toBe(0);
   });
 
+  it('uses YouTube artwork for linked videos and preserves unlinked posters', () => {
+    let images: (string | null)[] = [];
+    api.getVideos('ar').subscribe(page => images = page.items.map(video => video.thumbnailUrl));
+    http.expectOne(req => req.url.endsWith('/videos')).flush({
+      items: [
+        { youTubeVideoId: 'HjOdg4Mvp-s', thumbnailUrl: 'https://broken.example.test' },
+        { youTubeVideoId: null, thumbnailUrl: '/assets/demo/media/camera.svg' }
+      ], page: 1, pageSize: 24, totalCount: 2
+    });
+    expect(images).toEqual(['https://i.ytimg.com/vi/HjOdg4Mvp-s/hqdefault.jpg', '/assets/demo/media/camera.svg']);
+  });
+
+  it('uses YouTube artwork for podcast details with no saved image', () => {
+    let image: string | null = null;
+    api.getPodcast('ar', 'episode').subscribe(video => image = video.thumbnailUrl);
+    http.expectOne(req => req.url.endsWith('/podcasts/episode')).flush({ youTubeVideoId: 'M7lc1UVf-VE', thumbnailUrl: null });
+    expect(image).toBe('https://i.ytimg.com/vi/M7lc1UVf-VE/hqdefault.jpg');
+  });
+
   it('requests podcast episodes from the localized podcast endpoint', () => {
     api.getPodcasts('ar', { page: 2, pageSize: 6, search: 'حوار' }).subscribe();
     const request = http.expectOne((req) => req.url.endsWith('/podcasts'));

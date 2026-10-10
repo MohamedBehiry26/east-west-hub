@@ -42,14 +42,18 @@ docs/                       Architecture records and deployment notes
    ```
 
    Its connection is stored in the API project's .NET User Secrets, outside the repository. The ignored `work/` directory contains the local database files.
-4. Start the API with `dotnet run --project src/backend/SpaceMedia.Api`. In Development, configured connections apply migrations and development seed data at startup.
+4. Start the API with `dotnet run --project src/backend/SpaceMedia.Api`. In Development, configured connections apply migrations at startup. Demo content is disabled by default; explicitly set Development__SeedDemoContent=true only when provisioning a disposable demo database.
 5. Start the frontend with `npm start` in `src/frontend`; its `/api` proxy targets the local API on `127.0.0.1:5080`.
 
 The API listens at `http://127.0.0.1:5080`; Angular listens at `http://localhost:4200`.
 
 ## Admin dashboard
 
-The protected administration area starts at `/admin/login`. It provides bilingual management screens for videos and podcasts, categories, tags, services, projects, articles, YouTube synchronization, and site settings. Configure an administrator through the environment only when a local bootstrap account is required; do not put administrator credentials in source control.
+The protected administration area starts at `/admin/login`. It provides bilingual management screens for manually selected YouTube videos and podcasts, categories, tags, services, projects, articles, administrator account creation, and site settings. Synchronization and automatic imports are not part of the current implementation. Do not put administrator credentials in source control.
+
+## Free client staging preparation
+
+See [docs/FREE-STAGING.md](docs/FREE-STAGING.md) for the same-origin Pages API proxy, Render .NET Dockerfile, staging PostgreSQL migrations, first administrator, provider variables, noindex behavior and acceptance checklist. No deployment is performed by these files. Older phase/synchronization descriptions below are historical and do not authorize or require YouTube Sync.
 
 ## Production sitemap
 

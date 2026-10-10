@@ -184,6 +184,7 @@ public sealed class SpaceMediaDbContext(DbContextOptions<SpaceMediaDbContext> op
             entity.Property(x => x.FaviconUrl).HasMaxLength(2048);
             entity.Property(x => x.Email).HasMaxLength(320);
             entity.Property(x => x.Phone).HasMaxLength(40);
+            entity.Property(x => x.HeroYouTubeVideoId).HasMaxLength(11);
             entity.Property(x => x.YouTubeChannelId).HasMaxLength(80);
             entity.Property(x => x.DefaultSeoTitleEn).HasMaxLength(250);
             entity.Property(x => x.DefaultSeoTitleAr).HasMaxLength(250);

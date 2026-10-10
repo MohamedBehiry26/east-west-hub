@@ -15,6 +15,7 @@ public sealed class SaveAdminArticleRequest
     public string? ContentAr { get; init; }
     [StringLength(2048)] public string? CoverImageUrl { get; init; }
     public Guid AuthorId { get; init; }
+    [StringLength(160)] public string? AuthorName { get; init; }
     public DateTimeOffset? PublishedAt { get; init; }
     public bool IsPublished { get; init; }
     [StringLength(250)] public string? SeoTitleEn { get; init; }
@@ -24,5 +25,5 @@ public sealed class SaveAdminArticleRequest
 
     public SaveAdminArticle ToModel() => new(TitleEn.Trim(), TitleAr.Trim(), SlugEn.Trim(), SlugAr.Trim(),
         ExcerptEn, ExcerptAr, ContentEn, ContentAr, CoverImageUrl, AuthorId,
-        PublishedAt, IsPublished, SeoTitleEn, SeoTitleAr, SeoDescriptionEn, SeoDescriptionAr);
+        PublishedAt, IsPublished, SeoTitleEn, SeoTitleAr, SeoDescriptionEn, SeoDescriptionAr, AuthorName);
 }

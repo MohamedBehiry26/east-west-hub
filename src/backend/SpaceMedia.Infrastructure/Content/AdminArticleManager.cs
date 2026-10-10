@@ -19,11 +19,25 @@ public sealed class AdminArticleManager(SpaceMediaDbContext db) : IAdminArticleM
 
     public async Task<AdminArticleContent?> SaveArticleAsync(Guid? id, SaveAdminArticle input, CancellationToken ct)
     {
-        if (!await db.ContentAuthors.AnyAsync(x => x.Id == input.AuthorId && x.IsActive, ct))
+        var authorId = input.AuthorId;
+        if (input.AuthorName is not null)
+        {
+            var name = input.AuthorName.Trim();
+            if (name.Length is < 1 or > 160)
+                throw new AdminArticleConflictException("Enter an author name between 1 and 160 characters.");
+            var author = await db.ContentAuthors.FirstOrDefaultAsync(x => x.DisplayName == name && x.IsActive, ct);
+            if (author is null)
+            {
+                author = new User { Id = Guid.NewGuid(), DisplayName = name, Email = $"author-{Guid.NewGuid():N}@content.invalid" };
+                db.ContentAuthors.Add(author);
+            }
+            authorId = author.Id;
+        }
+        else if (!await db.ContentAuthors.AnyAsync(x => x.Id == authorId && x.IsActive, ct))
             throw new AdminArticleConflictException("Select an active author.");
 
         var article = id is null
-            ? new Article { TitleEn = input.TitleEn.Trim(), TitleAr = input.TitleAr.Trim(), SlugEn = input.SlugEn.Trim(), SlugAr = input.SlugAr.Trim(), AuthorId = input.AuthorId }
+            ? new Article { TitleEn = input.TitleEn.Trim(), TitleAr = input.TitleAr.Trim(), SlugEn = input.SlugEn.Trim(), SlugAr = input.SlugAr.Trim(), AuthorId = authorId }
             : await db.Articles.SingleOrDefaultAsync(x => x.Id == id, ct);
         if (article is null) return null;
 
@@ -31,9 +45,12 @@ public sealed class AdminArticleManager(SpaceMediaDbContext db) : IAdminArticleM
         article.SlugEn = input.SlugEn.Trim(); article.SlugAr = input.SlugAr.Trim();
         article.ExcerptEn = input.ExcerptEn; article.ExcerptAr = input.ExcerptAr;
         article.ContentEn = input.ContentEn; article.ContentAr = input.ContentAr;
-        article.CoverImageUrl = input.CoverImageUrl; article.AuthorId = input.AuthorId;
+        article.CoverImageUrl = input.CoverImageUrl; article.AuthorId = authorId;
         article.IsPublished = input.IsPublished;
-        article.PublishedAt = input.IsPublished ? input.PublishedAt ?? article.PublishedAt ?? DateTimeOffset.UtcNow : input.PublishedAt;
+        // PostgreSQL timestamptz accepts DateTimeOffset values in UTC. ToUniversalTime
+        // preserves the instant supplied by the client while making it safe to persist.
+        var publishedAt = input.PublishedAt?.ToUniversalTime();
+        article.PublishedAt = input.IsPublished ? publishedAt ?? article.PublishedAt ?? DateTimeOffset.UtcNow : publishedAt;
         article.SeoTitleEn = input.SeoTitleEn; article.SeoTitleAr = input.SeoTitleAr;
         article.SeoDescriptionEn = input.SeoDescriptionEn; article.SeoDescriptionAr = input.SeoDescriptionAr;
         if (id is null) db.Articles.Add(article);

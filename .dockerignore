@@ -1,0 +1,16 @@
+.git
+**/node_modules
+**/bin
+**/obj
+**/dist
+**/work
+**/TestResults
+**/.angular
+.env
+.env.*
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/*.pfx
+**/*.pem
+**/*.key
+**/*.log

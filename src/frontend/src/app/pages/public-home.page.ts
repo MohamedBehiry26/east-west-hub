@@ -2,7 +2,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RevealDirective } from '../shared/reveal.directive';
 import { MediaDepthDirective } from '../shared/media-depth.directive';
 import { ImageFallbackDirective } from '../shared/image-fallback.directive';
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, forkJoin, of, Subscription } from 'rxjs';
 import { PublicContentApi } from '../core/public-content-api.service';
@@ -10,6 +10,8 @@ import { PublicArticle, PublicCategory, PublicPortfolioProject, PublicService, P
 import { SeoMetadataService } from '../core/seo-metadata.service';
 import enResources from '../../assets/i18n/en.json';
 import arResources from '../../assets/i18n/ar.json';
+
+import { DomSanitizer } from '@angular/platform-browser';
 
 type Language = 'en' | 'ar';
 
@@ -33,6 +35,16 @@ export class PublicHomePage implements OnInit {
   readonly projects = signal<PublicPortfolioProject[]>([]);
   readonly articles = signal<PublicArticle[]>([]);
   readonly siteSettings = signal<PublicSiteSettings | null>(null);
+  private readonly sanitizer = inject(DomSanitizer);
+  readonly heroStarted = signal(false);
+  readonly heroVideoId = computed(() => {
+    const id = this.siteSettings()?.heroYouTubeVideoId;
+    return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+  });
+  readonly heroEmbedUrl = computed(() => {
+    const id = this.heroVideoId();
+    return id ? this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube-nocookie.com/embed/${id}?autoplay=1`) : null;
+  });
 
   readonly content = { en: enResources.publicHome, ar: arResources.publicHome } as const;
 

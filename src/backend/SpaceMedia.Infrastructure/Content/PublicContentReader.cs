@@ -15,7 +15,7 @@ public sealed class PublicContentReader(SpaceMediaDbContext dbContext) : IPublic
             .Select(x => new
             {
                 x.AgencyNameEn, x.AgencyNameAr, x.AgencyDescriptionEn, x.AgencyDescriptionAr,
-                x.LogoUrl, x.FaviconUrl, x.Email, x.Phone, x.AddressEn, x.AddressAr,
+                x.LogoUrl, x.FaviconUrl, x.Email, x.Phone, x.AddressEn, x.AddressAr, x.HeroYouTubeVideoId,
                 SocialLinks = x.SocialLinks.Where(link => link.IsVisible).OrderBy(link => link.DisplayOrder)
                     .Select(link => new PublicSocialLink(link.Platform, link.Url)).ToList()
             })
@@ -25,7 +25,7 @@ public sealed class PublicContentReader(SpaceMediaDbContext dbContext) : IPublic
             isArabic ? setting.AgencyNameAr : setting.AgencyNameEn,
             isArabic ? setting.AgencyDescriptionAr : setting.AgencyDescriptionEn,
             setting.LogoUrl, setting.FaviconUrl, setting.Email, setting.Phone,
-            isArabic ? setting.AddressAr : setting.AddressEn, setting.SocialLinks);
+            isArabic ? setting.AddressAr : setting.AddressEn, setting.SocialLinks, setting.HeroYouTubeVideoId);
     }
 
     public async Task<IReadOnlyList<PublicCategory>> GetCategoriesAsync(bool isArabic, CancellationToken cancellationToken) =>
@@ -43,7 +43,9 @@ public sealed class PublicContentReader(SpaceMediaDbContext dbContext) : IPublic
     {
         var now = DateTimeOffset.UtcNow;
         return await dbContext.VideoTags.AsNoTracking()
-            .Where(link => link.Video.IsPublished && (link.Video.PublishedAt == null || link.Video.PublishedAt <= now) && link.Video.Category.IsPublished)
+            .Where(link => link.Video.ContentType != MediaContentType.Podcast
+                && link.Video.IsPublished && (link.Video.PublishedAt == null || link.Video.PublishedAt <= now)
+                && link.Video.Category.IsPublished)
             .Select(link => new { Slug = isArabic ? link.Tag.SlugAr : link.Tag.SlugEn, Name = isArabic ? link.Tag.NameAr : link.Tag.NameEn })
             .Distinct().OrderBy(tag => tag.Name)
             .Select(tag => new PublicTag(tag.Slug, tag.Name)).ToListAsync(cancellationToken);
@@ -54,7 +56,9 @@ public sealed class PublicContentReader(SpaceMediaDbContext dbContext) : IPublic
     {
         var now = DateTimeOffset.UtcNow;
         var query = dbContext.Videos.AsNoTracking()
-            .Where(x => x.ContentType == MediaContentType.Video && x.IsPublished && (x.PublishedAt == null || x.PublishedAt <= now) && x.Category.IsPublished);
+            .Where(x => x.ContentType != MediaContentType.Podcast
+                && x.IsPublished && (x.PublishedAt == null || x.PublishedAt <= now)
+                && x.Category.IsPublished);
 
         if (!string.IsNullOrWhiteSpace(categorySlug))
         {
@@ -107,7 +111,7 @@ public sealed class PublicContentReader(SpaceMediaDbContext dbContext) : IPublic
         var now = DateTimeOffset.UtcNow;
         return dbContext.Videos.AsNoTracking()
             .Where(x => x.IsPublished && (x.PublishedAt == null || x.PublishedAt <= now)
-                && x.ContentType == MediaContentType.Video && x.Category.IsPublished && (isArabic ? x.SlugAr : x.SlugEn) == slug)
+                && x.ContentType != MediaContentType.Podcast && x.Category.IsPublished && (isArabic ? x.SlugAr : x.SlugEn) == slug)
             .Select(x => new PublicVideo(
                 x.Id, isArabic ? x.SlugAr : x.SlugEn, isArabic ? x.SlugEn : x.SlugAr,
                 isArabic ? x.TitleAr : x.TitleEn,

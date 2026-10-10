@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable, catchError, shareReplay, throwError } from 'rxjs';
+import { Observable, catchError, map, shareReplay, throwError } from 'rxjs';
 import {
   PublicArticle, PublicCategory, PublicPage, PublicPortfolioProject,
   PublicService, PublicSiteSettings, PublicTag, PublicVideo
@@ -33,6 +33,12 @@ export class PublicContentApi {
     return stream;
   }
 
+  private videoThumbnail(video: PublicVideo): PublicVideo {
+    return video.youTubeVideoId && /^[A-Za-z0-9_-]{11}$/.test(video.youTubeVideoId)
+      ? { ...video, thumbnailUrl: `https://i.ytimg.com/vi/${video.youTubeVideoId}/hqdefault.jpg` }
+      : video;
+  }
+
   getSiteSettings(lang: string) {
     return this.cached(`site:${lang}`, () => this.http.get<PublicSiteSettings>(`${this.baseUrl}/site`, { params: { lang } }));
   }
@@ -47,23 +53,23 @@ export class PublicContentApi {
     if (options.search) params = params.set('search', options.search);
     if (options.tag) params = params.set('tag', options.tag);
     if (options.featured !== undefined) params = params.set('featured', options.featured);
-    return this.cached(`videos:${params.toString()}`, () => this.http.get<PublicPage<PublicVideo>>(`${this.baseUrl}/videos`, { params }));
+    return this.cached(`videos:${params.toString()}`, () => this.http.get<PublicPage<PublicVideo>>(`${this.baseUrl}/videos`, { params }).pipe(map(page => ({ ...page, items: page.items.map(video => this.videoThumbnail(video)) }))));
   }
 
   getTags(lang: string) { return this.cached(`tags:${lang}`, () => this.http.get<PublicTag[]>(`${this.baseUrl}/tags`, { params: { lang } })); }
 
   getVideo(lang: string, slug: string) {
-    return this.cached(`video:${lang}:${slug}`, () => this.http.get<PublicVideo>(`${this.baseUrl}/videos/${encodeURIComponent(slug)}`, { params: { lang } }));
+    return this.cached(`video:${lang}:${slug}`, () => this.http.get<PublicVideo>(`${this.baseUrl}/videos/${encodeURIComponent(slug)}`, { params: { lang } }).pipe(map(video => this.videoThumbnail(video))));
   }
 
   getPodcasts(lang: string, options: { page?: number; pageSize?: number; search?: string } = {}) {
     let params = new HttpParams().set('lang', lang).set('page', options.page ?? 1).set('pageSize', options.pageSize ?? 24);
     if (options.search) params = params.set('search', options.search);
-    return this.cached(`podcasts:${params.toString()}`, () => this.http.get<PublicPage<PublicVideo>>(`${this.baseUrl}/podcasts`, { params }));
+    return this.cached(`podcasts:${params.toString()}`, () => this.http.get<PublicPage<PublicVideo>>(`${this.baseUrl}/podcasts`, { params }).pipe(map(page => ({ ...page, items: page.items.map(video => this.videoThumbnail(video)) }))));
   }
 
   getPodcast(lang: string, slug: string) {
-    return this.cached(`podcast:${lang}:${slug}`, () => this.http.get<PublicVideo>(`${this.baseUrl}/podcasts/${encodeURIComponent(slug)}`, { params: { lang } }));
+    return this.cached(`podcast:${lang}:${slug}`, () => this.http.get<PublicVideo>(`${this.baseUrl}/podcasts/${encodeURIComponent(slug)}`, { params: { lang } }).pipe(map(video => this.videoThumbnail(video))));
   }
 
   getServices(lang: string, page = 1, pageSize = 50) {

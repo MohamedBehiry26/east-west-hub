@@ -15,17 +15,17 @@ public sealed class SaveAdminSiteSettingsRequest
     [StringLength(40)] public string? Phone { get; init; }
     [StringLength(500)] public string? AddressEn { get; init; }
     [StringLength(500)] public string? AddressAr { get; init; }
-    [StringLength(80)] public string? YouTubeChannelId { get; init; }
     [StringLength(250)] public string? DefaultSeoTitleEn { get; init; }
     [StringLength(250)] public string? DefaultSeoTitleAr { get; init; }
     [StringLength(500)] public string? DefaultSeoDescriptionEn { get; init; }
     [StringLength(500)] public string? DefaultSeoDescriptionAr { get; init; }
+    [StringLength(2048)] public string? HeroVideoUrl { get; init; }
     public List<SaveAdminSocialLinkRequest> SocialLinks { get; init; } = [];
 
     public SaveAdminSiteSettings ToModel() => new(AgencyNameEn.Trim(), AgencyNameAr.Trim(), AgencyDescriptionEn, AgencyDescriptionAr,
-        LogoUrl, FaviconUrl, Email, Phone, AddressEn, AddressAr, YouTubeChannelId,
+        LogoUrl, FaviconUrl, Email, Phone, AddressEn, AddressAr,
         DefaultSeoTitleEn, DefaultSeoTitleAr, DefaultSeoDescriptionEn, DefaultSeoDescriptionAr,
-        (SocialLinks ?? []).Select(x => new SaveAdminSocialLink(x.Platform, x.Url, x.DisplayOrder, x.IsVisible)).ToArray());
+        (SocialLinks ?? []).Select(x => new SaveAdminSocialLink(x.Platform, x.Url, x.DisplayOrder, x.IsVisible)).ToArray(), HeroVideoUrl);
 }
 
 public sealed class SaveAdminSocialLinkRequest
@@ -35,3 +35,4 @@ public sealed class SaveAdminSocialLinkRequest
     public int DisplayOrder { get; init; }
     public bool IsVisible { get; init; } = true;
 }
+

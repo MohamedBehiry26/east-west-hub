@@ -1,12 +1,13 @@
 interface SecurityMiddlewareContext {
   request: Request;
-  env: { API_BASE_URL?: string };
+  env: { API_BASE_URL?: string; STAGING_NOINDEX?: string };
   next: () => Promise<Response>;
 }
 
 export const onRequest = async ({ request, env, next }: SecurityMiddlewareContext): Promise<Response> => {
   const response = await next();
   const headers = new Headers(response.headers);
+  if (env.STAGING_NOINDEX === 'true') headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
   const connectSources = new Set(["'self'"]);
 
   if (env.API_BASE_URL) {

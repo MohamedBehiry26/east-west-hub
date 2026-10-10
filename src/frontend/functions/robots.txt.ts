@@ -1,8 +1,8 @@
-interface RobotsContext { request: Request; }
+interface RobotsContext { request: Request; env?: { STAGING_NOINDEX?: string }; }
 
-export const onRequest = ({ request }: RobotsContext): Response => {
+export const onRequest = ({ request, env }: RobotsContext): Response => {
   const origin = new URL(request.url).origin;
-  const body = [
+  const body = env?.STAGING_NOINDEX === 'true' ? 'User-agent: *\nDisallow: /\n' : [
     'User-agent: *',
     'Allow: /',
     'Disallow: /admin',

@@ -38,3 +38,7 @@ All routes require the `Admin` role. Article fields include English and Arabic t
 - `PUT /api/admin/settings` updates the bilingual agency name, description and address; contact email and phone; logo and favicon URLs; and ordered social links.
 
 Settings routes require the `Admin` role. Hidden social links are retained in admin settings and omitted from public contact information. The dashboard editor is at `/admin/settings`; the saved values feed the existing localized public settings API.
+
+Article saves accept an optional AuthorName (1–160 trimmed characters). The dashboard uses a free-text byline. A matching active content author is reused; a new name creates a content-only author, without a login account. Editing one article's byline does not rename authors on other articles. Existing AuthorId requests remain supported.
+
+Homepage hero: Settings accepts an optional HeroVideoUrl containing a YouTube watch, short, Shorts or embed link. The normalized video ID is persisted independently of featured media, exposed by the public site endpoint, and displayed as a click-to-play hero. Clearing the link restores the default artwork. Deploy the HomepageHeroVideo migration before starting the updated production API.

@@ -18,7 +18,8 @@ describe('application routes', () => {
     expect(admin?.canActivate).toContain(authGuard);
     expect(routes.some((route) => route.path === 'admin/login')).toBe(true);
     expect(admin?.children?.map((route) => route.path)).toEqual(expect.arrayContaining([
-      '', 'videos', 'podcasts', 'youtube', 'categories', 'tags', 'services', 'portfolio', 'articles', 'settings'
+      '', 'videos', 'podcasts', 'categories', 'tags', 'services', 'portfolio', 'articles', 'settings', 'accounts'
     ]));
   });
 });
+

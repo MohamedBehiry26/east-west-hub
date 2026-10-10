@@ -11,8 +11,8 @@ export class AdminHomePage implements OnInit {
   private readonly http=inject(HttpClient); private readonly destroyRef=inject(DestroyRef); readonly locale=inject(AdminLocaleService);
   readonly loading=signal(true); readonly error=signal(false); readonly media=signal<Media[]|null>(null);
   private request?:Subscription;
-  counts: (number|null)[]=[null,null,null,null]; lastSync:string|null=null;
-  ngOnInit():void { try { this.lastSync=localStorage.getItem('space-media.admin.youtube.lastSync'); } catch {} this.load(); }
+  counts: (number|null)[]=[null,null,null,null];
+  ngOnInit():void { this.load(); }
   title(item:Media):string { return (this.locale.locale()==='ar' ? item.titleAr : item.titleEn) || item.titleEn || item.titleAr; }
   complete(item:Media,language:'en'|'ar'):boolean { return !!(language==='en' ? item.titleEn.trim() && item.descriptionEn?.trim() : item.titleAr.trim() && item.descriptionAr?.trim()); }
   status(item:Media):string { return !item.isPublished ? 'Draft' : item.publishedAt && Date.parse(item.publishedAt)>Date.now() ? 'Scheduled' : 'Published'; }
@@ -36,3 +36,4 @@ export class AdminHomePage implements OnInit {
     this.request=forkJoin({media:read<Media>('/api/admin/videos'),categories:read<unknown>('/api/admin/categories'),services:read<unknown>('/api/admin/services'),projects:read<unknown>('/api/admin/portfolio'),articles:read<unknown>('/api/admin/articles')}).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(result=>{this.media.set(result.media);this.counts=[result.categories?.length??null,result.services?.length??null,result.projects?.length??null,result.articles?.length??null];this.loading.set(false);});
   }
 }
+

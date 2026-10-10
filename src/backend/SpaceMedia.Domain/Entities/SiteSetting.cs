@@ -13,6 +13,7 @@ public sealed class SiteSetting : AuditableEntity
     public string? Phone { get; set; }
     public string? AddressEn { get; set; }
     public string? AddressAr { get; set; }
+    public string? HeroYouTubeVideoId { get; set; }
     public string? YouTubeChannelId { get; set; }
     public string? DefaultSeoTitleEn { get; set; }
     public string? DefaultSeoTitleAr { get; set; }

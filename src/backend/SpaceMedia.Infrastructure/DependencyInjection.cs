@@ -49,7 +49,6 @@ public static class DependencyInjection
         services.AddScoped<IAdminArticleManager, AdminArticleManager>();
         services.AddScoped<IAdminSiteSettingsManager, AdminSiteSettingsManager>();
         services.AddScoped<IAdminVideoManager, AdminVideoManager>();
-        services.AddHttpClient<IYouTubeService, YouTubeService>();
 
         return services;
     }

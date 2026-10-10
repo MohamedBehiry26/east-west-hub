@@ -8,7 +8,7 @@
 - Authorization uses the `Admin` role. The API has a fallback policy requiring authentication; explicitly mark future public endpoints `[AllowAnonymous]`.
 - Unconfirmed email is rejected. Bootstrap-created administrator accounts are marked confirmed because there is no email-confirmation flow yet.
 - Passwords are stored using ASP.NET Core Identity's password hasher. The policy requires at least 12 characters, upper/lowercase, a digit, and a non-alphanumeric character. Five failed attempts lock an account for 15 minutes.
-- No public registration or refresh-token endpoint exists.
+- No public registration or refresh-token endpoint exists. Authenticated administrators can create additional administrators with POST /api/admin/accounts from the dashboard Admin accounts page. The endpoint validates Identity password rules and duplicate emails, grants Admin access, and returns only id, email and display name. Bootstrap is needed only for the first administrator.
 
 ## Bootstrap an administrator
 

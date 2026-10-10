@@ -1,0 +1,8 @@
+name = "east-west-hub-staging"
+pages_build_output_dir = "dist/space-media-web/browser"
+compatibility_date = "2026-10-10"
+
+[vars]
+STAGING_NOINDEX = "true"
+# Set API_BASE_URL to the HTTPS Render origin in Pages settings before deployment.
+# No API credentials or JWT keys belong here.

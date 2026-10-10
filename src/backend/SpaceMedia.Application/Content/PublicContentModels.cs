@@ -38,7 +38,7 @@ public sealed record PublicSocialLink(string Platform, string Url);
 
 public sealed record PublicSiteSettings(
     string AgencyName, string? AgencyDescription, string? LogoUrl, string? FaviconUrl,
-    string? Email, string? Phone, string? Address, IReadOnlyList<PublicSocialLink> SocialLinks);
+    string? Email, string? Phone, string? Address, IReadOnlyList<PublicSocialLink> SocialLinks, string? HeroYouTubeVideoId = null);
 
 public interface IPublicContentReader
 {

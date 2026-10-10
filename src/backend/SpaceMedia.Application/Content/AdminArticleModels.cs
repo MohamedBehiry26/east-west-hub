@@ -13,7 +13,7 @@ public sealed record SaveAdminArticle(
     string TitleEn, string TitleAr, string SlugEn, string SlugAr,
     string? ExcerptEn, string? ExcerptAr, string? ContentEn, string? ContentAr,
     string? CoverImageUrl, Guid AuthorId, DateTimeOffset? PublishedAt, bool IsPublished,
-    string? SeoTitleEn, string? SeoTitleAr, string? SeoDescriptionEn, string? SeoDescriptionAr);
+    string? SeoTitleEn, string? SeoTitleAr, string? SeoDescriptionEn, string? SeoDescriptionAr, string? AuthorName = null);
 
 public interface IAdminArticleManager
 {

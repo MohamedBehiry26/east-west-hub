@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test --watch=false",
+    "test": "ng test",
+    "test:staging": "node tests/run-staging-tests.cjs",
     "watch": "ng build --watch --configuration development"
   },
   "dependencies": {

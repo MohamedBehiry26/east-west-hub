@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using SpaceMedia.Application.Content;
+using SpaceMedia.Domain.Entities;
 
 namespace SpaceMedia.Api.Contracts;
 
@@ -21,6 +22,7 @@ public sealed record AdminVideoTagRequest([Required, StringLength(100)] string N
 }
 
 public sealed record SaveAdminVideoRequest(
+    [StringLength(2048)] string? YouTubeUrl,
     [Required, StringLength(250)] string TitleEn,
     [Required, StringLength(250)] string TitleAr,
     [Required, StringLength(180)] string SlugEn,
@@ -29,9 +31,12 @@ public sealed record SaveAdminVideoRequest(
     [Url, StringLength(2048)] string? ThumbnailUrl,
     [Required] Guid CategoryId,
     bool IsFeatured, bool IsPublished, int DisplayOrder,
-    [MaxLength(20)] IReadOnlyList<AdminVideoTagRequest> Tags)
+    [MaxLength(20)] IReadOnlyList<AdminVideoTagRequest>? Tags,
+    MediaContentType ContentType = MediaContentType.Video,
+    int? EpisodeNumber = null, int? SeasonNumber = null,
+    [StringLength(160)] string? GuestNameEn = null, [StringLength(160)] string? GuestNameAr = null,
+    [StringLength(250)] string? SeoTitleEn = null, [StringLength(250)] string? SeoTitleAr = null,
+    [StringLength(500)] string? SeoDescriptionEn = null, [StringLength(500)] string? SeoDescriptionAr = null)
 {
-    public SaveAdminVideo ToModel() => new(TitleEn, TitleAr, SlugEn, SlugAr, DescriptionEn, DescriptionAr, ThumbnailUrl, CategoryId, IsFeatured, IsPublished, DisplayOrder, (Tags ?? []).Select(tag => tag.ToModel()).ToArray());
+    public SaveAdminVideo ToModel() => new(YouTubeUrl, TitleEn, TitleAr, SlugEn, SlugAr, DescriptionEn, DescriptionAr, ThumbnailUrl, CategoryId, IsFeatured, IsPublished, DisplayOrder, (Tags ?? []).Select(tag => tag.ToModel()).ToArray(), ContentType, EpisodeNumber, SeasonNumber, GuestNameEn, GuestNameAr, SeoTitleEn, SeoTitleAr, SeoDescriptionEn, SeoDescriptionAr);
 }
-
-public sealed record SyncYouTubeRequest([Required] Guid CategoryId);

@@ -29,9 +29,9 @@ describe('AdminShellComponent navigation', () => {
     const router = TestBed.inject(Router);
     const destinations = [
       ['Overview', '/admin'], ['Media', '/admin/videos'], ['Podcasts', '/admin/podcasts'],
-      ['YouTube sync', '/admin/youtube'], ['Categories', '/admin/categories'], ['Tags', '/admin/tags'],
+['Categories', '/admin/categories'], ['Tags', '/admin/tags'],
       ['Services', '/admin/services'], ['Projects', '/admin/portfolio'], ['Insights', '/admin/articles'],
-      ['Settings', '/admin/settings']
+      ['Settings', '/admin/settings'], ['Admin accounts', '/admin/accounts']
     ];
 
     for (const [label, path] of destinations) {
@@ -45,3 +45,4 @@ describe('AdminShellComponent navigation', () => {
     }
   });
 });
+

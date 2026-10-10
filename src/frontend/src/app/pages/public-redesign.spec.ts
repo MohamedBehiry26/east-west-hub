@@ -35,6 +35,45 @@ function setup(locale: 'en' | 'ar' = 'en', kind = 'podcasts') {
 }
 
 describe('cinematic public experience', () => {
+  it('plays the configured hero only on activation and keeps its iframe stable', () => {
+    setup('ar');
+    const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
+    const component = fixture.componentInstance;
+    component.siteSettings.set({agencyName:'Hub',agencyDescription:null,logoUrl:null,faviconUrl:null,email:null,phone:null,address:null,socialLinks:[],heroYouTubeVideoId:'M7lc1UVf-VE'});
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.hero-video-player')).toBeNull();
+    fixture.nativeElement.querySelector('.hero-video-poster').click(); fixture.detectChanges();
+    const iframe: HTMLIFrameElement = fixture.nativeElement.querySelector('.hero-video-player');
+    expect(iframe.src).toContain('/embed/M7lc1UVf-VE');
+    const setter = vi.spyOn(iframe,'src','set');
+    window.dispatchEvent(new Event('scroll')); fixture.detectChanges();
+    expect(setter).not.toHaveBeenCalled();
+    component.siteSettings.set(null); fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.hero-video-player')).toBeNull();
+  });
+  it('debounces watch search and resets pagination while keeping filters', async () => {
+    vi.useFakeTimers();
+    try {
+      const { api } = setup('ar');
+      const fixture = TestBed.createComponent(VideoListPage); fixture.detectChanges();
+      const c = fixture.componentInstance;
+      c.category = 'production'; c.tag = 'creative'; c.load(2);
+      api.getVideos.mockClear();
+      c.searchChanged('ح'); c.searchChanged('حملة');
+      await vi.advanceTimersByTimeAsync(299);
+      expect(api.getVideos).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(1);
+      expect(api.getVideos).toHaveBeenCalledTimes(1);
+      expect(api.getVideos).toHaveBeenLastCalledWith('ar', 'production', expect.objectContaining({ page: 1, search: 'حملة', tag: 'creative' }));
+      c.searchChanged('pending'); c.clearSearch();
+      expect(api.getVideos).toHaveBeenLastCalledWith('ar', 'production', expect.objectContaining({ page: 1, search: undefined }));
+      const calls = api.getVideos.mock.calls.length;
+      await vi.advanceTimersByTimeAsync(500);
+      expect(api.getVideos.mock.calls.length).toBe(calls);
+      fixture.destroy();
+    } finally { vi.useRealTimers(); }
+  });
+
   afterEach(() => { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; });
 
   for (const locale of ['en', 'ar'] as const) {

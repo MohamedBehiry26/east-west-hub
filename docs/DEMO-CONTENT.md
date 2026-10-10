@@ -1,6 +1,6 @@
 # Development content
 
-The development catalog is deliberately separate from production content. It is loaded only when the API environment name is exactly `Development`.
+The development catalog is deliberately separate from production content. Automatic loading is disabled by default. It runs only when the environment is exactly `Development` and `Development__SeedDemoContent=true` is explicitly configured.
 
 ## What is seeded
 
@@ -20,7 +20,7 @@ The business service names and their bilingual descriptions are editable CMS con
 
 It adds missing records, upgrades only the exact legacy placeholders that shipped with the project, and preserves later editor changes. It can be run repeatedly without duplicates. It also refuses to run in Production, Staging, or any other environment.
 
-To refresh a local development database, start the API with the `Development` environment. Do not delete database records to refresh demo content: edit or remove the development catalog only when you intentionally want to change the deterministic dataset.
+To provision demo data in a disposable local database, explicitly set `Development__SeedDemoContent=true` and start in `Development`, then remove that setting. Enabling it again restores missing demo records, including intentionally deleted ones. Do not delete database records to refresh demo content: edit or remove the development catalog only when you intentionally want to change the deterministic dataset.
 
 ## Video policy
 

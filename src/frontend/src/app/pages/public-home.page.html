@@ -7,12 +7,20 @@
       <p class="hero-intro">{{ copy.intro }}</p>
       <div class="ew-actions"><a routerLink="watch" class="ew-button">{{ copy.primaryCta }} <span class="directional-icon" aria-hidden="true">↗</span></a><a routerLink="services" class="ew-link">{{ copy.secondaryCta }} <span class="directional-icon" aria-hidden="true">↗</span></a></div>
     </div>
-    <div class="media-stage" ewMediaDepth>
+    <div class="media-stage" ewMediaDepth [class.hero-playing]="heroStarted()">
       <div class="media-stack">
         <div class="media-plane plane-back" aria-hidden="true"><span>EW / 03</span></div>
         <div class="media-plane plane-middle" aria-hidden="true"><div class="waveform">@for (bar of waveform; track $index) {<i [style.height.%]="bar"></i>}</div></div>
         <div class="media-plane plane-front">
-          <img ewImage src="/assets/demo/east-west-studio.svg" [alt]="copy.heroImageAlt" width="1200" height="1400" fetchpriority="high" decoding="async" />
+          @if (heroVideoId(); as id) {
+            @if (heroStarted()) {
+              <iframe class="hero-video-player" [src]="heroEmbedUrl()" [title]="copy.heroLabel" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            } @else {
+              <button type="button" class="hero-video-poster" (click)="heroStarted.set(true)" [attr.aria-label]="copy.watchStory"><img ewImage [src]="'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'" [alt]="copy.heroImageAlt" width="1280" height="720" fetchpriority="high" decoding="async" /><span class="media-play" aria-hidden="true">▶</span></button>
+            }
+          } @else {
+            <img ewImage src="/assets/demo/east-west-studio.svg" [alt]="copy.heroImageAlt" width="1200" height="1400" fetchpriority="high" decoding="async" />
+          }
           <div class="viewfinder" aria-hidden="true"><span>EW / STUDIO</span><span class="record-mark"></span></div>
           <div class="frame-caption"><span>{{ copy.heroLabel }}</span><span aria-hidden="true">16:9</span></div>
         </div>

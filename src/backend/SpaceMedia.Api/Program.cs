@@ -119,6 +119,8 @@ if (!builder.Environment.IsDevelopment())
 
 builder.Services.AddResponseCaching();
 var app = builder.Build();
+var skipStartupDataInitialization = app.Environment.IsEnvironment("Testing")
+    && builder.Configuration.GetValue("Testing:SkipStartupDataInitialization", false);
 app.UseExceptionHandler();
 if (!app.Environment.IsDevelopment())
 {
@@ -135,18 +137,20 @@ app.Use(async (context, next) =>
     context.Response.Headers["X-Permitted-Cross-Domain-Policies"] = "none";
     await next();
 });
-if (app.Environment.IsDevelopment()
+if (!skipStartupDataInitialization
+    && app.Environment.IsDevelopment()
     && !string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("DefaultConnection")))
 {
     await using var scope = app.Services.CreateAsyncScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<SpaceMediaDbContext>();
     await dbContext.Database.MigrateAsync();
-    if (app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>("Development:SeedDemoContent"))
     {
         await DevelopmentSeeder.SeedAsync(dbContext, app.Environment.EnvironmentName);
     }
 }
-if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("DefaultConnection")))
+if (!skipStartupDataInitialization
+    && !string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("DefaultConnection")))
 {
     await using var scope = app.Services.CreateAsyncScope();
     await IdentityBootstrapper.EnsureAdminRoleAndOptionalUserAsync(scope.ServiceProvider, builder.Configuration);

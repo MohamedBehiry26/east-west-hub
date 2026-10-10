@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AdminTextPipe } from '../core/admin-text.pipe';
 import { AdminLocaleService } from '../core/admin-locale.service';
 
@@ -25,7 +25,6 @@ interface PortfolioItem {
   serviceIds: string[];
 }
 interface ServiceOption { id: string; titleEn: string; titleAr: string; }
-interface ArticleAuthor { id: string; displayName: string; }
 interface ArticleItem {
   id: string; titleEn: string; titleAr: string; slugEn: string; slugAr: string;
   excerptEn: string | null; excerptAr: string | null; contentEn: string | null; contentAr: string | null;
@@ -78,7 +77,7 @@ const fieldClass = 'mt-1 w-full rounded-xl border border-white/10 bg-[#101010] p
       <div class="flex flex-wrap gap-3"><label class="flex-1 min-w-40 text-xs text-[#a0a0a0]">{{ 'Search' | adminText }}<input [(ngModel)]="query" (ngModelChange)="page=0" class="${fieldClass}" type="search"></label><label class="text-xs text-[#a0a0a0]">{{ 'Status' | adminText }}<select [(ngModel)]="statusFilter" (ngModelChange)="page=0" class="${fieldClass}"><option value="all">{{ 'All statuses' | adminText }}</option><option value="published">{{ 'Published' | adminText }}</option><option value="draft">{{ 'Draft' | adminText }}</option></select></label></div><div class="flex items-center justify-between text-xs text-[#a0a0a0]"><span>{{filteredItems.length}} {{ 'results' | adminText }}</span><div class="flex items-center gap-4"><button [disabled]="page===0" (click)="page=page-1">{{ 'Previous' | adminText }}</button><span>{{page+1}} / {{totalPages}}</span><button [disabled]="page>=totalPages-1" (click)="page=page+1">{{ 'Next' | adminText }}</button></div></div><div class="overflow-hidden rounded-2xl border border-white/10 bg-[#141414]/[.02]">
         <div *ngFor="let item of pageItems" class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 last:border-0">
           <div><h2 class="font-medium">{{item.titleEn}} <span class="text-[#a0a0a0]">/ {{item.titleAr}}</span></h2><p class="mt-1 text-xs text-[#a0a0a0]">/{{item.slugEn}} · {{ (item.isPublished ? 'Published' : 'Draft') | adminText }} · {{ 'Display order' | adminText }} {{item.displayOrder}}</p><p class="mt-1 text-xs" [class.text-emerald-200]="translationComplete(item)" [class.text-amber-200]="!translationComplete(item)">{{ (translationComplete(item) ? 'translation.complete' : 'translation.missing') | adminText }}</p></div>
-          <div class="flex gap-2"><button type="button" (click)="edit(item)" class="rounded-lg border border-white/15 px-3 py-2 text-xs">{{ 'Edit' | adminText }}</button><button type="button" (click)="remove(item)" class="rounded-lg border border-rose-300/20 px-3 py-2 text-xs text-rose-200">{{ 'Delete' | adminText }}</button></div>
+          <div class="cms-row-actions"><button type="button" (click)="edit(item)" class="cms-action cms-action--edit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6L16 3Z M14 5l5 5" /></svg>{{ 'Edit' | adminText }}</button><button type="button" (click)="remove(item)" class="cms-action cms-action--delete"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18 M9 6V3h6v3 M5 6l1 15h12l1-15 M10 10v7 M14 10v7" /></svg>{{ 'Delete' | adminText }}</button></div>
         </div><p *ngIf="!filteredItems.length" class="p-8 text-center text-sm text-[#a0a0a0]">{{ 'No services yet. Add the first service.' | adminText }}</p>
       </div>
     </section>`
@@ -145,8 +144,8 @@ export class AdminServicesPage implements OnInit {
         </div>
         <div class="flex justify-end gap-3"><button type="button" (click)="editing=false" class="rounded-xl border border-white/15 px-4 py-2 text-sm">{{ 'Cancel' | adminText }}</button><button [disabled]="saving || editorForm.invalid" class="rounded-xl bg-[#d4a077] px-5 py-2 text-sm font-semibold text-[#17120e]">{{ (saving ? 'Saving…' : 'Save project') | adminText }}</button></div>
       </form>
-      <div class="flex flex-wrap gap-3"><label class="flex-1 min-w-40 text-xs text-[#a0a0a0]">{{ 'Search' | adminText }}<input [(ngModel)]="query" (ngModelChange)="page=0" class="${fieldClass}" type="search"></label><label class="text-xs text-[#a0a0a0]">{{ 'Status' | adminText }}<select [(ngModel)]="statusFilter" (ngModelChange)="page=0" class="${fieldClass}"><option value="all">{{ 'All statuses' | adminText }}</option><option value="published">{{ 'Published' | adminText }}</option><option value="draft">{{ 'Draft' | adminText }}</option></select></label></div><div class="flex items-center justify-between text-xs text-[#a0a0a0]"><span>{{filteredItems.length}} {{ 'results' | adminText }}</span><div class="flex items-center gap-4"><button [disabled]="page===0" (click)="page=page-1">{{ 'Previous' | adminText }}</button><span>{{page+1}} / {{totalPages}}</span><button [disabled]="page>=totalPages-1" (click)="page=page+1">{{ 'Next' | adminText }}</button></div></div><div class="overflow-hidden rounded-2xl border border-white/10 bg-[#141414]/[.02]">
-        <div *ngFor="let item of pageItems" class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 last:border-0"><div><h2 class="font-medium">{{item.titleEn}} <span class="text-[#a0a0a0]">/ {{item.titleAr}}</span></h2><p class="mt-1 text-xs text-[#a0a0a0]">{{item.categoryEn || item.client || ('Uncategorized' | adminText)}} · /{{item.slugEn}} · {{ (item.isPublished ? 'Published' : 'Draft') | adminText }} · {{item.images.length}} {{'gallery images' | adminText}}</p><p class="mt-1 text-xs" [class.text-emerald-200]="translationComplete(item)" [class.text-amber-200]="!translationComplete(item)">{{ (translationComplete(item) ? 'translation.complete' : 'translation.missing') | adminText }}</p></div><div class="flex gap-2"><button type="button" (click)="edit(item)" class="rounded-lg border border-white/15 px-3 py-2 text-xs">{{ 'Edit' | adminText }}</button><button type="button" (click)="remove(item)" class="rounded-lg border border-rose-300/20 px-3 py-2 text-xs text-rose-200">{{ 'Delete' | adminText }}</button></div></div>
+      <div class="flex flex-wrap gap-3"><label class="flex-1 min-w-40 text-xs text-[#a0a0a0]">{{ 'Search' | adminText }}<input [(ngModel)]="query" (ngModelChange)="page=0" name="portfolio-search" autocomplete="off" class="${fieldClass}" type="search"></label><label class="text-xs text-[#a0a0a0]">{{ 'Status' | adminText }}<select [(ngModel)]="statusFilter" (ngModelChange)="page=0" class="${fieldClass}"><option value="all">{{ 'All statuses' | adminText }}</option><option value="published">{{ 'Published' | adminText }}</option><option value="draft">{{ 'Draft' | adminText }}</option></select></label></div><div class="flex items-center justify-between text-xs text-[#a0a0a0]"><span>{{filteredItems.length}} {{ 'results' | adminText }}</span><div class="flex items-center gap-4"><button [disabled]="page===0" (click)="page=page-1">{{ 'Previous' | adminText }}</button><span>{{page+1}} / {{totalPages}}</span><button [disabled]="page>=totalPages-1" (click)="page=page+1">{{ 'Next' | adminText }}</button></div></div><div class="overflow-hidden rounded-2xl border border-white/10 bg-[#141414]/[.02]">
+        <div *ngFor="let item of pageItems" class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 last:border-0"><div><h2 class="font-medium">{{item.titleEn}} <span class="text-[#a0a0a0]">/ {{item.titleAr}}</span></h2><p class="mt-1 text-xs text-[#a0a0a0]">{{item.categoryEn || item.client || ('Uncategorized' | adminText)}} · /{{item.slugEn}} · {{ (item.isPublished ? 'Published' : 'Draft') | adminText }} · {{item.images.length}} {{'gallery images' | adminText}}</p><p class="mt-1 text-xs" [class.text-emerald-200]="translationComplete(item)" [class.text-amber-200]="!translationComplete(item)">{{ (translationComplete(item) ? 'translation.complete' : 'translation.missing') | adminText }}</p></div><div class="cms-row-actions"><button type="button" (click)="edit(item)" class="cms-action cms-action--edit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6L16 3Z M14 5l5 5" /></svg>{{ 'Edit' | adminText }}</button><button type="button" (click)="remove(item)" class="cms-action cms-action--delete"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18 M9 6V3h6v3 M5 6l1 15h12l1-15 M10 10v7 M14 10v7" /></svg>{{ 'Delete' | adminText }}</button></div></div>
         <p *ngIf="!filteredItems.length" class="p-8 text-center text-sm text-[#a0a0a0]">{{ 'No projects yet. Add the first case study.' | adminText }}</p>
       </div>
     </section>`
@@ -160,6 +159,7 @@ export class AdminPortfolioPage implements OnInit {
   editingLanguage: 'en' | 'ar' = 'en';
   private readonly http = inject(HttpClient); private readonly cdr = inject(ChangeDetectorRef);
   private readonly locale = inject(AdminLocaleService);
+  private portfolioLoadVersion = 0;
   items: PortfolioItem[] = []; editing = false; saving = false; error = '';
   services: ServiceOption[] = [];
   model: PortfolioItem = this.empty();
@@ -167,8 +167,23 @@ export class AdminPortfolioPage implements OnInit {
   private empty(): PortfolioItem { return { id: '', titleEn: '', titleAr: '', slugEn: '', slugAr: '', client: '', categoryEn: '', categoryAr: '', descriptionEn: '', descriptionAr: '', challengeEn: '', challengeAr: '', approachEn: '', approachAr: '', solutionEn: '', solutionAr: '', resultsEn: '', resultsAr: '', coverImageUrl: '', projectDate: null, displayOrder: 0, isFeatured: false, isPublished: false, seoTitleEn: '', seoTitleAr: '', seoDescriptionEn: '', seoDescriptionAr: '', images: [], serviceIds: [] }; }
   translationComplete(item: PortfolioItem): boolean { return !!(item.titleAr.trim() && item.slugAr.trim() && item.descriptionAr?.trim()); }
   load(): void {
-    this.http.get<PortfolioItem[]>('/api/admin/portfolio').subscribe({ next: (items) => { this.items = items; this.cdr.markForCheck(); }, error: () => { this.error = 'Could not load projects. Please sign in again and retry.'; this.cdr.markForCheck(); } });
+    this.loadPortfolio();
     this.http.get<ServiceOption[]>('/api/admin/services').subscribe({ next: (items) => { this.services = items; this.cdr.markForCheck(); }, error: () => { this.error = 'Could not load services for project links.'; this.cdr.markForCheck(); } });
+  }
+  private loadPortfolio(): void {
+    const loadVersion = ++this.portfolioLoadVersion;
+    this.http.get<PortfolioItem[]>('/api/admin/portfolio').subscribe({
+      next: (items) => {
+        if (loadVersion !== this.portfolioLoadVersion) return;
+        this.items = items;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        if (loadVersion !== this.portfolioLoadVersion) return;
+        this.error = 'Could not load projects. Please sign in again and retry.';
+        this.cdr.markForCheck();
+      }
+    });
   }
   startNew(): void { this.model = this.empty(); this.error = ''; this.editing = true; }
   edit(item: PortfolioItem): void { this.model = { ...item, images: item.images.map(image => ({ ...image })) }; this.error = ''; this.editing = true; }
@@ -179,10 +194,30 @@ export class AdminPortfolioPage implements OnInit {
     this.model.serviceIds = selected ? [...this.model.serviceIds, id] : this.model.serviceIds.filter(item => item !== id);
   }
   save(): void {
+    if (this.saving) return;
     this.saving = true; this.error = '';
     const { id, ...payload } = this.model;
     const request = id ? this.http.put<PortfolioItem>(`/api/admin/portfolio/${id}`, payload) : this.http.post<PortfolioItem>('/api/admin/portfolio', payload);
-    request.subscribe({ next: () => { this.saving = false; this.editing = false; this.load(); }, error: (e) => { this.saving = false; this.error = e.status === 409 ? 'That English or Arabic slug is already in use.' : 'Could not save the project. Check the fields and try again.'; } });
+    request.subscribe({
+      next: (saved) => {
+        // The POST/PUT response is the confirmed persisted record. Reconcile it directly so
+        // an older in-flight GET cannot overwrite the list with stale data after a save.
+        this.portfolioLoadVersion++;
+        this.items = [...this.items.filter(item => item.id !== saved.id), saved]
+          .sort((left, right) => left.displayOrder - right.displayOrder || left.titleEn.localeCompare(right.titleEn));
+        this.query = '';
+        this.statusFilter = 'all';
+        this.page = 0;
+        this.saving = false;
+        this.editing = false;
+        this.cdr.markForCheck();
+      },
+      error: (e) => {
+        this.saving = false;
+        this.error = e.status === 409 ? 'That English or Arabic slug is already in use.' : 'Could not save the project. Check the fields and try again.';
+        this.cdr.markForCheck();
+      }
+    });
   }
   remove(item: PortfolioItem): void { if (window.confirm(this.locale.text('confirm.deleteProject').replace('{title}', item.titleEn))) this.http.delete(`/api/admin/portfolio/${item.id}`).subscribe({ next: () => this.load(), error: () => this.error = 'Could not delete this project.' }); }
 }
@@ -192,25 +227,26 @@ export class AdminPortfolioPage implements OnInit {
   template: `
     <section class="space-y-7">
       <header class="flex flex-wrap items-end justify-between gap-4"><div><p class="text-xs font-semibold uppercase tracking-[.22em] text-[#d4a077]">{{ 'Editorial studio' | adminText }}</p><h1 class="mt-2 text-3xl font-semibold">{{ 'Articles' | adminText }}</h1><p class="mt-2 text-sm text-[#a0a0a0]">{{ 'Write bilingual articles, prepare drafts, and manage publishing and SEO.' | adminText }}</p></div><button type="button" (click)="startNew()" class="rounded-xl bg-[#d4a077] px-4 py-2.5 text-sm font-semibold text-[#17120e]">{{ 'Write article' | adminText }}</button></header>
-      <p *ngIf="error" role="alert" class="rounded-xl border border-rose-400/30 bg-rose-400/10 p-3 text-sm text-rose-200">{{error | adminText}}</p>
-      <form *ngIf="editing" (ngSubmit)="save()" #editorForm="ngForm" class="space-y-5 rounded-2xl border border-white/10 bg-[#141414]/[.03] p-5 sm:p-7">
+      <p *ngIf="error && !editing" role="alert" class="rounded-xl border border-rose-400/30 bg-rose-400/10 p-3 text-sm text-rose-200">{{error | adminText}}</p>
+      <form *ngIf="editing" (ngSubmit)="save(editorForm)" #editorForm="ngForm" novalidate class="space-y-5 rounded-2xl border border-white/10 bg-[#141414]/[.03] p-5 sm:p-7">
         <div class="flex items-center justify-between"><h2 class="text-lg font-semibold">{{ (model.id ? 'Edit article' : 'New article') | adminText }}</h2><button type="button" (click)="editing=false" class="text-sm text-[#a0a0a0]">{{ 'Close' | adminText }}</button></div>
+        <p *ngIf="error" role="alert" class="rounded-xl border border-rose-400/30 bg-rose-400/10 p-3 text-sm text-rose-200">{{error | adminText}}</p>
         <div class="cms-language-tabs"><button type="button" (click)="editingLanguage='en'" [attr.aria-pressed]="editingLanguage==='en'">English</button><button type="button" (click)="editingLanguage='ar'" [attr.aria-pressed]="editingLanguage==='ar'">العربية</button></div><p class="cms-field-hint">{{ 'Complete both language tabs before saving.' | adminText }}</p><div class="grid gap-5 md:grid-cols-2">
           <fieldset [hidden]="editingLanguage !== 'en'" lang="en" dir="ltr" class="space-y-3"><legend class="mb-2 text-sm font-semibold text-[#d4a077]">English</legend>
-            <label class="block text-xs text-[#a0a0a0]">{{ 'Title' | adminText }}<input class="${fieldClass}" required maxlength="250" [(ngModel)]="model.titleEn" name="titleEn"></label><label class="block text-xs text-[#a0a0a0]">{{ 'Slug' | adminText }}<input class="${fieldClass}" required maxlength="180" [(ngModel)]="model.slugEn" name="slugEn"></label>
+            <label class="block text-xs text-[#a0a0a0]">{{ 'Title' | adminText }}<input class="${fieldClass}" required maxlength="250" [(ngModel)]="model.titleEn" name="titleEn"></label><p *ngIf="invalid(editorForm, 'titleEn')" class="text-xs text-rose-200">{{ 'English title is required.' | adminText }}</p><p *ngIf="serverError('titleEn') as message" class="text-xs text-rose-200">{{message}}</p><label class="block text-xs text-[#a0a0a0]">{{ 'Slug' | adminText }}<input class="${fieldClass}" required maxlength="180" [(ngModel)]="model.slugEn" name="slugEn"></label><p *ngIf="invalid(editorForm, 'slugEn')" class="text-xs text-rose-200">{{ 'English slug is required.' | adminText }}</p><p *ngIf="serverError('slugEn') as message" class="text-xs text-rose-200">{{message}}</p>
             <label class="block text-xs text-[#a0a0a0]">{{ 'Excerpt' | adminText }}<textarea class="${fieldClass}" rows="3" maxlength="500" [(ngModel)]="model.excerptEn" name="excerptEn"></textarea></label><label class="block text-xs text-[#a0a0a0]">{{ 'Article content (plain text or Markdown)' | adminText }}<textarea class="${fieldClass}" rows="12" [(ngModel)]="model.contentEn" name="contentEn"></textarea></label>
             <label class="block text-xs text-[#a0a0a0]">{{ 'SEO title' | adminText }}<input class="${fieldClass}" maxlength="250" [(ngModel)]="model.seoTitleEn" name="seoTitleEn"></label><label class="block text-xs text-[#a0a0a0]">{{ 'SEO description' | adminText }}<textarea class="${fieldClass}" rows="2" maxlength="500" [(ngModel)]="model.seoDescriptionEn" name="seoDescriptionEn"></textarea></label>
           </fieldset>
           <fieldset [hidden]="editingLanguage !== 'ar'" lang="ar" class="space-y-3" dir="rtl"><legend class="mb-2 text-sm font-semibold text-[#d4a077]">العربية</legend>
-            <label class="block text-xs text-[#a0a0a0]">العنوان<input class="${fieldClass}" required maxlength="250" [(ngModel)]="model.titleAr" name="titleAr"></label><label class="block text-xs text-[#a0a0a0]">الرابط المختصر<input class="${fieldClass}" required maxlength="180" [(ngModel)]="model.slugAr" name="slugAr"></label>
+            <label class="block text-xs text-[#a0a0a0]">العنوان<input class="${fieldClass}" required maxlength="250" [(ngModel)]="model.titleAr" name="titleAr"></label><p *ngIf="invalid(editorForm, 'titleAr')" class="text-xs text-rose-200">{{ 'Arabic title is required.' | adminText }}</p><p *ngIf="serverError('titleAr') as message" class="text-xs text-rose-200">{{message}}</p><label class="block text-xs text-[#a0a0a0]">الرابط المختصر<input class="${fieldClass}" required maxlength="180" [(ngModel)]="model.slugAr" name="slugAr"></label><p *ngIf="invalid(editorForm, 'slugAr')" class="text-xs text-rose-200">{{ 'Arabic slug is required.' | adminText }}</p><p *ngIf="serverError('slugAr') as message" class="text-xs text-rose-200">{{message}}</p>
             <label class="block text-xs text-[#a0a0a0]">مقدمة المقال<textarea class="${fieldClass}" rows="3" maxlength="500" [(ngModel)]="model.excerptAr" name="excerptAr"></textarea></label><label class="block text-xs text-[#a0a0a0]">محتوى المقال (نص أو Markdown)<textarea class="${fieldClass}" rows="12" [(ngModel)]="model.contentAr" name="contentAr"></textarea></label>
             <label class="block text-xs text-[#a0a0a0]">عنوان SEO<input class="${fieldClass}" maxlength="250" [(ngModel)]="model.seoTitleAr" name="seoTitleAr"></label><label class="block text-xs text-[#a0a0a0]">وصف SEO<textarea class="${fieldClass}" rows="2" maxlength="500" [(ngModel)]="model.seoDescriptionAr" name="seoDescriptionAr"></textarea></label>
           </fieldset>
         </div>
-        <div class="grid gap-4 sm:grid-cols-3"><label class="block text-xs text-[#a0a0a0]">{{ 'Author' | adminText }}<select class="${fieldClass}" required [(ngModel)]="model.authorId" name="authorId"><option value="">{{ 'Choose an author' | adminText }}</option><option *ngFor="let author of authors" [value]="author.id">{{author.displayName}}</option></select></label><label class="block text-xs text-[#a0a0a0]">{{ 'Cover image URL' | adminText }}<input class="${fieldClass}" type="url" maxlength="2048" [(ngModel)]="model.coverImageUrl" name="coverImageUrl"></label><label class="block text-xs text-[#a0a0a0]">{{ 'Publication date' | adminText }}<input class="${fieldClass}" type="datetime-local" [(ngModel)]="model.publishedAt" name="publishedAt"></label></div>
-        <div class="flex justify-end gap-3"><button type="button" (click)="editing=false" class="rounded-xl border border-white/15 px-4 py-2 text-sm">{{ 'Cancel' | adminText }}</button><button type="submit" [disabled]="saving || !authors.length || editorForm.invalid" class="rounded-xl bg-[#d4a077] px-5 py-2 text-sm font-semibold text-[#17120e]">{{ (saving ? 'Saving…' : 'Save draft') | adminText }}</button><button type="button" (click)="publish()" [disabled]="saving || !authors.length || editorForm.invalid" class="rounded-xl border border-[#d4a077]/30 px-5 py-2 text-sm font-semibold text-[#e0b796]">{{ 'Publish' | adminText }}</button></div>
+        <div class="grid gap-4 sm:grid-cols-3"><div><label class="block text-xs text-[#a0a0a0]">{{ 'Author' | adminText }}<input class="${fieldClass}" required maxlength="160" [(ngModel)]="model.authorName" name="authorName" [placeholder]="'Enter author name' | adminText"></label><p *ngIf="invalid(editorForm, 'authorName')" class="mt-1 text-xs text-rose-200">{{ 'Enter an author name before saving.' | adminText }}</p></div><label class="block text-xs text-[#a0a0a0]">{{ 'Cover image URL' | adminText }}<input class="${fieldClass}" type="url" maxlength="2048" [(ngModel)]="model.coverImageUrl" name="coverImageUrl"></label><label class="block text-xs text-[#a0a0a0]">{{ 'Publication date' | adminText }}<input class="${fieldClass}" type="datetime-local" [(ngModel)]="model.publishedAt" name="publishedAt"></label></div>
+        <div class="flex justify-end gap-3"><button type="button" (click)="editing=false" class="rounded-xl border border-white/15 px-4 py-2 text-sm">{{ 'Cancel' | adminText }}</button><button type="submit" [disabled]="saving" class="rounded-xl bg-[#d4a077] px-5 py-2 text-sm font-semibold text-[#17120e]">{{ (saving ? 'Saving…' : 'Save draft') | adminText }}</button><button type="button" (click)="publish(editorForm)" [disabled]="saving" class="rounded-xl border border-[#d4a077]/30 px-5 py-2 text-sm font-semibold text-[#e0b796]">{{ 'Publish' | adminText }}</button></div>
       </form>
-      <div class="flex flex-wrap gap-3"><label class="flex-1 min-w-40 text-xs text-[#a0a0a0]">{{ 'Search' | adminText }}<input [(ngModel)]="query" (ngModelChange)="page=0" class="${fieldClass}" type="search"></label><label class="text-xs text-[#a0a0a0]">{{ 'Status' | adminText }}<select [(ngModel)]="statusFilter" (ngModelChange)="page=0" class="${fieldClass}"><option value="all">{{ 'All statuses' | adminText }}</option><option value="published">{{ 'Published' | adminText }}</option><option value="draft">{{ 'Draft' | adminText }}</option></select></label></div><div class="flex items-center justify-between text-xs text-[#a0a0a0]"><span>{{filteredItems.length}} {{ 'results' | adminText }}</span><div class="flex items-center gap-4"><button [disabled]="page===0" (click)="page=page-1">{{ 'Previous' | adminText }}</button><span>{{page+1}} / {{totalPages}}</span><button [disabled]="page>=totalPages-1" (click)="page=page+1">{{ 'Next' | adminText }}</button></div></div><div class="overflow-hidden rounded-2xl border border-white/10 bg-[#141414]/[.02]"><div *ngFor="let item of pageItems" class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 last:border-0"><div><h2 class="font-medium">{{item.titleEn}} <span class="text-[#a0a0a0]">/ {{item.titleAr}}</span></h2><p class="mt-1 text-xs text-[#a0a0a0]">{{'By' | adminText}} {{item.authorName}} · /{{item.slugEn}} · {{ (item.isPublished ? 'Published' : 'Draft') | adminText }}</p><p class="mt-1 text-xs" [class.text-emerald-200]="translationComplete(item)" [class.text-amber-200]="!translationComplete(item)">{{ (translationComplete(item) ? 'translation.complete' : 'translation.missing') | adminText }}</p></div><div class="flex gap-2"><button type="button" (click)="edit(item)" class="rounded-lg border border-white/15 px-3 py-2 text-xs">{{ 'Edit' | adminText }}</button><button type="button" (click)="remove(item)" class="rounded-lg border border-rose-300/20 px-3 py-2 text-xs text-rose-200">{{ 'Delete' | adminText }}</button></div></div><p *ngIf="!filteredItems.length" class="p-8 text-center text-sm text-[#a0a0a0]">{{ 'No articles yet. Start your first editorial story.' | adminText }}</p></div>
+      <div class="flex flex-wrap gap-3"><label class="flex-1 min-w-40 text-xs text-[#a0a0a0]">{{ 'Search' | adminText }}<input [(ngModel)]="query" (ngModelChange)="page=0" class="${fieldClass}" type="search"></label><label class="text-xs text-[#a0a0a0]">{{ 'Status' | adminText }}<select [(ngModel)]="statusFilter" (ngModelChange)="page=0" class="${fieldClass}"><option value="all">{{ 'All statuses' | adminText }}</option><option value="published">{{ 'Published' | adminText }}</option><option value="draft">{{ 'Draft' | adminText }}</option></select></label></div><div class="flex items-center justify-between text-xs text-[#a0a0a0]"><span>{{filteredItems.length}} {{ 'results' | adminText }}</span><div class="flex items-center gap-4"><button [disabled]="page===0" (click)="page=page-1">{{ 'Previous' | adminText }}</button><span>{{page+1}} / {{totalPages}}</span><button [disabled]="page>=totalPages-1" (click)="page=page+1">{{ 'Next' | adminText }}</button></div></div><div class="overflow-hidden rounded-2xl border border-white/10 bg-[#141414]/[.02]"><div *ngFor="let item of pageItems" class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 last:border-0"><div><h2 class="font-medium">{{item.titleEn}} <span class="text-[#a0a0a0]">/ {{item.titleAr}}</span></h2><p class="mt-1 text-xs text-[#a0a0a0]">{{'By' | adminText}} {{item.authorName}} · /{{item.slugEn}} · {{ (item.isPublished ? 'Published' : 'Draft') | adminText }}</p><p class="mt-1 text-xs" [class.text-emerald-200]="translationComplete(item)" [class.text-amber-200]="!translationComplete(item)">{{ (translationComplete(item) ? 'translation.complete' : 'translation.missing') | adminText }}</p></div><div class="cms-row-actions"><button type="button" (click)="edit(item)" class="cms-action cms-action--edit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6L16 3Z M14 5l5 5" /></svg>{{ 'Edit' | adminText }}</button><button type="button" (click)="remove(item)" class="cms-action cms-action--delete"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18 M9 6V3h6v3 M5 6l1 15h12l1-15 M10 10v7 M14 10v7" /></svg>{{ 'Delete' | adminText }}</button></div></div><p *ngIf="!filteredItems.length" class="p-8 text-center text-sm text-[#a0a0a0]">{{ 'No articles yet. Start your first editorial story.' | adminText }}</p></div>
     </section>`
 })
 export class AdminArticlesPage implements OnInit {
@@ -222,23 +258,48 @@ export class AdminArticlesPage implements OnInit {
   editingLanguage: 'en' | 'ar' = 'en';
   private readonly http = inject(HttpClient); private readonly cdr = inject(ChangeDetectorRef);
   private readonly locale = inject(AdminLocaleService);
-  items: ArticleItem[] = []; authors: ArticleAuthor[] = []; editing = false; saving = false; error = '';
+  items: ArticleItem[] = []; editing = false; saving = false; error = ''; serverErrors: Record<string, string[]> = {};
   model: ArticleItem = this.empty();
   ngOnInit(): void { this.load(); }
   private empty(): ArticleItem { return { id: '', titleEn: '', titleAr: '', slugEn: '', slugAr: '', excerptEn: '', excerptAr: '', contentEn: '', contentAr: '', coverImageUrl: '', authorId: '', authorName: '', publishedAt: null, isPublished: false, seoTitleEn: '', seoTitleAr: '', seoDescriptionEn: '', seoDescriptionAr: '' }; }
   translationComplete(item: ArticleItem): boolean { return !!(item.titleAr.trim() && item.slugAr.trim() && (item.contentAr?.trim() || item.excerptAr?.trim())); }
   load(): void {
     this.http.get<ArticleItem[]>('/api/admin/articles').subscribe({ next: items => { this.items = items; this.cdr.markForCheck(); }, error: () => { this.error = 'Could not load articles. Please sign in again and retry.'; this.cdr.markForCheck(); } });
-    this.http.get<ArticleAuthor[]>('/api/admin/authors').subscribe({ next: authors => { this.authors = authors; if (!this.model.authorId && authors.length) this.model.authorId = authors[0].id; this.cdr.markForCheck(); }, error: () => { this.error = 'Could not load article authors.'; this.cdr.markForCheck(); } });
   }
-  startNew(): void { this.model = this.empty(); this.model.authorId = this.authors[0]?.id ?? ''; this.error = ''; this.editing = true; }
-  edit(item: ArticleItem): void { this.model = { ...item, publishedAt: item.publishedAt ? item.publishedAt.slice(0, 16) : null }; this.error = ''; this.editing = true; }
-  save(): void { this.submit(this.model.isPublished); }
-  publish(): void { this.model.isPublished = true; this.submit(true); }
-  private submit(published: boolean): void {
-    this.saving = true; this.error = ''; const { id, authorName, ...payload } = { ...this.model, isPublished: published };
+  startNew(): void { this.model = this.empty(); this.error = ''; this.serverErrors = {}; this.editing = true; }
+  edit(item: ArticleItem): void { this.model = { ...item, publishedAt: item.publishedAt ? item.publishedAt.slice(0, 16) : null }; this.error = ''; this.serverErrors = {}; this.editing = true; }
+  invalid(form: NgForm, name: string): boolean { const control = form.controls[name]; return !!control && control.invalid && (control.touched || form.submitted); }
+  serverError(name: string): string | null { return this.serverErrors[name]?.[0] ?? null; }
+  save(form: NgForm): void { this.submit(this.model.isPublished, form); }
+  publish(form: NgForm): void { this.submit(true, form); }
+  private submit(published: boolean, form: NgForm): void {
+    if (this.saving) return;
+    if (form.invalid || !this.model.authorName.trim()) {
+      form.control.markAllAsTouched();
+      if (form.controls['titleEn']?.invalid || form.controls['slugEn']?.invalid) this.editingLanguage = 'en';
+      else if (form.controls['titleAr']?.invalid || form.controls['slugAr']?.invalid) this.editingLanguage = 'ar';
+      this.error = 'Review the highlighted required fields.';
+      this.cdr.markForCheck();
+      return;
+    }
+    this.saving = true; this.error = ''; this.serverErrors = {};
+    const { id, authorId, ...rawPayload } = { ...this.model, isPublished: published };
+    const optional = (value: string | null) => value?.trim() || null;
+    const payload = { ...rawPayload, authorName: rawPayload.authorName.trim(), excerptEn: optional(rawPayload.excerptEn), excerptAr: optional(rawPayload.excerptAr), contentEn: optional(rawPayload.contentEn), contentAr: optional(rawPayload.contentAr), coverImageUrl: optional(rawPayload.coverImageUrl), seoTitleEn: optional(rawPayload.seoTitleEn), seoTitleAr: optional(rawPayload.seoTitleAr), seoDescriptionEn: optional(rawPayload.seoDescriptionEn), seoDescriptionAr: optional(rawPayload.seoDescriptionAr) };
     const request = id ? this.http.put<ArticleItem>(`/api/admin/articles/${id}`, payload) : this.http.post<ArticleItem>('/api/admin/articles', payload);
-    request.subscribe({ next: () => { this.saving = false; this.editing = false; this.load(); }, error: e => { this.saving = false; this.error = e.status === 409 ? 'That English or Arabic slug is already in use.' : 'Could not save the article. Check the required fields and author.'; } });
+    request.subscribe({ next: () => { this.saving = false; this.editing = false; this.load(); this.cdr.markForCheck(); }, error: e => { this.saving = false; this.serverErrors = this.articleFieldErrors(e?.error?.errors); this.error = this.articleSaveError(e); this.cdr.markForCheck(); } });
+  }
+  private articleFieldErrors(errors: Record<string, string[]> | undefined): Record<string, string[]> {
+    if (!errors) return {};
+    return Object.fromEntries(Object.entries(errors).map(([name, messages]) => [name.replace(/^\$?\.?/, '').replace(/^./, character => character.toLowerCase()), messages]));
+  }
+  private articleSaveError(error: { status?: number; error?: { title?: string; errors?: Record<string, string[]> } }): string {
+    if (error.status === 409 && (error.error?.title === 'Select an active author.' || error.error?.title === 'Enter an author name between 1 and 160 characters.')) return 'Enter an author name before saving.';
+    if (error.status === 409) return 'That English or Arabic slug is already in use.';
+    if (error.status === 400 && error.error?.errors) return 'The API rejected one or more article fields. Review the highlighted fields.';
+    if (error.status === 401) return 'Your admin session expired. Sign in again to save the article.';
+    if (error.status === 403) return 'Your account does not have permission to save articles.';
+    return 'Could not save the article. Check the required fields and author.';
   }
   remove(item: ArticleItem): void { if (window.confirm(this.locale.text('confirm.delete').replace('{title}', item.titleEn))) this.http.delete(`/api/admin/articles/${item.id}`).subscribe({ next: () => this.load(), error: () => this.error = 'Could not delete this article.' }); }
 }

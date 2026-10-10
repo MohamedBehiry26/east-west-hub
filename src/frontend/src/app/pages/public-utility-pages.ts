@@ -4,7 +4,7 @@ import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angula
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Observable, catchError, distinctUntilChanged, expand, forkJoin, map, of, reduce, Subscription } from 'rxjs';
+import { Observable, catchError, distinctUntilChanged, expand, forkJoin, map, of, reduce, Subscription, timer } from 'rxjs';
 import { PublicContentApi } from '../core/public-content-api.service';
 import enResources from '../../assets/i18n/en.json';
 import arResources from '../../assets/i18n/ar.json';
@@ -32,12 +32,12 @@ function loadEveryPage<T>(load: (page: number) => Observable<PublicPage<T>>): Ob
       <header class="page-hero page-hero--watch"><p class="eyebrow">{{ t('text0') }}</p>
       <h1 class="section-title">{{ t('text1') }}</h1><p class="page-hero-copy">{{ metaText('videoDescription') }}</p></header>
       <div class="filter-bar mt-8 grid gap-3 md:grid-cols-[minmax(0,1fr)_200px_190px_170px]">
-        <label class="rounded-sm border border-white/15 bg-white/[.04] px-4 py-3"><span class="sr-only">{{ t('text2') }}</span><input [(ngModel)]="search" type="search" class="w-full bg-transparent outline-none placeholder:text-[#9a9a9a]" [placeholder]="t('text3')" (keyup.enter)="load(1)" /></label>
+        <form class="watch-search" (ngSubmit)="load(1)" role="search"><label class="watch-search-input"><span class="sr-only">{{ t('text2') }}</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input [ngModel]="search" (ngModelChange)="searchChanged($event)" name="videoSearch" type="search" [placeholder]="t('text3')" />@if (search) {<button class="watch-search-clear" type="button" (click)="clearSearch()" [attr.aria-label]="t('clearSearch')">×</button>}</label><button type="submit" class="watch-search-submit">{{ t('text12') }}</button></form>
         <label class="rounded-sm border border-white/15 bg-white/[.04] px-4 py-3"><span class="sr-only">{{ t('text4') }}</span><select [(ngModel)]="category" (ngModelChange)="load(1)" class="w-full bg-transparent text-slate-200 outline-none"><option value="" class="bg-[#111111]">{{ t('text5') }}</option>@for (item of categories(); track item.id) { <option [value]="item.slug" class="bg-[#111111]">{{ item.name }}</option> }</select></label>
         <label class="rounded-sm border border-white/15 bg-white/[.04] px-4 py-3"><span class="sr-only">{{ t('text6') }}</span><select [(ngModel)]="tag" (ngModelChange)="load(1)" class="w-full bg-transparent text-slate-200 outline-none"><option value="" class="bg-[#111111]">{{ t('text7') }}</option>@for (item of tags(); track item.slug) { <option [value]="item.slug" class="bg-[#111111]">{{ item.name }}</option> }</select></label>
         <label class="rounded-sm border border-white/15 bg-white/[.04] px-4 py-3"><span class="sr-only">{{ t('text8') }}</span><select [(ngModel)]="order" (ngModelChange)="load(1)" class="w-full bg-transparent text-slate-200 outline-none"><option value="featured" class="bg-[#111111]">{{ t('text9') }}</option><option value="latest" class="bg-[#111111]">{{ t('text10') }}</option><option value="oldest" class="bg-[#111111]">{{ t('text11') }}</option></select></label>
       </div>
-      <button type="button" (click)="load(1)" class="mt-4 rounded-full bg-[var(--ew-accent)] px-5 py-2.5 text-sm font-semibold text-[#050505]">{{ t('text12') }}</button>
+      
       <label class="mt-4 inline-flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" [(ngModel)]="featured" (ngModelChange)="load(1)" />{{ t('text13') }}</label>
       @if (loading()) { <div class="mt-10 grid gap-5 sm:grid-cols-2" role="status"><span class="sr-only">{{ t('text14') }}</span><div class="media-skeleton" aria-hidden="true"></div><div class="media-skeleton" aria-hidden="true"></div></div> }
       @else if (error()) { <p role="alert" class="py-16 text-center text-rose-200">{{ t('text15') }} <button type="button" (click)="load(page())" class="underline">{{ t('text16') }}</button></p> }
@@ -70,6 +70,15 @@ export class VideoListPage implements OnInit {
   readonly totalPages = signal(1);
   private readonly destroyRef = inject(DestroyRef);
   private request?: Subscription;
+  private searchDelay?: Subscription;
+  searchChanged(value: string): void {
+    this.search = value;
+    this.searchDelay?.unsubscribe();
+    this.request?.unsubscribe();
+    this.loading.set(true);
+    this.searchDelay = timer(300).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.load(1));
+  }
+  clearSearch(): void { this.search = ''; this.load(1); }
   contentTypeLabel(value: string): string { const names = (this.locale === 'ar' ? arResources : enResources).adminUi as Record<string,string>; return names[value] ?? names['video']; }
   search = ''; category = ''; tag = ''; order = 'featured'; featured = false;
   ngOnInit(): void {
@@ -81,6 +90,7 @@ export class VideoListPage implements OnInit {
     this.load(1);
   }
   load(page: number): void {
+    this.searchDelay?.unsubscribe();
     this.request?.unsubscribe();
     this.page.set(page); this.loading.set(true); this.error.set(false);
     this.request = this.api.getVideos(this.locale, this.category || undefined, { page, pageSize: 9, search: this.search.trim() || undefined, tag: this.tag || undefined, featured: this.featured ? true : undefined, order: this.order })
@@ -218,7 +228,7 @@ export class CategoryDetailPage implements OnInit {
         this.category.set(found);
         this.videos.set(videos.items);
         if (found) {
-          const alternate = `/${this.locale === 'ar' ? 'en' : 'ar'}/categories/${encodeURIComponent(found.alternateSlug)}`;
+          const alternate = `/${this.locale === 'ar' ? 'en' : 'ar'}/categories/${found.alternateSlug}`;
           this.alternateRoute.set(alternate);
           this.seo.update(this.locale, `/${this.locale}/categories/${encodeURIComponent(found.slug)}`, `${found.name} | East West Hub`, found.description ?? found.name, found.imageUrl, alternate);
         } else this.seo.update(this.locale, `/${this.locale}/categories/${encodeURIComponent(slug)}`, `${this.metaText('categoryNotFound')} | East West Hub`, this.metaText('categoryNotFoundDescription'));

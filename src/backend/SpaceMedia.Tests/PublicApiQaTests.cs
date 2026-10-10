@@ -84,6 +84,36 @@ public sealed class PublicApiQaTests
     }
 
     [Fact]
+    public async Task Watch_endpoint_includes_all_eligible_non_podcast_media_and_excludes_podcasts_drafts_and_scheduled_items()
+    {
+        await using var db = NewDb();
+        var category = new Category { Id = Guid.NewGuid(), NameEn = "Media", NameAr = "إعلام", SlugEn = "media", SlugAr = "ielam", IsPublished = true };
+        var video = Video(category, "video", "video-ar", "Video", "فيديو", DateTimeOffset.UtcNow.AddDays(-1));
+        var program = Video(category, "program", "program-ar", "Program", "برنامج", DateTimeOffset.UtcNow.AddDays(-1));
+        program.ContentType = MediaContentType.Program;
+        var podcast = Video(category, "podcast", "podcast-ar", "Podcast", "بودكاست", DateTimeOffset.UtcNow.AddDays(-1));
+        podcast.ContentType = MediaContentType.Podcast;
+        var draft = Video(category, "draft", "draft-ar", "Draft", "مسودة", DateTimeOffset.UtcNow.AddDays(-1));
+        draft.IsPublished = false;
+        var scheduled = Video(category, "scheduled", "scheduled-ar", "Scheduled", "مجدول", DateTimeOffset.UtcNow.AddDays(1));
+        scheduled.ContentType = MediaContentType.Campaign;
+        db.Videos.AddRange(video, program, podcast, draft, scheduled);
+        await db.SaveChangesAsync();
+
+        var listResponse = await NewController(db).GetVideos(page: 1, pageSize: 12);
+        var list = Assert.IsType<PublicPage<PublicVideo>>(Assert.IsType<OkObjectResult>(listResponse.Result).Value);
+        var programResponse = await NewController(db).GetVideo("program");
+        var podcastResponse = await NewController(db).GetVideo("podcast");
+
+        Assert.Equal(2, list.TotalCount);
+        Assert.Contains(list.Items, item => item.ContentType == MediaContentType.Video);
+        Assert.Contains(list.Items, item => item.ContentType == MediaContentType.Program);
+        Assert.DoesNotContain(list.Items, item => item.ContentType == MediaContentType.Podcast);
+        Assert.IsType<OkObjectResult>(programResponse.Result);
+        Assert.IsType<NotFoundResult>(podcastResponse.Result);
+    }
+
+    [Fact]
     public async Task Empty_and_missing_public_content_returns_stable_empty_or_404_responses()
     {
         await using var db = NewDb();

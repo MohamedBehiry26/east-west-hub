@@ -45,13 +45,13 @@ export const routes: Routes = [
       { path: 'services', loadComponent: () => import('./admin/admin-content.pages').then((m) => m.AdminServicesPage) },
       { path: 'portfolio', loadComponent: () => import('./admin/admin-content.pages').then((m) => m.AdminPortfolioPage) },
       { path: 'articles', loadComponent: () => import('./admin/admin-content.pages').then((m) => m.AdminArticlesPage) },
+      { path: 'accounts', loadComponent: () => import('./admin/admin-accounts.page').then(m => m.AdminAccountsPage) },
       { path: 'settings', loadComponent: () => import('./admin/admin-settings.page').then((m) => m.AdminSettingsPage) },
       { path: 'videos', loadComponent: () => import('./admin/admin-video.pages').then((m) => m.AdminVideosPage) },
       { path: 'podcasts', data: { mediaKind: 'podcast' }, loadComponent: () => import('./admin/admin-video.pages').then((m) => m.AdminVideosPage) },
       { path: 'categories', loadComponent: () => import('./admin/admin-video.pages').then((m) => m.AdminCategoriesPage) },
-      { path: 'tags', loadComponent: () => import('./admin/admin-tags.page').then((m) => m.AdminTagsPage) },
-      { path: 'youtube', loadComponent: () => import('./admin/admin-youtube.page').then((m) => m.AdminYouTubePage) }
-    ]
+      { path: 'tags', loadComponent: () => import('./admin/admin-tags.page').then((m) => m.AdminTagsPage) },    ]
   },
   { path: '**', loadComponent: () => import('./pages/public-utility-pages').then((m) => m.NotFoundPage) }
 ];
+

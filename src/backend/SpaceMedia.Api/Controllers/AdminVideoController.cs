@@ -30,6 +30,12 @@ public sealed class AdminVideoController(IAdminVideoManager manager) : Controlle
     [HttpGet("videos")]
     public async Task<ActionResult<IReadOnlyList<AdminVideoContent>>> GetVideos(CancellationToken ct) => Ok(await manager.GetVideosAsync(ct));
 
+    [HttpPost("videos")]
+    public async Task<ActionResult<AdminVideoContent>> CreateVideo(SaveAdminVideoRequest request, CancellationToken ct)
+    {
+        try { var saved = await manager.SaveVideoAsync(null, request.ToModel(), ct); return Created($"/api/admin/videos/{saved!.Id}", saved); }
+        catch (VideoAdministrationConflictException exception) { return Conflict(new ProblemDetails { Title = exception.Message }); }
+    }
     [HttpPut("videos/{id:guid}")]
     public async Task<ActionResult<AdminVideoContent>> UpdateVideo(Guid id, SaveAdminVideoRequest request, CancellationToken ct)
     {
@@ -39,15 +45,6 @@ public sealed class AdminVideoController(IAdminVideoManager manager) : Controlle
 
     [HttpDelete("videos/{id:guid}")]
     public async Task<IActionResult> DeleteVideo(Guid id, CancellationToken ct) => await manager.DeleteVideoAsync(id, ct) ? NoContent() : NotFound();
-
-    [HttpPost("youtube/sync")]
-    public async Task<ActionResult<YouTubeSyncResult>> SyncYouTube(SyncYouTubeRequest request, CancellationToken ct)
-    {
-        try { return Ok(await manager.SyncYouTubeAsync(request.CategoryId, ct)); }
-        catch (YouTubeNotConfiguredException) { return Problem(statusCode: StatusCodes.Status503ServiceUnavailable, title: "YouTube integration is not configured", detail: "Set YouTube__ApiKey and YouTube__ChannelId in the API environment."); }
-        catch (VideoAdministrationConflictException exception) { return Conflict(new ProblemDetails { Title = exception.Message }); }
-        catch (HttpRequestException exception) { return Problem(statusCode: StatusCodes.Status502BadGateway, title: "YouTube synchronization failed", detail: exception.StatusCode is null ? "The YouTube API could not be reached." : $"YouTube API returned HTTP {(int)exception.StatusCode}."); }
-    }
 
     private async Task<ActionResult<AdminCategoryContent>> SaveCategoryAsync(Guid? id, SaveAdminCategoryRequest request, CancellationToken ct)
     {
