@@ -61,6 +61,20 @@ describe('public motion and asset fallbacks', () => {
     fixture.destroy(); expect(disconnect).toHaveBeenCalled();
   });
 
+  it('keeps touch and reduced-motion scenes static even when visible', () => {
+    let observer: IntersectionObserverCallback | undefined;
+    const requestFrame = vi.fn();
+    vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+    vi.stubGlobal('IntersectionObserver', vi.fn(function (callback: IntersectionObserverCallback) { observer = callback; return { observe: vi.fn(), disconnect: vi.fn() }; }));
+    vi.stubGlobal('requestAnimationFrame', requestFrame);
+    const fixture = TestBed.createComponent(EffectsHost); fixture.detectChanges();
+    const scene: HTMLElement = fixture.nativeElement.querySelector('[ewMediaDepth]');
+    observer!([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver);
+    scene.dispatchEvent(new MouseEvent('pointermove', { clientX: 75, clientY: 25 }));
+    expect(requestFrame).not.toHaveBeenCalled();
+    expect(scene.style.getPropertyValue('--tilt-x')).toBe('');
+    expect(scene.style.getPropertyValue('--tilt-y')).toBe('');
+  });
   it('tilts a visible desktop media frame and resets it when it leaves view', () => {
     let observer: IntersectionObserverCallback | undefined;
     vi.stubGlobal('matchMedia', () => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }));

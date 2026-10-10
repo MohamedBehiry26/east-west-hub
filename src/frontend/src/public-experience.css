@@ -304,7 +304,7 @@ a:hover .media-play { background: var(--ew-accent); color: var(--ew-black); scal
 }
 @media (max-width: 1023px) {
   .hero-headline { font-size: clamp(4rem,9.5vw,6.5rem); }.hero-composition { gap: .5rem; }
-  .media-stack { transform: rotateY(-8deg) rotateZ(2deg); }.plane-back { display: none; }
+  .media-stack { transform: rotateX(-3deg) rotateY(-8deg) rotateZ(2deg); }
   .feature-caption { grid-template-columns: 1fr auto; }.feature-caption > .eyebrow { grid-column: 1/-1; }
   .statement-grid { grid-template-columns: 1fr 2fr; gap: 2rem; }.project-showcase { gap: 2rem; }
   .editorial-media-grid,.insight-grid { gap: 1.2rem; }.public-site .collection-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -319,8 +319,14 @@ a:hover .media-play { background: var(--ew-accent); color: var(--ew-black); scal
   .hero-headline span:last-child { display: block; }.hero-intro { margin-block: 1.5rem; font-size: .82rem; }
   .ew-actions { gap: 1rem; }.ew-button { gap: 1.3rem; padding: .85rem 1rem; font-size: .78rem; }.ew-link { font-size: .75rem; gap: .65rem; }
   .media-stage { inline-size: 100%; max-inline-size: 460px; align-self: center; padding: 2rem .5rem .5rem; }
-  .media-stack { aspect-ratio: 1.5; transform: none; }.plane-front { inset: 0 2% 0 2%; transform: none; }.plane-front img { object-position: 50% 45%; }
-  .plane-middle, .plane-back, .timeline-plane { display: none; }.asset-caption { margin-block-start: .6rem; font-size: .5rem; }
+  /* Keep the layered scene on touch screens without an animation loop or touch tracking. */
+  .media-stack { aspect-ratio: 1.5; transform: rotateX(-3deg) rotateY(-8deg) rotateZ(2deg); }
+  .plane-front { inset: 4% 6% 12% 6%; transform: translateZ(16px); }.plane-front img { object-position: 50% 45%; }
+  .plane-middle { inset: 12% 0 3% 24%; transform: translateZ(-24px); }
+  .plane-back { inset: 0 20% 20% 0; transform: translateZ(-48px); }
+  .timeline-plane { inset: auto 0 2% 3%; block-size: 32px; transform: translateZ(32px); }
+  .timeline-plane i { block-size: 14px; }
+  .asset-caption { margin-block-start: .6rem; font-size: .5rem; }
   .hero-bottom { margin-block-start: 1rem; font-size: .5rem; letter-spacing: .04em; padding-block: .6rem; }
   .section-heading { gap: 1rem; flex-wrap: wrap; align-items: start; margin-block-end: 1.75rem; }.section-heading h2 { font-size: 2.3rem; }
   .featured-image { aspect-ratio: 16/10; }.media-play { inline-size: 58px; block-size: 58px; }
