@@ -61,7 +61,7 @@ describe('public motion and asset fallbacks', () => {
     fixture.destroy(); expect(disconnect).toHaveBeenCalled();
   });
 
-  it('keeps touch and reduced-motion scenes static even when visible', () => {
+  it('does not schedule JavaScript tilt frames on touch or reduced-motion scenes', () => {
     let observer: IntersectionObserverCallback | undefined;
     const requestFrame = vi.fn();
     vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
@@ -75,6 +75,27 @@ describe('public motion and asset fallbacks', () => {
     expect(scene.style.getPropertyValue('--tilt-x')).toBe('');
     expect(scene.style.getPropertyValue('--tilt-y')).toBe('');
   });
+  it('pauses CSS motion offscreen and in hidden tabs, then cleans up', () => {
+    let observer: IntersectionObserverCallback | undefined;
+    vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+    vi.stubGlobal('IntersectionObserver', vi.fn(function (callback: IntersectionObserverCallback) { observer = callback; return { observe: vi.fn(), disconnect: vi.fn() }; }));
+    const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
+    const fixture = TestBed.createComponent(EffectsHost); fixture.detectChanges();
+    const scene: HTMLElement = fixture.nativeElement.querySelector('[ewMediaDepth]');
+    expect(scene.classList.contains('media-depth-active')).toBe(false);
+    observer!([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver);
+    expect(scene.classList.contains('media-depth-active')).toBe(true);
+    hidden.mockReturnValue(true); document.dispatchEvent(new Event('visibilitychange'));
+    expect(scene.classList.contains('media-depth-active')).toBe(false);
+    hidden.mockReturnValue(false); document.dispatchEvent(new Event('visibilitychange'));
+    expect(scene.classList.contains('media-depth-active')).toBe(true);
+    observer!([{ isIntersecting: false } as IntersectionObserverEntry], {} as IntersectionObserver);
+    expect(scene.classList.contains('media-depth-active')).toBe(false);
+    fixture.destroy();
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect(scene.classList.contains('media-depth-active')).toBe(false);
+  });
+
   it('tilts a visible desktop media frame and resets it when it leaves view', () => {
     let observer: IntersectionObserverCallback | undefined;
     vi.stubGlobal('matchMedia', () => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }));

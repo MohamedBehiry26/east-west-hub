@@ -351,6 +351,18 @@ a:hover .media-play { background: var(--ew-accent); color: var(--ew-black); scal
   .public-site .info-visual { margin-block: 2.5rem; }.public-site .info-visual h2 { font-size: 2rem; }
   .public-site[dir="rtl"] .hero-headline { font-size: clamp(3.8rem,16vw,6rem); }.public-site[dir="rtl"] .hero-headline span { display: block; }
 }
+/* Animate only the hero transform; the existing observer controls visibility. */
+@keyframes hero-mobile-float {
+  0%, 100% { transform: translateY(0) rotateX(-3deg) rotateY(-8deg) rotateZ(2deg); }
+  50% { transform: translateY(-3px) rotateX(-1deg) rotateY(-6deg) rotateZ(1.5deg); }
+}
+@supports (transform-style: preserve-3d) {
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    .media-stage .media-stack { animation: hero-mobile-float 12s ease-in-out infinite; animation-play-state: paused; }
+    .media-stage.media-depth-active .media-stack { animation-play-state: running; }
+    .public-site .hero-playing .media-stack { animation: none; }
+  }
+}
 @supports not (transform-style: preserve-3d) { .media-stack { transform: none; }.plane-middle,.plane-back,.timeline-plane { display: none; }.plane-front { transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   .public-site *, .public-site *::before, .public-site *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

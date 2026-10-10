@@ -8,6 +8,10 @@ export class MediaDepthDirective implements AfterViewInit, OnDestroy {
   private preference?: MediaQueryList;
   private visible = false;
   private frame = 0;
+  private readonly syncVisibility = () => {
+    this.element.classList.toggle('media-depth-active', this.visible && !document.hidden);
+    this.reset();
+  };
   private readonly reset = () => {
     cancelAnimationFrame(this.frame);
     this.frame = 0;
@@ -29,18 +33,19 @@ export class MediaDepthDirective implements AfterViewInit, OnDestroy {
     this.preference.addEventListener('change', this.reset);
     this.observer = new IntersectionObserver(entries => {
       this.visible = entries.some(entry => entry.isIntersecting);
-      if (!this.visible) this.reset();
+      this.syncVisibility();
     });
     this.observer.observe(this.element);
     this.element.addEventListener('pointermove', this.move, { passive: true });
     this.element.addEventListener('pointerleave', this.reset);
-    document.addEventListener('visibilitychange', this.reset);
+    document.addEventListener('visibilitychange', this.syncVisibility);
   }
   ngOnDestroy(): void {
+    this.element.classList.remove('media-depth-active');
     this.reset(); this.observer?.disconnect();
     this.preference?.removeEventListener('change', this.reset);
     this.element.removeEventListener('pointermove', this.move);
     this.element.removeEventListener('pointerleave', this.reset);
-    document.removeEventListener('visibilitychange', this.reset);
+    document.removeEventListener('visibilitychange', this.syncVisibility);
   }
 }
