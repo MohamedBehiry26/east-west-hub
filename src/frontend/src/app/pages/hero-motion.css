@@ -1,0 +1,7 @@
+.hero-motion { display: none; }
+@media (max-width: 1023px) {
+  .hero-motion { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; margin-block-start: 1rem; }
+  .hero-motion button { min-block-size: 44px; padding: .5rem .75rem; border: 1px solid #d4a07766; border-radius: 4px; background: #111; color: #d4a077; font: inherit; font-size: .75rem; }
+  .hero-motion button:disabled { opacity: .6; cursor: default; }
+  .hero-motion span { flex: 1 1 10rem; color: #aaa; font-size: .7rem; line-height: 1.6; }
+}

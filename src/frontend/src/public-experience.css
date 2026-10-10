@@ -320,7 +320,7 @@ a:hover .media-play { background: var(--ew-accent); color: var(--ew-black); scal
   .ew-actions { gap: 1rem; }.ew-button { gap: 1.3rem; padding: .85rem 1rem; font-size: .78rem; }.ew-link { font-size: .75rem; gap: .65rem; }
   .media-stage { inline-size: 100%; max-inline-size: 460px; align-self: center; padding: 2rem .5rem .5rem; }
   /* Keep the layered scene on touch screens without an animation loop or touch tracking. */
-  .media-stack { aspect-ratio: 1.5; transform: rotateX(-3deg) rotateY(-8deg) rotateZ(2deg); }
+  .media-stack { aspect-ratio: 1.5; }
   .plane-front { inset: 4% 6% 12% 6%; transform: translateZ(16px); }.plane-front img { object-position: 50% 45%; }
   .plane-middle { inset: 12% 0 3% 24%; transform: translateZ(-24px); }
   .plane-back { inset: 0 20% 20% 0; transform: translateZ(-48px); }
@@ -351,15 +351,20 @@ a:hover .media-play { background: var(--ew-accent); color: var(--ew-black); scal
   .public-site .info-visual { margin-block: 2.5rem; }.public-site .info-visual h2 { font-size: 2rem; }
   .public-site[dir="rtl"] .hero-headline { font-size: clamp(3.8rem,16vw,6rem); }.public-site[dir="rtl"] .hero-headline span { display: block; }
 }
+@property --tilt-x { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+@property --tilt-y { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
 /* Animate only the hero transform; the existing observer controls visibility. */
 @keyframes hero-mobile-float {
-  0%, 100% { transform: translateY(0) rotateX(-3deg) rotateY(-8deg) rotateZ(2deg); }
-  50% { transform: translateY(-3px) rotateX(-1deg) rotateY(-6deg) rotateZ(1.5deg); }
+  0%, 100% { transform: translateY(0) rotateX(calc(-3deg + var(--tilt-x))) rotateY(calc(-8deg + var(--tilt-y))) rotateZ(2deg); }
+  50% { transform: translateY(-3px) rotateX(calc(0deg + var(--tilt-x))) rotateY(calc(-5deg + var(--tilt-y))) rotateZ(1deg); }
 }
 @supports (transform-style: preserve-3d) {
   @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
-    .media-stage .media-stack { animation: hero-mobile-float 12s ease-in-out infinite; animation-play-state: paused; }
+    .media-stage { touch-action: pan-y pinch-zoom; transition: --tilt-x 350ms ease-out, --tilt-y 350ms ease-out; }
+    .media-stage.media-touch-dragging { transition-duration: 80ms; }
+    .media-stage .media-stack { animation: hero-mobile-float 7s ease-in-out infinite; animation-play-state: paused; }
     .media-stage.media-depth-active .media-stack { animation-play-state: running; }
+    .media-stage:is(.media-touch-active, .media-gyro-active) .media-stack { animation-play-state: paused; }
     .public-site .hero-playing .media-stack { animation: none; }
   }
 }
@@ -394,11 +399,10 @@ a:hover .media-play { background: var(--ew-accent); color: var(--ew-black); scal
   max-inline-size: 1920px;
   padding-inline: clamp(1rem, 2.5vw, 3rem);
 }
-.public-site .hero-video-poster { position:absolute; inset:0; width:100%; height:100%; }
-.public-site .hero-video-player { position:absolute; inset:0; width:100%; height:100%; border:0; }
-.public-site .hero-playing .media-stack { transform:none; }
+.public-site .hero-video-poster, .public-site .hero-video-player { position:absolute; inset:0; width:100%; height:100%; }
+.public-site .hero-video-player { border:0; }
+.public-site .hero-playing .media-stack { transform:none; aspect-ratio:16/9; }
 .public-site .hero-playing .plane-front { transform:none; inset:0; }
-.public-site .hero-playing .viewfinder, .public-site .hero-playing .frame-caption, .public-site .hero-playing .timeline-plane { display:none; }
-.public-site .hero-playing .media-stack { aspect-ratio:16/9; }
+.public-site .hero-playing :is(.viewfinder, .frame-caption, .timeline-plane) { display:none; }
 
 

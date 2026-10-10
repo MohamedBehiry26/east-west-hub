@@ -8,7 +8,7 @@ import { ImageFallbackDirective } from './image-fallback.directive';
 class EffectsHost {}
 
 describe('public motion and asset fallbacks', () => {
-  afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+  afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 
   it('keeps content visible without observer or animation support', () => {
     vi.stubGlobal('IntersectionObserver', undefined);
@@ -94,6 +94,42 @@ describe('public motion and asset fallbacks', () => {
     fixture.destroy();
     document.dispatchEvent(new Event('visibilitychange'));
     expect(scene.classList.contains('media-depth-active')).toBe(false);
+  });
+
+  it('bounds touch tilt, protects controls, and returns on release or cancellation', () => {
+    vi.useFakeTimers();
+    let observer: IntersectionObserverCallback | undefined;
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('max-width'), addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+    vi.stubGlobal('IntersectionObserver', vi.fn(function (callback: IntersectionObserverCallback) { observer = callback; return { observe: vi.fn(), disconnect: vi.fn() }; }));
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { callback(0); return 1; });
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
+    const fixture = TestBed.createComponent(EffectsHost); fixture.detectChanges();
+    const scene: HTMLElement = fixture.nativeElement.querySelector('[ewMediaDepth]');
+    scene.classList.add('media-stage');
+    vi.spyOn(scene, 'getBoundingClientRect').mockReturnValue({ width: 100, height: 100 } as DOMRect);
+    observer!([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver);
+    const touch = (type: string, x = 0, y = 0) => Object.assign(new MouseEvent(type, { bubbles: true, clientX: x, clientY: y }), { pointerType: 'touch', pointerId: 1, isPrimary: true });
+    const button = document.createElement('button'); scene.append(button);
+    button.dispatchEvent(touch('pointerdown'));
+    expect(scene.classList.contains('media-touch-active')).toBe(false);
+    scene.classList.add('hero-playing'); scene.dispatchEvent(touch('pointerdown'));
+    expect(scene.classList.contains('media-touch-active')).toBe(false);
+    scene.classList.remove('hero-playing'); scene.dispatchEvent(touch('pointerdown'));
+    scene.dispatchEvent(touch('pointermove', 1000, -1000));
+    expect(scene.style.getPropertyValue('--tilt-x')).toBe('6deg');
+    expect(scene.style.getPropertyValue('--tilt-y')).toBe('6deg');
+    scene.dispatchEvent(touch('pointerup'));
+    expect(scene.style.getPropertyValue('--tilt-y')).toBe('');
+    expect(scene.classList.contains('media-touch-dragging')).toBe(false);
+    expect(scene.classList.contains('media-touch-active')).toBe(true);
+    vi.advanceTimersByTime(350);
+    expect(scene.classList.contains('media-touch-active')).toBe(false);
+    scene.dispatchEvent(touch('pointerdown')); scene.dispatchEvent(touch('pointercancel'));
+    vi.advanceTimersByTime(350);
+    expect(scene.classList.contains('media-touch-active')).toBe(false);
+    scene.dispatchEvent(touch('pointerdown')); fixture.destroy(); vi.runAllTimers();
+    expect(scene.classList.contains('media-touch-active')).toBe(false);
   });
 
   it('tilts a visible desktop media frame and resets it when it leaves view', () => {

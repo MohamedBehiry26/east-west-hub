@@ -12,13 +12,15 @@ import enResources from '../../assets/i18n/en.json';
 import arResources from '../../assets/i18n/ar.json';
 
 import { DomSanitizer } from '@angular/platform-browser';
+import { heroMotionLabels } from './hero-motion.labels';
 
 type Language = 'en' | 'ar';
 
 @Component({
   standalone: true,
   imports: [RouterLink, RevealDirective, MediaDepthDirective, ImageFallbackDirective],
-  templateUrl: './public-home.page.html'
+  templateUrl: './public-home.page.html',
+  styleUrl: './hero-motion.css'
 })
 export class PublicHomePage implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
@@ -56,6 +58,7 @@ export class PublicHomePage implements OnInit {
   formatDate(value: string): string { return new Intl.DateTimeFormat(this.language === 'ar' ? 'ar-EG' : 'en-US', { dateStyle: 'medium' }).format(new Date(value)); }
 
   get copy() { return this.content[this.language]; }
+  get motionCopy() { return heroMotionLabels[this.language]; }
 
   ngOnInit(): void {
     this.language = this.route.parent?.snapshot.routeConfig?.path === 'ar' ? 'ar' : 'en';

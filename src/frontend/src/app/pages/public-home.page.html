@@ -7,7 +7,7 @@
       <p class="hero-intro">{{ copy.intro }}</p>
       <div class="ew-actions"><a routerLink="watch" class="ew-button">{{ copy.primaryCta }} <span class="directional-icon" aria-hidden="true">↗</span></a><a routerLink="services" class="ew-link">{{ copy.secondaryCta }} <span class="directional-icon" aria-hidden="true">↗</span></a></div>
     </div>
-    <div class="media-stage" ewMediaDepth [class.hero-playing]="heroStarted()">
+    <div class="media-stage" ewMediaDepth #scene="mediaDepth" [ewMediaPlaying]="heroStarted()" [class.hero-playing]="heroStarted()">
       <div class="media-stack">
         <div class="media-plane plane-back" aria-hidden="true"><span>EW / 03</span></div>
         <div class="media-plane plane-middle" aria-hidden="true"><div class="waveform">@for (bar of waveform; track $index) {<i [style.height.%]="bar"></i>}</div></div>
@@ -25,6 +25,13 @@
           <div class="frame-caption"><span>{{ copy.heroLabel }}</span><span aria-hidden="true">16:9</span></div>
         </div>
         <div class="timeline-plane" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><span>01:24:08</span></div>
+      </div>
+      <div class="hero-motion" [attr.dir]="language === 'ar' ? 'rtl' : 'ltr'">
+        <button type="button" (click)="scene.toggleMotion()" [disabled]="!scene.motionAllowed() || scene.motionStatus() === 'permission'"
+          [attr.aria-pressed]="scene.motionStatus() === 'on' || scene.motionStatus() === 'waiting'">
+          {{ scene.motionStatus() === 'on' || scene.motionStatus() === 'waiting' ? motionCopy.disable : motionCopy.enable }}
+        </button>
+        <span role="status" aria-live="polite">{{ scene.motionAllowed() ? motionCopy.status[scene.motionStatus()] : motionCopy.reduced }}</span>
       </div>
     </div>
   </div>
