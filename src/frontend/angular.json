@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "space-media-web": {
+    "east-west-hub-web": {
       "projectType": "application",
       "root": "",
       "sourceRoot": "src",
@@ -70,10 +70,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "space-media-web:build:production"
+              "buildTarget": "east-west-hub-web:build:production"
             },
             "development": {
-              "buildTarget": "space-media-web:build:development"
+              "buildTarget": "east-west-hub-web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "buildTarget": "space-media-web:build:development",
+            "buildTarget": "east-west-hub-web:build:development",
             "runner": "vitest",
             "runnerConfig": "vitest.config.ts",
             "include": [

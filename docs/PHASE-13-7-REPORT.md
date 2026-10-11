@@ -18,18 +18,18 @@ Browser automation remains unavailable for localhost. Public visual, RTL/respons
 
 ## Source changes
 
-- `src/backend/SpaceMedia.Api/Program.cs`
-- `src/backend/SpaceMedia.Tests/ReleaseGateHttpTests.cs`
+- `src/backend/EastWestHub.Api/Program.cs`
+- `src/backend/EastWestHub.Tests/ReleaseGateHttpTests.cs`
 
 No commit, push, deployment, production resource, or production migration was performed.
 
 ## Release build lock resolution
 
-The local `SpaceMedia.Api.exe` Release process was verified by PID and stopped with owner approval to release its locked DLLs. `dotnet build SpaceMedia.sln --configuration Release --no-restore` then passed with 0 warnings and 0 errors. The local API was restarted with its prior Release/no-build logging configuration. Process startup was verified; localhost HTTP health verification remains manual because this session cannot access localhost through browser or raw HTTP tooling.
+The local `EastWestHub.Api.exe` Release process was verified by PID and stopped with owner approval to release its locked DLLs. `dotnet build EastWestHub.sln --configuration Release --no-restore` then passed with 0 warnings and 0 errors. The local API was restarted with its prior Release/no-build logging configuration. Process startup was verified; localhost HTTP health verification remains manual because this session cannot access localhost through browser or raw HTTP tooling.
 
 ## Branding correction
 
-The Admin top navigation now uses the localized official label: `East West Hub Administration` in English and `إدارة إيست ويست هب` in Arabic. A targeted frontend source scan found no remaining user-facing `Space Media`, `SpaceMedia`, or `Space Media Agency` references; retained technical namespace references are excluded from this branding check.
+The Admin top navigation now uses the localized official label: `East West Hub Administration` in English and `إدارة إيست ويست هب` in Arabic. A targeted frontend source scan found no remaining user-facing `East West Hub`, `EastWestHub`, or `East West Hub Agency` references; retained technical namespace references are excluded from this branding check.
 
 The reported legacy label next to the language switcher was an existing authenticated account `displayName`, not a translation key. That location now renders the localized official administration brand and retains the current page title in the navigation context.
 
@@ -73,11 +73,11 @@ Focused Admin Articles checks: 15 tests passed. Current complete frontend suite:
 
 ## Articles UTC persistence correction
 
-The Development browser retest produced a confirmed EF Core persistence failure. PostgreSQL rejected `Article.PublishedAt` because the incoming `DateTimeOffset` had offset `+03:00`, while the `timestamp with time zone` mapping accepts UTC offsets only. `CreatedAt` and `UpdatedAt` were already generated with `DateTimeOffset.UtcNow` by `SpaceMediaDbContext`; the failing property was the client-supplied `PublishedAt` value.
+The Development browser retest produced a confirmed EF Core persistence failure. PostgreSQL rejected `Article.PublishedAt` because the incoming `DateTimeOffset` had offset `+03:00`, while the `timestamp with time zone` mapping accepts UTC offsets only. `CreatedAt` and `UpdatedAt` were already generated with `DateTimeOffset.UtcNow` by `EastWestHubDbContext`; the failing property was the client-supplied `PublishedAt` value.
 
 `AdminArticleManager` now applies `ToUniversalTime()` to the nullable input before assigning it for both Create and Update. This preserves the represented instant, keeps `null` values null, and preserves the existing draft/publish behavior. No schema change and no existing content modification was made. The related YouTube metadata ingestion and video synchronization path were also audited and now normalize externally supplied publication timestamps before they reach `Videos`.
 
-Focused backend regression run: 24 passed, 0 failed, 0 skipped. It covers Article Create and Update with `+03:00`, UTC instant preservation, zero UTC offset on the persisted value, nullable draft publication dates, existing article CRUD behavior, and non-UTC YouTube source timestamps. The complete backend suite then passed: 71 passed, 0 failed, 0 skipped. `dotnet build SpaceMedia.sln --configuration Release --no-restore` passed with 0 warnings and 0 errors.
+Focused backend regression run: 24 passed, 0 failed, 0 skipped. It covers Article Create and Update with `+03:00`, UTC instant preservation, zero UTC offset on the persisted value, nullable draft publication dates, existing article CRUD behavior, and non-UTC YouTube source timestamps. The complete backend suite then passed: 71 passed, 0 failed, 0 skipped. `dotnet build EastWestHub.sln --configuration Release --no-restore` passed with 0 warnings and 0 errors.
 
 The local Development API was restarted from the existing `http` launch profile after the Release build. It is listening on `127.0.0.1:5080`; `/health` returned HTTP 200. Real-browser Article Create and Article Update acceptance remain pending.
 

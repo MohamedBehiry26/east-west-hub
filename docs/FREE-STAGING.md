@@ -4,20 +4,20 @@ These instructions prepare a client preview using the existing Angular + ASP.NET
 
 ## Architecture and free-tier limits
 
-Cloudflare Pages serves Angular and Pages Functions. `/api/*` forwards only to the configured HTTPS Render API origin. Render runs the .NET 10 container. A separate Supabase project provides PostgreSQL. YouTube hosts playback; no Data API key, channel sync or automatic imports are needed.
+Cloudflare Pages serves Angular and Pages Functions. `/api/*` forwards only to the configured HTTPS SnapDeploy API origin. SnapDeploy runs the .NET 10 container. A separate Supabase project provides PostgreSQL. YouTube hosts playback; no Data API key, channel sync or automatic imports are needed.
 
-Use only free plans without a payment method. If a provider requires payment details or no longer offers the required free tier, stop and reassess rather than upgrading. Render free web services sleep after 15 minutes of inactivity; the first request can take around a minute. Supabase free projects may pause after low activity over seven days. Open and verify the preview before the client meeting. This setup is a temporary preview, not an always-on production promise. Check current provider quotas before deployment.
+Use only free plans without a payment method. If a provider requires payment details or no longer offers the required free tier, stop and reassess rather than upgrading. SnapDeploy capacity and free-plan availability must be checked in the dashboard before creating resources; do not enable paid upgrades. Supabase free projects may pause after low activity over seven days. Open and verify the preview before the client meeting. This setup is a temporary preview, not an always-on production promise. Check current provider quotas before deployment.
 
-Official references: https://render.com/docs/free, https://render.com/docs/docker, https://supabase.com/docs/guides/platform/free-project-pausing, https://developers.cloudflare.com/pages/functions/.
+Official references: https://snapdeploy.dev/docs/deployment, https://snapdeploy.dev/docs/environment-variables, https://supabase.com/docs/guides/platform/free-project-pausing, https://developers.cloudflare.com/pages/functions/.
 
 ## 1. Validate and freeze the source
 
 From the repository root:
 
 ```powershell
-dotnet test SpaceMedia.sln --configuration Release --no-restore
-dotnet build SpaceMedia.sln --configuration Release --no-restore
-dotnet publish src/backend/SpaceMedia.Api/SpaceMedia.Api.csproj --configuration Release --no-restore --output work/staging-publish
+dotnet test EastWestHub.sln --configuration Release --no-restore
+dotnet build EastWestHub.sln --configuration Release --no-restore
+dotnet publish src/backend/EastWestHub.Api/EastWestHub.Api.csproj --configuration Release --no-restore --output work/staging-publish
 ```
 
 From `src/frontend`:
@@ -41,9 +41,13 @@ For an IPv4 host, obtain the **session pooler** connection string from the Supab
 
 Use a separate runtime role with only the application table/sequence privileges where practical, and a migration role for DDL. Do not put any PostgreSQL credentials or Supabase service-role keys in Angular or Pages variables.
 
-Supabase's generated REST API is not the application's authorization layer. Ensure `anon` and `authenticated` roles cannot read or write the application's tables. After migration, review RLS/grants or remove application schemas from the Data API's exposed schemas. Verify anonymous REST access is denied. Do not rely on hiding an API key. In this dedicated staging database, an operator can revoke application-table/sequence grants from those roles and configure default privileges for future migrations. The ASP.NET API's database role must retain the required privileges.
+Keep the Data API disabled in the existing dedicated staging project. Do not enable it as part of rebranding. For other environments where it must remain enabled, Supabase's generated REST API is not the application's authorization layer. Ensure `anon` and `authenticated` roles cannot read or write the application's tables. After migration, review RLS/grants or remove application schemas from the Data API's exposed schemas. Verify anonymous REST access is denied. Do not rely on hiding an API key. In this dedicated staging database, an operator can revoke application-table/sequence grants from those roles and configure default privileges for future migrations. The ASP.NET API's database role must retain the required privileges.
 
-## 3. Safe migration procedure — before API startup
+## 3. Existing staging database and migration compatibility
+
+The current staging database already has all 13 migrations applied. Project/namespace rebranding does **not** require any database action. Do not run migrations, reset data, rename tables, or bootstrap a second database as part of this refactor. The following procedure is only for a separately authorized, new empty environment.
+
+## Safe migration procedure — new empty environments only
 
 No new migration is required for this preparation. The existing chain ends at `20261008221058_HomepageHeroVideo`; the model snapshot must match it.
 
@@ -52,7 +56,7 @@ No new migration is required for this preparation. The existing chain ends at `2
 3. Generate the forward idempotent SQL from the root:
 
    ```powershell
-   dotnet ef migrations script --idempotent --project src/backend/SpaceMedia.Infrastructure --startup-project src/backend/SpaceMedia.Api --configuration Release --no-build --output work/staging-migrations.sql
+   dotnet ef migrations script --idempotent --project src/backend/EastWestHub.Infrastructure --startup-project src/backend/EastWestHub.Api --configuration Release --no-build --output work/staging-migrations.sql
    ```
 
 4. Review the generated SQL and target history. Apply the reviewed script using the staging provider SQL editor or a trusted PostgreSQL client. Do not use `database drop`, `EnsureDeleted`, downgrade migrations or automatic seed imports.
@@ -61,11 +65,11 @@ No new migration is required for this preparation. The existing chain ends at `2
 
 Production/Staging startup does **not** run migrations. An empty database must be migrated before Identity initialization. Do not switch the hosted API to Development to bypass this procedure.
 
-## 4. Render — prepare a Free Docker web service
+## 4. SnapDeploy — prepare the Docker API
 
-Repository root Dockerfile: `Dockerfile`; build context: root. The container runs the .NET 10 API as a non-root user and listens on Render's `PORT` (8080 fallback). Health check: `/health`. This is process liveness, not proof of database readiness; also check a public content endpoint after initialization.
+Repository root Dockerfile: `Dockerfile`; build context: root. The container runs the .NET 10 API as a non-root user and listens on SnapDeploy's `PORT` (8080 fallback). Health check: `/health`. This is process liveness, not proof of database readiness; also check a public content endpoint after initialization.
 
-Set these in Render's environment/secret settings only:
+Set these in SnapDeploy's environment/secret settings only:
 
 | Variable | Value / rule |
 |---|---|
@@ -75,12 +79,18 @@ Set these in Render's environment/secret settings only:
 | `Jwt__Issuer` | `EastWestHub.Staging.Api` |
 | `Jwt__Audience` | `EastWestHub.Staging.Admin` |
 | `Jwt__AccessTokenMinutes` | `15` |
-| `AllowedHosts` | Exact Render API hostname, no scheme/port/wildcard |
+| `AllowedHosts` | Exact SnapDeploy API hostname, no scheme/port/wildcard |
 | `AllowedOrigins__0` | Exact HTTPS Pages preview origin, no path or trailing slash |
 | `PublicSite__BaseUrl` | Same HTTPS Pages origin |
 | `Development__SeedDemoContent` | `false` |
 
 Do not set `Testing__SkipStartupDataInitialization`, any YouTube key or sync variables. Do not trust arbitrary forwarded-IP headers. The same-origin proxy deliberately strips visitor-supplied proxy/IP headers; per-account Identity lockout remains active. App IP throttling may group proxied clients, so configure provider-supported edge login rate limiting if available on the free plan, and verify legitimate login attempts are not blocked. Do not enable paid rules.
+
+The image bundles the public Supabase CA at `/etc/ssl/certs/supabase-prod-ca-2021.crt` and sets `PGSSLROOTCERT` to that path. In the private Npgsql connection configuration, use `SSL Mode=VerifyFull`. If `Root Certificate` is already set, point it to the container path, not a Windows or Render secret-file path. Do not bypass certificate validation. Use the repository root as Docker build context.
+
+For an existing deployment, keep the current `Jwt__Key`, `Jwt__Issuer` and `Jwt__Audience` unchanged. Explicit environment values override the new defaults. If the old application relied on its issuer/audience defaults, configure those previous values explicitly before deploying the renamed application so existing tokens remain valid. Do not rotate keys as part of rebranding.
+
+SnapDeploy may deploy Git pushes automatically if that integration is enabled; repository validation is not a live deployment or TLS smoke test. The Docker entrypoint is now `EastWestHub.Api.dll`; remove any custom command override pointing to the old DLL. Keep provider-managed `PORT` and port 8080 unchanged.
 
 ## 5. First staging administrator
 
@@ -95,7 +105,7 @@ Verify login, then remove both bootstrap secrets together and restart/redeploy w
 - Build: `npm run build`.
 - Output: `dist/space-media-web/browser`.
 - Existing `wrangler.toml` describes the Pages output and defaults to staging noindex.
-- Set `API_BASE_URL` to the HTTPS Render **origin only** (no `/api`, credentials, query or fragment).
+- Set `API_BASE_URL` to the HTTPS SnapDeploy **origin only** (no `/api`, credentials, query or fragment).
 - Set `STAGING_NOINDEX=true` for both preview and production variables of this staging Pages project.
 - Do not put JWT/DB/bootstrap secrets in Pages. It needs only the public API origin.
 - Retain the default SPA fallback; verify direct `/ar/watch/...` and `/admin/login` refresh. Pages Functions must actually be included in the deployment. A static-files-only upload is insufficient.

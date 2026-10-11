@@ -12,14 +12,14 @@
 
 ## محليًا على Windows
 
-أوقف الـAPI الحالي أولًا حتى يكون المنفذ 5080 متاحًا. افتح PowerShell داخل مجلد المشروع الذي يحتوي على SpaceMedia.sln، ثم نفّذ:
+أوقف الـAPI الحالي أولًا حتى يكون المنفذ 5080 متاحًا. افتح PowerShell داخل مجلد المشروع الذي يحتوي على EastWestHub.sln، ثم نفّذ:
 
 ```powershell
 $env:AdminBootstrap__Email = Read-Host 'Admin email'
 $adminPassword = Read-Host 'Admin password' -AsSecureString
 $env:AdminBootstrap__Password = [pscredential]::new('admin', $adminPassword).GetNetworkCredential().Password
 try {
-    dotnet run --project src/backend/SpaceMedia.Api
+    dotnet run --project src/backend/EastWestHub.Api
 } finally {
     Remove-Item Env:AdminBootstrap__Email, Env:AdminBootstrap__Password -ErrorAction SilentlyContinue
     Remove-Variable adminPassword -ErrorAction SilentlyContinue
@@ -31,7 +31,7 @@ try {
 بعد التأكد، أوقف التشغيل بـ Ctrl+C ليتم مسح متغيرات الإنشاء من جلسة PowerShell، ثم شغّل الـAPI بالطريقة العادية:
 
 ```powershell
-dotnet run --project src/backend/SpaceMedia.Api
+dotnet run --project src/backend/EastWestHub.Api
 ```
 
 لإضافة أدمن آخر، كرر الخطوات ببريد جديد. الحسابات السابقة تظل موجودة. استخدام بريد موجود لا يغيّر كلمة مروره؛ إذا لم يكن له دور Admin، تمنحه هذه العملية ذلك الدور.

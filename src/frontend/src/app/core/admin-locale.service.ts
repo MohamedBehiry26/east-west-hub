@@ -23,13 +23,17 @@ export class AdminLocaleService {
 
   set(locale: AdminLocale): void {
     this.locale.set(locale);
-    try { localStorage.setItem('space-media-admin-locale', locale); } catch { /* Storage may be disabled. */ }
+    try { localStorage.setItem('east-west-hub-admin-locale', locale); } catch { /* Storage may be disabled. */ }
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
   }
 
   private readSavedLocale(): AdminLocale {
-    try { return localStorage.getItem('space-media-admin-locale') === 'ar' ? 'ar' : 'en'; }
+    try {
+      // Read-only compatibility for language preferences saved before the rebrand.
+      const saved = localStorage.getItem('east-west-hub-admin-locale') ?? localStorage.getItem('space-media-admin-locale');
+      return saved === 'ar' ? 'ar' : 'en';
+    }
     catch { return 'en'; }
   }
 }

@@ -4,7 +4,7 @@
 |---|---|---|---|---|---|---|---|
 | SEC-HTTP-01 | API/Security | JWT validity and Admin authorization | TestServer | 18 release-gate tests passed | PASS | `ReleaseGateHttpTests` | — |
 | SEC-HTTP-02 | API/Security | CORS and login rate limiting | TestServer | Allowed/disallowed origins and 429 threshold passed | PASS | `ReleaseGateHttpTests` | — |
-| API-REG-01 | API | Complete backend regression after the UTC persistence correction | Unit/TestServer | 71 passed, 0 failed, 0 skipped | PASS | `dotnet test SpaceMedia.sln --no-restore` | — |
+| API-REG-01 | API | Complete backend regression after the UTC persistence correction | Unit/TestServer | 71 passed, 0 failed, 0 skipped | PASS | `dotnet test EastWestHub.sln --no-restore` | — |
 | WEB-REG-01 | Public/Admin | Frontend suite | Angular/Vitest | 41 passed | PASS | `npm test` baseline | — |
 | CF-01 | Release | Pages functions type check | TypeScript | Passed | PASS | `npx tsc --noEmit` | — |
 | PUB-BROWSER-01 | Public | English/Arabic routes, RTL, responsive layouts | Browser | Automation unavailable | BLOCKED | Manual checklist | HIGH |
@@ -27,5 +27,5 @@
 | ADMIN-ARTICLE-BROWSER-02 | Admin | Article Create and Update with local-time publication date against Development PostgreSQL | Browser / Development | Pending retest after UTC normalization | BLOCKED | Manual browser acceptance required | HIGH |
 | PUBLIC-WATCH-API-01 | Public/API | Watch includes all eligible non-podcast media types and excludes podcasts, drafts, and scheduled media | Development database + backend regression | Admin: 22 records; eligible Watch: 14; live public API: `totalCount: 14` | PASS | `PublicApiQaTests`; live `/api/v1/public/videos` query | — |
 | PUBLIC-WATCH-BROWSER-01 | Public | Watch listing pagination and detail navigation for non-podcast media types | Browser / Development | Pending visual retest after API correction | BLOCKED | Manual browser acceptance required | MEDIUM |
-| YOUTUBE-LIMIT-01 | API | Optional configured import limit, default behavior, and invalid-value fallback | Backend regression | 24 focused tests passed; complete backend suite 77 passed | PASS | `AdminVideoManagerTests`; `dotnet test SpaceMedia.sln --no-restore` | — |
+| YOUTUBE-LIMIT-01 | API | Optional configured import limit, default behavior, and invalid-value fallback | Backend regression | 24 focused tests passed; complete backend suite 77 passed | PASS | `AdminVideoManagerTests`; `dotnet test EastWestHub.sln --no-restore` | — |
 | YOUTUBE-LIVE-01 | Admin / Development | NASA channel synchronization with Development limit of five distinct records | Browser / Development | Not run by instruction | BLOCKED | Requires explicit manual Sync action | MEDIUM |

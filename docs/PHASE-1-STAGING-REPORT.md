@@ -15,12 +15,12 @@ Date: 10 October 2026 (Africa/Cairo).
 ## Files changed in this phase
 
 Backend:
-- `src/backend/SpaceMedia.Api/Contracts/AdminVideoRequests.cs`
-- `src/backend/SpaceMedia.Application/Content/VideoAdministration.cs`
-- `src/backend/SpaceMedia.Infrastructure/Content/AdminVideoManager.cs`
-- `src/backend/SpaceMedia.Infrastructure/Content/AdminSiteSettingsManager.cs`
-- `src/backend/SpaceMedia.Tests/AdminVideoManagerTests.cs`
-- `src/backend/SpaceMedia.Tests/AdminSiteSettingsManagerTests.cs`
+- `src/backend/EastWestHub.Api/Contracts/AdminVideoRequests.cs`
+- `src/backend/EastWestHub.Application/Content/VideoAdministration.cs`
+- `src/backend/EastWestHub.Infrastructure/Content/AdminVideoManager.cs`
+- `src/backend/EastWestHub.Infrastructure/Content/AdminSiteSettingsManager.cs`
+- `src/backend/EastWestHub.Tests/AdminVideoManagerTests.cs`
+- `src/backend/EastWestHub.Tests/AdminSiteSettingsManagerTests.cs`
 
 Frontend:
 - `src/frontend/src/app/admin/admin-video.pages.ts`

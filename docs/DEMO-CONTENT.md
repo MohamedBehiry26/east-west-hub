@@ -16,7 +16,7 @@ The business service names and their bilingual descriptions are editable CMS con
 
 ## How development seeding works
 
-`DevelopmentSeeder` reads the embedded catalog in `src/backend/SpaceMedia.Infrastructure/Persistence/SeedData/`. It uses deterministic IDs and does not use titles as identity.
+`DevelopmentSeeder` reads the embedded catalog in `src/backend/EastWestHub.Infrastructure/Persistence/SeedData/`. It uses deterministic IDs and does not use titles as identity.
 
 It adds missing records, upgrades only the exact legacy placeholders that shipped with the project, and preserves later editor changes. It can be run repeatedly without duplicates. It also refuses to run in Production, Staging, or any other environment.
 

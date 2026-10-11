@@ -1,6 +1,6 @@
 # Database foundation
 
-The API uses EF Core with Npgsql and PostgreSQL. Supabase PostgreSQL is the deployment target. Schema mappings and migrations live in `SpaceMedia.Infrastructure`; the API owns development-time startup initialization.
+The API uses EF Core with Npgsql and PostgreSQL. Supabase PostgreSQL is the deployment target. Schema mappings and migrations live in `EastWestHub.Infrastructure`; the API owns development-time startup initialization.
 
 ## Entities
 
@@ -33,8 +33,8 @@ Create a migration from the repository root:
 
 ```powershell
 dotnet ef migrations add <MigrationName> `
-  --project src/backend/SpaceMedia.Infrastructure `
-  --startup-project src/backend/SpaceMedia.Api `
+  --project src/backend/EastWestHub.Infrastructure `
+  --startup-project src/backend/EastWestHub.Api `
   --output-dir Persistence/Migrations
 ```
 
@@ -44,8 +44,8 @@ Generate an idempotent deployment script with:
 
 ```powershell
 dotnet ef migrations script --idempotent `
-  --project src/backend/SpaceMedia.Infrastructure `
-  --startup-project src/backend/SpaceMedia.Api
+  --project src/backend/EastWestHub.Infrastructure `
+  --startup-project src/backend/EastWestHub.Api
 ```
 
 Development startup applies migrations automatically only when a connection string is present. Production migration execution remains an explicit deployment operation; do not rely on web-service startup to mutate production schema.
@@ -54,4 +54,4 @@ Development startup applies migrations automatically only when a connection stri
 
 Set `ConnectionStrings__DefaultConnection` in the local shell or deployment secret store. `.env.example` contains a local placeholder only; ASP.NET Core does not load `.env` files by itself. Never commit real credentials.
 
-This checkout has a separate UTF-8 development cluster under the ignored `work/space-media-postgres-data-utf8` folder, listening only on `127.0.0.1:5434`. Its connection string is held in the API project's .NET User Secrets. If the cluster is stopped, follow the start command in the README. This setup does not use or alter the machine's PostgreSQL service on port 5432.
+This checkout has a separate UTF-8 development cluster under the ignored `work/east-west-hub-postgres-data-utf8` folder, listening only on `127.0.0.1:5434`. Its connection string is held in the API project's .NET User Secrets. If the cluster is stopped, follow the start command in the README. This setup does not use or alter the machine's PostgreSQL service on port 5432.

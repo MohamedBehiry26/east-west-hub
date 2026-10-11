@@ -47,7 +47,7 @@ The application has English/Arabic routes, centralized JSON resources for public
 ## Verification performed
 
 - `npm run build` — passed.
-- `dotnet build SpaceMedia.Api/SpaceMedia.Api.csproj` — passed with 0 warnings and 0 errors.
-- `dotnet test SpaceMedia.Tests/SpaceMedia.Tests.csproj --no-restore` — 10 passed, 0 failed.
+- `dotnet build EastWestHub.Api/EastWestHub.Api.csproj` — passed with 0 warnings and 0 errors.
+- `dotnet test EastWestHub.Tests/EastWestHub.Tests.csproj --no-restore` — 10 passed, 0 failed.
 - Static scan of frontend source found no hardcoded physical left/right CSS utility/property usage.
 - No browser visual verification was performed; the pass/fail status for the visual layout criteria remains unverified.

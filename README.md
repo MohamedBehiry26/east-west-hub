@@ -16,10 +16,10 @@ Bilingual media, content, and creative platform built on a layered Angular and A
 src/
   frontend/                 Angular application
   backend/
-    SpaceMedia.Api/         HTTP entry point and composition root
-    SpaceMedia.Application/ Use cases and application contracts
-    SpaceMedia.Domain/      Business model and rules
-    SpaceMedia.Infrastructure/ EF Core, PostgreSQL, external adapters
+    EastWestHub.Api/         HTTP entry point and composition root
+    EastWestHub.Application/ Use cases and application contracts
+    EastWestHub.Domain/      Business model and rules
+    EastWestHub.Infrastructure/ EF Core, PostgreSQL, external adapters
 docs/                       Architecture records and deployment notes
 ```
 
@@ -36,13 +36,13 @@ docs/                       Architecture records and deployment notes
 3. If using the local PostgreSQL cluster provisioned for this checkout and it is stopped, start it from the repository root with:
 
    ```powershell
-   $cluster = Join-Path $PWD 'work/space-media-postgres-data-utf8'
-   $log = Join-Path $PWD 'work/space-media-postgres-utf8.log'
+   $cluster = Join-Path $PWD 'work/east-west-hub-postgres-data-utf8'
+   $log = Join-Path $PWD 'work/east-west-hub-postgres-utf8.log'
    & 'C:\Program Files\PostgreSQL\18\bin\pg_ctl.exe' -D $cluster -l $log -o '-p 5434 -h 127.0.0.1' start
    ```
 
    Its connection is stored in the API project's .NET User Secrets, outside the repository. The ignored `work/` directory contains the local database files.
-4. Start the API with `dotnet run --project src/backend/SpaceMedia.Api`. In Development, configured connections apply migrations at startup. Demo content is disabled by default; explicitly set Development__SeedDemoContent=true only when provisioning a disposable demo database.
+4. Start the API with `dotnet run --project src/backend/EastWestHub.Api`. In Development, configured connections apply migrations at startup. Demo content is disabled by default; explicitly set Development__SeedDemoContent=true only when provisioning a disposable demo database.
 5. Start the frontend with `npm start` in `src/frontend`; its `/api` proxy targets the local API on `127.0.0.1:5080`.
 
 The API listens at `http://127.0.0.1:5080`; Angular listens at `http://localhost:4200`.
@@ -69,7 +69,7 @@ Cloudflare Pages responses get a Content Security Policy and browser security he
 
 ## Verification
 
-Run the backend test suite from the repository root with `dotnet test SpaceMedia.sln`, then create a release build with `dotnet build SpaceMedia.sln --configuration Release --no-restore`. From `src/frontend`, run `npm test` for the frontend suite and `npm run build` for the production frontend build. Automated backend tests cover JWT signature, claims, admin role, configured expiry, and service/portfolio CRUD including galleries and project-service links.
+Run the backend test suite from the repository root with `dotnet test EastWestHub.sln`, then create a release build with `dotnet build EastWestHub.sln --configuration Release --no-restore`. From `src/frontend`, run `npm test` for the frontend suite and `npm run build` for the production frontend build. Automated backend tests cover JWT signature, claims, admin role, configured expiry, and service/portfolio CRUD including galleries and project-service links.
 
 ## Current scope and phase order
 
@@ -99,3 +99,5 @@ See [docs/ADMIN_CONTENT.md](docs/ADMIN_CONTENT.md) for services, projects, and I
 ## Phase 12.5 — business domain alignment
 
 The public brand and information architecture are aligned to East West Hub: Watch, Podcasts, Services, Projects, Insights, About, and Contact. Video records retain their existing table/API foundation with a `ContentType` enum and optional podcast episode, season, guest, and localized SEO metadata. See [docs/PHASE_12_5.md](docs/PHASE_12_5.md) for scope and migration details.
+
+Current staging deployment: SnapDeploy Docker API, Supabase PostgreSQL, and Cloudflare Pages. See [free staging instructions](docs/FREE-STAGING.md), [TLS configuration](docs/SNAPDEPLOY-TLS.md), and [rebranding compatibility](docs/REBRANDING.md).
