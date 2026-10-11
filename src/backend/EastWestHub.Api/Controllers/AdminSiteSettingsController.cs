@@ -13,8 +13,11 @@ namespace EastWestHub.Api.Controllers;
 public sealed class AdminSiteSettingsController(IAdminSiteSettingsManager manager) : ControllerBase
 {
     [HttpGet]
+    // An unconfigured site is editable; GET must not create or seed database records.
     public async Task<ActionResult<AdminSiteSettingsContent>> Get(CancellationToken ct) =>
-        (await manager.GetAsync(ct)) is { } settings ? Ok(settings) : NotFound();
+        Ok(await manager.GetAsync(ct) ?? new AdminSiteSettingsContent(
+            "", "", null, null, null, null, null, null, null, null,
+            null, null, null, null, []));
 
     [HttpPut]
     public async Task<ActionResult<AdminSiteSettingsContent>> Save(SaveAdminSiteSettingsRequest request, CancellationToken ct)

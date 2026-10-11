@@ -7,6 +7,27 @@ const middleware=require(path.join(output,'_middleware.js')).onRequest;
 const robots=require(path.join(output,'robots.txt.js')).onRequest;
 const env={API_BASE_URL:'https://api.example.test'};
 
+test('settings GET and PUT preserve the backend route, authorization and response status',async()=>{
+  const original=global.fetch;
+  try{
+    for(const method of ['GET','PUT']) for(const status of [200,401,403,404]) {
+      global.fetch=async(url,options)=>{
+        assert.equal(url.href,'https://api.example.test/api/admin/settings');
+        assert.equal(options.method,method);
+        assert.equal(options.headers.get('authorization'),'Bearer test-token');
+        if(method==='PUT') assert.equal(new TextDecoder().decode(options.body),'{"agencyNameEn":"Owner supplied"}');
+        return new Response('{"socialLinks":[]}',{status,headers:{'Content-Type':'application/json'}});
+      };
+      const result=await proxy({env,request:new Request('https://preview.example.test/api/admin/settings',{
+        method,headers:{Authorization:'Bearer test-token','Content-Type':'application/json'},
+        ...(method==='PUT'?{body:'{"agencyNameEn":"Owner supplied"}'}:{})
+      })});
+      assert.equal(result.status,status);
+      assert.deepEqual(await result.json(),{socialLinks:[]});
+    }
+  }finally{global.fetch=original;}
+});
+
 test('proxy forwards the same API path, query, body and bearer token, without cookies or spoofed IP headers',async()=>{
   const original=global.fetch;
   global.fetch=async(url,options)=>{

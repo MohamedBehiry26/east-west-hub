@@ -1,6 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
@@ -171,6 +174,44 @@ public sealed class ReleaseGateHttpTests : IClassFixture<ReleaseGateHttpTests.Te
 
         Assert.Equal(HttpStatusCode.TooManyRequests, response!.StatusCode);
         response.Dispose();
+    }
+
+    [Theory]
+    [InlineData("GET")]
+    [InlineData("PUT")]
+    public async Task Settings_routes_require_admin_authorization(string method)
+    {
+        using var client = _factory.CreateClient();
+        using var anonymous = new HttpRequestMessage(new HttpMethod(method), "/api/admin/settings");
+        Assert.Equal(HttpStatusCode.Unauthorized, (await client.SendAsync(anonymous)).StatusCode);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CreateToken(TokenVariant.Valid, false));
+        using var ordinary = new HttpRequestMessage(new HttpMethod(method), "/api/admin/settings");
+        Assert.Equal(HttpStatusCode.Forbidden, (await client.SendAsync(ordinary)).StatusCode);
+    }
+
+    [Fact]
+    public async Task Empty_settings_GET_is_read_only_and_PUT_creates_then_updates_the_same_record()
+    {
+        await using var db = new EastWestHub.Infrastructure.Persistence.EastWestHubDbContext(
+            new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<EastWestHub.Infrastructure.Persistence.EastWestHubDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+        using var factory = _factory.WithWebHostBuilder(builder => builder.ConfigureServices(services =>
+            services.AddSingleton<EastWestHub.Application.Content.IAdminSiteSettingsManager>(
+                new EastWestHub.Infrastructure.Content.AdminSiteSettingsManager(db))));
+        using var client = factory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CreateToken(TokenVariant.Valid, true));
+        var empty = await client.GetAsync("/api/admin/settings");
+        Assert.Equal(HttpStatusCode.OK, empty.StatusCode);
+        var draft = await empty.Content.ReadFromJsonAsync<EastWestHub.Application.Content.AdminSiteSettingsContent>();
+        Assert.Equal("", draft!.AgencyNameEn); Assert.Empty(draft.SocialLinks);
+        Assert.Empty(db.SiteSettings); Assert.Empty(db.SocialLinks);
+        var input = new { agencyNameEn = "Owner supplied", agencyNameAr = "اسم المالك", socialLinks = Array.Empty<object>() };
+        Assert.Equal(HttpStatusCode.OK, (await client.PutAsJsonAsync("/api/admin/settings", input)).StatusCode);
+        var id = Assert.Single(db.SiteSettings).Id;
+        Assert.Equal(HttpStatusCode.OK, (await client.PutAsJsonAsync("/api/admin/settings", input with { agencyNameEn = "Updated" })).StatusCode);
+        Assert.Equal(id, Assert.Single(db.SiteSettings).Id);
+        var saved = await client.GetFromJsonAsync<EastWestHub.Application.Content.AdminSiteSettingsContent>("/api/admin/settings");
+        Assert.Equal("Updated", saved!.AgencyNameEn);
     }
 
     private static string CreateToken(TokenVariant variant, bool isAdmin)

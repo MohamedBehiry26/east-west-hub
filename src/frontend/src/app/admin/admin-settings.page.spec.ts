@@ -27,6 +27,26 @@ describe('AdminSettingsPage', () => {
 
   afterEach(() => http.verify());
 
+  it('loads an empty draft through GET and creates settings through PUT on the same route', () => {
+    const fixture = TestBed.createComponent(AdminSettingsPage);
+    fixture.detectChanges();
+    const get = http.expectOne('/api/admin/settings');
+    expect(get.request.method).toBe('GET');
+    get.flush({ ...settings, agencyNameEn: '', agencyNameAr: '', socialLinks: [] });
+    expect(fixture.componentInstance.loading).toBe(false);
+    expect(fixture.componentInstance.error).toBe('');
+    http.expectNone('/api/admin/settings');
+    fixture.componentInstance.model.agencyNameEn = 'Owner supplied';
+    fixture.componentInstance.model.agencyNameAr = 'اسم المالك';
+    fixture.componentInstance.save();
+    const put = http.expectOne('/api/admin/settings');
+    expect(put.request.method).toBe('PUT');
+    expect(put.request.body.agencyNameEn).toBe('Owner supplied');
+    put.flush({ ...settings, agencyNameEn: 'Owner supplied', agencyNameAr: 'اسم المالك' });
+    expect(fixture.componentInstance.saving).toBe(false);
+    expect(fixture.componentInstance.message).toBe('Settings saved.');
+  });
+
   it('saves the independent homepage hero link', () => {
     const fixture = createPage();
     fixture.componentInstance.model.heroVideoUrl = 'https://youtu.be/M7lc1UVf-VE';
