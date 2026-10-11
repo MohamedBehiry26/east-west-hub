@@ -26,6 +26,11 @@
             "assets": [
               {
                 "glob": "**/*",
+                "input": "public/branding",
+                "output": "branding"
+              },
+              {
+                "glob": "**/*",
                 "input": "src/assets/demo",
                 "output": "assets/demo"
               }
