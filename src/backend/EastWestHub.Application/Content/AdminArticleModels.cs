@@ -7,7 +7,7 @@ public sealed record AdminArticleContent(
     string? ExcerptEn, string? ExcerptAr, string? ContentEn, string? ContentAr,
     string? CoverImageUrl, Guid AuthorId, string AuthorName,
     DateTimeOffset? PublishedAt, bool IsPublished,
-    string? SeoTitleEn, string? SeoTitleAr, string? SeoDescriptionEn, string? SeoDescriptionAr);
+    string? SeoTitleEn, string? SeoTitleAr, string? SeoDescriptionEn, string? SeoDescriptionAr, Guid Version = default);
 
 public sealed record SaveAdminArticle(
     string TitleEn, string TitleAr, string SlugEn, string SlugAr,

@@ -1,7 +1,8 @@
 namespace EastWestHub.Domain.Entities;
 
-public sealed class Category : AuditableEntity
+public sealed class Category : AuditableEntity, ICmsVersioned
 {
+    public Guid Version { get; set; } = Guid.NewGuid();
     public Guid Id { get; set; }
     public required string NameEn { get; set; }
     public required string NameAr { get; set; }

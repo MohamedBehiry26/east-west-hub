@@ -1,7 +1,8 @@
 namespace EastWestHub.Domain.Entities;
 
-public sealed class Service : AuditableEntity
+public sealed class Service : AuditableEntity, ICmsVersioned
 {
+    public Guid Version { get; set; } = Guid.NewGuid();
     public Guid Id { get; set; }
     public required string TitleEn { get; set; }
     public required string TitleAr { get; set; }

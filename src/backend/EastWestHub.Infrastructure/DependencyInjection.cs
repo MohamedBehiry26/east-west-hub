@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EastWestHub.Infrastructure.Persistence;
@@ -23,6 +23,13 @@ public static class DependencyInjection
                 "ConnectionStrings__DefaultConnection must be configured for every environment.");
         }
 
+        if (configuration.GetValue("Development:SkipDatabaseInitialization", false))
+        {
+            // Preserve credentials and target; enforce read-only transactions on every pooled connection.
+            var connection = new Npgsql.NpgsqlConnectionStringBuilder(connectionString);
+            connection.Options = (connection.Options + " -c default_transaction_read_only=on").Trim();
+            connectionString = connection.ConnectionString;
+        }
         services.AddDbContext<EastWestHubDbContext>(options => options.UseNpgsql(connectionString));
 
         services.AddIdentityCore<ApplicationUser>(options =>
@@ -44,6 +51,7 @@ public static class DependencyInjection
         .AddDefaultTokenProviders();
 
         services.AddScoped<IAdminAuthService, AdminAuthService>();
+        services.AddSingleton<SuperAdminAccount>();
         services.AddScoped<IPublicContentReader, PublicContentReader>();
         services.AddScoped<IAdminPortfolioManager, AdminPortfolioManager>();
         services.AddScoped<IAdminArticleManager, AdminArticleManager>();

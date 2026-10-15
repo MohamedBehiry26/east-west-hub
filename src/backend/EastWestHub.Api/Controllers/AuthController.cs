@@ -31,7 +31,7 @@ public sealed class AuthController(IAdminAuthService authService) : ControllerBa
             accessToken = result.AccessToken,
             tokenType = "Bearer",
             expiresAt = result.ExpiresAt,
-            user = new { email = result.Email, displayName = result.DisplayName }
+            user = new { email = result.Email, displayName = result.DisplayName, canManageAccounts = result.CanManageAccounts }
         });
     }
 }

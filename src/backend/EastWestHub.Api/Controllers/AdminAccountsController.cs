@@ -9,14 +9,33 @@ using EastWestHub.Infrastructure.Persistence;
 namespace EastWestHub.Api.Controllers;
 
 [ApiController]
-[Authorize(Roles = AdminRoles.Administrator)]
+[Authorize(Policy = SuperAdminAccount.Policy)]
 [Route("api/admin/accounts")]
-public sealed class AdminAccountsController(UserManager<ApplicationUser> users, RoleManager<IdentityRole<Guid>> roles, EastWestHubDbContext db) : ControllerBase
+public sealed class AdminAccountsController(UserManager<ApplicationUser> users, RoleManager<IdentityRole<Guid>> roles, EastWestHubDbContext db, SuperAdminAccount owner) : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> List()
+    {
+        var admins = await users.GetUsersInRoleAsync(AdminRoles.Administrator);
+        return Ok(admins.OrderBy(user => user.Email).Select(user => new { user.Id, user.Email, user.DisplayName, user.IsActive, isSuperAdmin = owner.UserId == user.Id }));
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Deactivate(Guid id)
+    {
+        if (id == owner.UserId) return Conflict(new ProblemDetails { Title = "The Super Admin account is protected." });
+        var user = await users.FindByIdAsync(id.ToString());
+        if (user is null || !await users.IsInRoleAsync(user, AdminRoles.Administrator)) return NotFound();
+        user.IsActive = false;
+        var result = await users.UpdateAsync(user);
+        return result.Succeeded ? NoContent() : Problem(statusCode: 500, title: "Could not deactivate the account.");
+    }
     [HttpPost]
     public async Task<IActionResult> Create(CreateAdminAccountRequest request)
     {
         var email = request.Email.Trim();
+        if (email.Equals(SuperAdminAccount.OwnerEmail, StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new ProblemDetails { Title = "The owner email is reserved for the existing Super Admin account." });
         if (await users.FindByEmailAsync(email) is not null)
             return Conflict(new ProblemDetails { Title = "An account with this email already exists." });
         await using var transaction = db.Database.IsRelational() ? await db.Database.BeginTransactionAsync() : null;

@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -16,7 +16,8 @@ using EastWestHub.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 1_048_576);
-builder.Services.AddControllers().AddJsonOptions(options =>
+builder.Services.AddScoped<EastWestHub.Api.Authorization.CmsConcurrencyFilter>();
+builder.Services.AddControllers(options => options.Filters.AddService<EastWestHub.Api.Authorization.CmsConcurrencyFilter>()).AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
 builder.Services.AddHealthChecks();
 builder.Services.AddProblemDetails();
@@ -79,11 +80,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             NameClaimType = ClaimTypes.Name,
             RoleClaimType = ClaimTypes.Role
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var users = context.HttpContext.RequestServices.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<ApplicationUser>>();
+                if (!AccountIdClaimResolver.TryResolve(context.Principal, out var accountId))
+                {
+                    context.Fail("Account is unavailable.");
+                    return;
+                }
+                var user = await users.FindByIdAsync(accountId.ToString());
+                if (user is null || !user.IsActive) context.Fail("Account is unavailable.");
+            }
+        };
     });
 builder.Services.AddAuthorization(options =>
 {
+    options.AddPolicy(SuperAdminAccount.Policy, policy => policy.RequireAuthenticatedUser().RequireRole(AdminRoles.Administrator)
+        .AddRequirements(new EastWestHub.Api.Authorization.SuperAdminRequirement()));
     options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 });
+builder.Services.AddScoped<IAuthorizationHandler, EastWestHub.Api.Authorization.SuperAdminAuthorization>();
 builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
 {
     var origins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? [];
@@ -119,8 +137,25 @@ if (!builder.Environment.IsDevelopment())
 
 builder.Services.AddResponseCaching();
 var app = builder.Build();
-var skipStartupDataInitialization = app.Environment.IsEnvironment("Testing")
-    && builder.Configuration.GetValue("Testing:SkipStartupDataInitialization", false);
+var readOnlyDevelopment = app.Configuration.GetValue("Development:SkipDatabaseInitialization", false);
+EastWestHub.Api.DevelopmentStartupSafety.Validate(readOnlyDevelopment, app.Environment.EnvironmentName);
+var skipStartupDataInitialization = readOnlyDevelopment || (app.Environment.IsEnvironment("Testing")
+    && builder.Configuration.GetValue("Testing:SkipStartupDataInitialization", false));
+if (readOnlyDevelopment)
+{
+    app.Logger.LogWarning("Development read-only integration mode: database initialization is skipped; only public GET/HEAD requests are allowed.");
+    app.Use(async (context, next) =>
+    {
+        if ((!HttpMethods.IsGet(context.Request.Method) && !HttpMethods.IsHead(context.Request.Method))
+            || context.Request.Path.StartsWithSegments("/api/admin")
+            || context.Request.Path.StartsWithSegments("/api/auth"))
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return;
+        }
+        await next();
+    });
+}
 app.UseExceptionHandler();
 if (!app.Environment.IsDevelopment())
 {
@@ -153,6 +188,8 @@ if (!skipStartupDataInitialization
     && !string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("DefaultConnection")))
 {
     await using var scope = app.Services.CreateAsyncScope();
+    await scope.ServiceProvider.GetRequiredService<SuperAdminAccount>().ValidateExistingOwnerAsync(
+        scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<ApplicationUser>>());
     await IdentityBootstrapper.EnsureAdminRoleAndOptionalUserAsync(scope.ServiceProvider, builder.Configuration);
 }
 

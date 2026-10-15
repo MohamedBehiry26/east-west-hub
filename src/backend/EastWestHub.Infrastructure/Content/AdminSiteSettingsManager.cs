@@ -17,6 +17,8 @@ public sealed class AdminSiteSettingsManager(EastWestHubDbContext db) : IAdminSi
     {
         if (input.SocialLinks.GroupBy(link => link.Platform.Trim(), StringComparer.OrdinalIgnoreCase).Any(group => group.Count() > 1))
             throw new VideoAdministrationConflictException("Each social platform may appear only once.");
+        var mp4 = ValidateMediaUrl(input.HeroMp4Url, true);
+        var poster = ValidateMediaUrl(input.HeroPosterImageUrl, false);
         var heroId = string.IsNullOrWhiteSpace(input.HeroVideoUrl) ? null : AdminVideoManager.ExtractYouTubeVideoId(input.HeroVideoUrl);
         var setting = await db.SiteSettings.Include(x => x.SocialLinks).OrderBy(x => x.Id).FirstOrDefaultAsync(ct);
         if (setting is null)
@@ -26,6 +28,9 @@ public sealed class AdminSiteSettingsManager(EastWestHubDbContext db) : IAdminSi
         }
         setting.AgencyNameEn = input.AgencyNameEn.Trim(); setting.AgencyNameAr = input.AgencyNameAr.Trim();
         setting.AgencyDescriptionEn = input.AgencyDescriptionEn; setting.AgencyDescriptionAr = input.AgencyDescriptionAr;
+        // Older settings clients omit these optional fields; an explicit empty string clears them.
+        if (input.HeroMp4Url is not null) setting.HeroMp4Url = mp4;
+        if (input.HeroPosterImageUrl is not null) setting.HeroPosterImageUrl = poster;
         setting.HeroYouTubeVideoId = heroId; setting.LogoUrl = input.LogoUrl; setting.FaviconUrl = input.FaviconUrl;
         setting.Email = input.Email; setting.Phone = input.Phone;
         setting.AddressEn = input.AddressEn; setting.AddressAr = input.AddressAr;
@@ -44,9 +49,21 @@ public sealed class AdminSiteSettingsManager(EastWestHubDbContext db) : IAdminSi
         return ToContent(setting);
     }
 
+    private static string? ValidateMediaUrl(string? value, bool mp4)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return null;
+        var url=value.Trim();
+        var local=url.StartsWith('/') && !url.StartsWith("//") && !url.Contains('\\');
+        if (!Uri.TryCreate(local ? "https://local.invalid"+url : url, UriKind.Absolute, out var uri)
+            || uri.Scheme != Uri.UriSchemeHttps || !string.IsNullOrEmpty(uri.UserInfo)
+            || (mp4 && !uri.AbsolutePath.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase)))
+            throw new VideoAdministrationConflictException(mp4 ? "Hero MP4 URL must be an HTTPS or site-relative .mp4 URL." : "Hero poster URL must be an HTTPS or site-relative image URL.");
+        return url;
+    }
+
     private static AdminSiteSettingsContent ToContent(SiteSetting x) => new(
         x.AgencyNameEn, x.AgencyNameAr, x.AgencyDescriptionEn, x.AgencyDescriptionAr,
         x.LogoUrl, x.FaviconUrl, x.Email, x.Phone, x.AddressEn, x.AddressAr,
         x.DefaultSeoTitleEn, x.DefaultSeoTitleAr, x.DefaultSeoDescriptionEn, x.DefaultSeoDescriptionAr,
-        x.SocialLinks.OrderBy(link => link.DisplayOrder).Select(link => new AdminSocialLinkContent(link.Platform, link.Url, link.DisplayOrder, link.IsVisible)).ToArray(), x.HeroYouTubeVideoId is null ? null : $"https://www.youtube.com/watch?v={x.HeroYouTubeVideoId}");
+        x.SocialLinks.OrderBy(link => link.DisplayOrder).Select(link => new AdminSocialLinkContent(link.Platform, link.Url, link.DisplayOrder, link.IsVisible)).ToArray(), x.HeroYouTubeVideoId is null ? null : $"https://www.youtube.com/watch?v={x.HeroYouTubeVideoId}", x.HeroMp4Url, x.HeroPosterImageUrl, x.Version);
 }

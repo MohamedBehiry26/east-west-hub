@@ -24,6 +24,7 @@ public sealed class EastWestHubDbContext(DbContextOptions<EastWestHubDbContext> 
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
+        ApplyCmsVersions();
         ApplyAuditTimestamps();
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
@@ -32,6 +33,7 @@ public sealed class EastWestHubDbContext(DbContextOptions<EastWestHubDbContext> 
         bool acceptAllChangesOnSuccess,
         CancellationToken cancellationToken = default)
     {
+        ApplyCmsVersions();
         ApplyAuditTimestamps();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
@@ -39,6 +41,13 @@ public sealed class EastWestHubDbContext(DbContextOptions<EastWestHubDbContext> 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Service>().Property(x => x.Version).IsConcurrencyToken();
+        modelBuilder.Entity<PortfolioProject>().Property(x => x.Version).IsConcurrencyToken();
+        modelBuilder.Entity<Video>().Property(x => x.Version).IsConcurrencyToken();
+        modelBuilder.Entity<Article>().Property(x => x.Version).IsConcurrencyToken();
+        modelBuilder.Entity<Category>().Property(x => x.Version).IsConcurrencyToken();
+        modelBuilder.Entity<SiteSetting>().Property(x => x.Version).IsConcurrencyToken();
+
 
         modelBuilder.Entity<ApplicationUser>(entity =>
         {
@@ -184,6 +193,8 @@ public sealed class EastWestHubDbContext(DbContextOptions<EastWestHubDbContext> 
             entity.Property(x => x.FaviconUrl).HasMaxLength(2048);
             entity.Property(x => x.Email).HasMaxLength(320);
             entity.Property(x => x.Phone).HasMaxLength(40);
+            entity.Property(x => x.HeroMp4Url).HasMaxLength(2048);
+            entity.Property(x => x.HeroPosterImageUrl).HasMaxLength(2048);
             entity.Property(x => x.HeroYouTubeVideoId).HasMaxLength(11);
             entity.Property(x => x.YouTubeChannelId).HasMaxLength(80);
             entity.Property(x => x.DefaultSeoTitleEn).HasMaxLength(250);
@@ -203,6 +214,13 @@ public sealed class EastWestHubDbContext(DbContextOptions<EastWestHubDbContext> 
         });
     }
 
+    private void ApplyCmsVersions()
+    {
+        ChangeTracker.DetectChanges();
+        foreach (var entry in ChangeTracker.Entries<ICmsVersioned>())
+            if (entry.State is EntityState.Added or EntityState.Modified)
+                entry.Entity.Version = Guid.NewGuid();
+    }
     private void ApplyAuditTimestamps()
     {
         var now = DateTimeOffset.UtcNow;

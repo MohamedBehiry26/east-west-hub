@@ -15,7 +15,7 @@ public sealed class PublicContentReader(EastWestHubDbContext dbContext) : IPubli
             .Select(x => new
             {
                 x.AgencyNameEn, x.AgencyNameAr, x.AgencyDescriptionEn, x.AgencyDescriptionAr,
-                x.LogoUrl, x.FaviconUrl, x.Email, x.Phone, x.AddressEn, x.AddressAr, x.HeroYouTubeVideoId,
+                x.LogoUrl, x.FaviconUrl, x.Email, x.Phone, x.AddressEn, x.AddressAr, x.HeroYouTubeVideoId, x.HeroMp4Url, x.HeroPosterImageUrl,
                 SocialLinks = x.SocialLinks.Where(link => link.IsVisible).OrderBy(link => link.DisplayOrder)
                     .Select(link => new PublicSocialLink(link.Platform, link.Url)).ToList()
             })
@@ -25,7 +25,7 @@ public sealed class PublicContentReader(EastWestHubDbContext dbContext) : IPubli
             isArabic ? setting.AgencyNameAr : setting.AgencyNameEn,
             isArabic ? setting.AgencyDescriptionAr : setting.AgencyDescriptionEn,
             setting.LogoUrl, setting.FaviconUrl, setting.Email, setting.Phone,
-            isArabic ? setting.AddressAr : setting.AddressEn, setting.SocialLinks, setting.HeroYouTubeVideoId);
+            isArabic ? setting.AddressAr : setting.AddressEn, setting.SocialLinks, setting.HeroYouTubeVideoId, setting.HeroMp4Url, setting.HeroPosterImageUrl);
     }
 
     public async Task<IReadOnlyList<PublicCategory>> GetCategoriesAsync(bool isArabic, CancellationToken cancellationToken) =>
@@ -249,7 +249,7 @@ public sealed class PublicContentReader(EastWestHubDbContext dbContext) : IPubli
         var now = DateTimeOffset.UtcNow;
         var query = dbContext.Articles.AsNoTracking()
             .Where(x => x.IsPublished && x.PublishedAt != null && x.PublishedAt <= now)
-            .OrderByDescending(x => x.PublishedAt)
+            .OrderByDescending(x => x.PublishedAt).ThenBy(x => x.Id)
             .Select(ArticleProjection(isArabic));
         return await ToPageAsync(query, page, pageSize, cancellationToken);
     }

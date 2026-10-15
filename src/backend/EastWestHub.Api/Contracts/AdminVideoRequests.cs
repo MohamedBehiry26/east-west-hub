@@ -13,6 +13,7 @@ public sealed record SaveAdminCategoryRequest(
     [Url, StringLength(2048)] string? ImageUrl,
     int DisplayOrder, bool IsPublished)
 {
+    public Guid? ExpectedVersion { get; init; }
     public SaveAdminCategory ToModel() => new(NameEn, NameAr, SlugEn, SlugAr, DescriptionEn, DescriptionAr, ImageUrl, DisplayOrder, IsPublished);
 }
 
@@ -28,15 +29,16 @@ public sealed record SaveAdminVideoRequest(
     [Required, StringLength(180)] string SlugEn,
     [Required, StringLength(180)] string SlugAr,
     string? DescriptionEn, string? DescriptionAr,
-    [Url, StringLength(2048)] string? ThumbnailUrl,
+    [MediaImageUrl, StringLength(2048)] string? ThumbnailUrl,
     [Required] Guid CategoryId,
     bool IsFeatured, bool IsPublished, int DisplayOrder,
     [MaxLength(20)] IReadOnlyList<AdminVideoTagRequest>? Tags,
-    MediaContentType ContentType = MediaContentType.Video,
-    int? EpisodeNumber = null, int? SeasonNumber = null,
+    [EnumDataType(typeof(MediaContentType))] MediaContentType ContentType = MediaContentType.Video,
+    [Range(1, int.MaxValue)] int? EpisodeNumber = null, [Range(1, int.MaxValue)] int? SeasonNumber = null,
     [StringLength(160)] string? GuestNameEn = null, [StringLength(160)] string? GuestNameAr = null,
     [StringLength(250)] string? SeoTitleEn = null, [StringLength(250)] string? SeoTitleAr = null,
     [StringLength(500)] string? SeoDescriptionEn = null, [StringLength(500)] string? SeoDescriptionAr = null)
 {
+    public Guid? ExpectedVersion { get; init; }
     public SaveAdminVideo ToModel() => new(YouTubeUrl, TitleEn, TitleAr, SlugEn, SlugAr, DescriptionEn, DescriptionAr, ThumbnailUrl, CategoryId, IsFeatured, IsPublished, DisplayOrder, (Tags ?? []).Select(tag => tag.ToModel()).ToArray(), ContentType, EpisodeNumber, SeasonNumber, GuestNameEn, GuestNameAr, SeoTitleEn, SeoTitleAr, SeoDescriptionEn, SeoDescriptionAr);
 }

@@ -17,7 +17,7 @@ public sealed class AdminSiteSettingsController(IAdminSiteSettingsManager manage
     public async Task<ActionResult<AdminSiteSettingsContent>> Get(CancellationToken ct) =>
         Ok(await manager.GetAsync(ct) ?? new AdminSiteSettingsContent(
             "", "", null, null, null, null, null, null, null, null,
-            null, null, null, null, []));
+            null, null, null, null, [], Exists: false));
 
     [HttpPut]
     public async Task<ActionResult<AdminSiteSettingsContent>> Save(SaveAdminSiteSettingsRequest request, CancellationToken ct)

@@ -171,6 +171,7 @@ public sealed class PublicContentController(IPublicContentReader contentReader, 
     }
 
     [HttpGet("articles")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public async Task<ActionResult<PublicPage<PublicArticle>>> GetArticles(
         [FromQuery] string lang = "en", [FromQuery] int page = 1,
         [FromQuery] int pageSize = 12, CancellationToken cancellationToken = default)
@@ -181,6 +182,7 @@ public sealed class PublicContentController(IPublicContentReader contentReader, 
     }
 
     [HttpGet("articles/{slug}")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public async Task<ActionResult<PublicArticle>> GetArticle(
         string slug, [FromQuery] string lang = "en", CancellationToken cancellationToken = default)
     {

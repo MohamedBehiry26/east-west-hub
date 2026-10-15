@@ -1,7 +1,8 @@
 namespace EastWestHub.Domain.Entities;
 
-public sealed class PortfolioProject : AuditableEntity
+public sealed class PortfolioProject : AuditableEntity, ICmsVersioned
 {
+    public Guid Version { get; set; } = Guid.NewGuid();
     public Guid Id { get; set; }
     public required string TitleEn { get; set; }
     public required string TitleAr { get; set; }

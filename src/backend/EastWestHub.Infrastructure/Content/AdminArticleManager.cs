@@ -58,7 +58,8 @@ public sealed class AdminArticleManager(EastWestHubDbContext db) : IAdminArticle
         catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
         { throw new AdminArticleConflictException("An article already uses one of these slugs."); }
 
-        return await db.Articles.AsNoTracking().Where(x => x.Id == article.Id).Select(ToContent()).SingleAsync(ct);
+        article.Author = await db.ContentAuthors.SingleAsync(x => x.Id == article.AuthorId, ct);
+        return ToContent().Compile()(article);
     }
 
     public async Task<bool> DeleteArticleAsync(Guid id, CancellationToken ct)
@@ -72,5 +73,5 @@ public sealed class AdminArticleManager(EastWestHubDbContext db) : IAdminArticle
         x => new AdminArticleContent(x.Id, x.TitleEn, x.TitleAr, x.SlugEn, x.SlugAr,
             x.ExcerptEn, x.ExcerptAr, x.ContentEn, x.ContentAr, x.CoverImageUrl,
             x.AuthorId, x.Author.DisplayName, x.PublishedAt, x.IsPublished,
-            x.SeoTitleEn, x.SeoTitleAr, x.SeoDescriptionEn, x.SeoDescriptionAr);
+            x.SeoTitleEn, x.SeoTitleAr, x.SeoDescriptionEn, x.SeoDescriptionAr, x.Version);
 }

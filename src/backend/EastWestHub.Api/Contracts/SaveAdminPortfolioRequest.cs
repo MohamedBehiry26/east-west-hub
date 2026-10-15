@@ -5,6 +5,8 @@ namespace EastWestHub.Api.Contracts;
 
 public sealed class SaveAdminPortfolioRequest
 {
+    public Guid? ExpectedVersion { get; init; }
+    public bool CreateIfAbsent { get; init; }
     [Required, StringLength(200)] public string TitleEn { get; init; } = "";
     [Required, StringLength(200)] public string TitleAr { get; init; } = "";
     [Required, StringLength(180)] public string SlugEn { get; init; } = "";

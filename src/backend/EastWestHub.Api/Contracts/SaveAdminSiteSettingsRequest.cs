@@ -5,6 +5,8 @@ namespace EastWestHub.Api.Contracts;
 
 public sealed class SaveAdminSiteSettingsRequest
 {
+    public Guid? ExpectedVersion { get; init; }
+    public bool CreateIfAbsent { get; init; }
     [Required, StringLength(160)] public string AgencyNameEn { get; init; } = "";
     [Required, StringLength(160)] public string AgencyNameAr { get; init; } = "";
     [StringLength(2000)] public string? AgencyDescriptionEn { get; init; }
@@ -20,12 +22,14 @@ public sealed class SaveAdminSiteSettingsRequest
     [StringLength(500)] public string? DefaultSeoDescriptionEn { get; init; }
     [StringLength(500)] public string? DefaultSeoDescriptionAr { get; init; }
     [StringLength(2048)] public string? HeroVideoUrl { get; init; }
+    [StringLength(2048)] public string? HeroMp4Url { get; init; }
+    [StringLength(2048)] public string? HeroPosterImageUrl { get; init; }
     public List<SaveAdminSocialLinkRequest> SocialLinks { get; init; } = [];
 
     public SaveAdminSiteSettings ToModel() => new(AgencyNameEn.Trim(), AgencyNameAr.Trim(), AgencyDescriptionEn, AgencyDescriptionAr,
         LogoUrl, FaviconUrl, Email, Phone, AddressEn, AddressAr,
         DefaultSeoTitleEn, DefaultSeoTitleAr, DefaultSeoDescriptionEn, DefaultSeoDescriptionAr,
-        (SocialLinks ?? []).Select(x => new SaveAdminSocialLink(x.Platform, x.Url, x.DisplayOrder, x.IsVisible)).ToArray(), HeroVideoUrl);
+        (SocialLinks ?? []).Select(x => new SaveAdminSocialLink(x.Platform, x.Url, x.DisplayOrder, x.IsVisible)).ToArray(), HeroVideoUrl, HeroMp4Url, HeroPosterImageUrl);
 }
 
 public sealed class SaveAdminSocialLinkRequest

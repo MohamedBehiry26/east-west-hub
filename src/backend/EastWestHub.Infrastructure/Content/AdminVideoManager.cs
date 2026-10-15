@@ -73,8 +73,8 @@ public sealed class AdminVideoManager(EastWestHubDbContext db) : IAdminVideoMana
             entity.VideoTags.Add(new VideoTag { Video = entity, Tag = tag });
         if (id is null) db.Videos.Add(entity);
         await SaveAsync(ct);
-        var saved = await db.Videos.AsNoTracking().Include(x => x.Category).Include(x => x.VideoTags).ThenInclude(x => x.Tag).SingleAsync(x => x.Id == entity.Id, ct);
-        return ToVideo(saved);
+        entity.Category = await db.Categories.SingleAsync(x => x.Id == entity.CategoryId, ct);
+        return ToVideo(entity);
     }
 
     public async Task<bool> DeleteVideoAsync(Guid id, CancellationToken ct) { var entity = await db.Videos.SingleOrDefaultAsync(x => x.Id == id, ct); if (entity is null) return false; db.Videos.Remove(entity); await SaveAsync(ct); return true; }
@@ -96,7 +96,7 @@ public sealed class AdminVideoManager(EastWestHubDbContext db) : IAdminVideoMana
 
     private async Task SaveAsync(CancellationToken ct) { try { await db.SaveChangesAsync(ct); } catch (DbUpdateException exception) when (exception.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation }) { throw new VideoAdministrationConflictException("A video, category, or tag already uses one of these values."); } }
     private static string? NullIfWhiteSpace(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
-    private static AdminCategoryContent ToCategory(Category x) => new(x.Id, x.NameEn, x.NameAr, x.SlugEn, x.SlugAr, x.DescriptionEn, x.DescriptionAr, x.ImageUrl, x.DisplayOrder, x.IsPublished);
-    private static AdminVideoContent ToVideo(Video x) => new(x.Id, x.YouTubeVideoId, x.TitleEn, x.TitleAr, x.SlugEn, x.SlugAr, x.DescriptionEn, x.DescriptionAr, x.ThumbnailUrl, x.PublishedAt, x.Duration, x.CategoryId, x.Category.NameEn, x.Category.NameAr, x.IsFeatured, x.IsPublished, x.DisplayOrder, x.VideoTags.OrderBy(link => link.Tag.NameEn).Select(link => new AdminVideoTagInput(link.Tag.NameEn, link.Tag.NameAr)).ToArray(), x.ContentType, x.EpisodeNumber, x.SeasonNumber, x.GuestNameEn, x.GuestNameAr, x.SeoTitleEn, x.SeoTitleAr, x.SeoDescriptionEn, x.SeoDescriptionAr);
+    private static AdminCategoryContent ToCategory(Category x) => new(x.Id, x.NameEn, x.NameAr, x.SlugEn, x.SlugAr, x.DescriptionEn, x.DescriptionAr, x.ImageUrl, x.DisplayOrder, x.IsPublished, x.Version);
+    private static AdminVideoContent ToVideo(Video x) => new(x.Id, x.YouTubeVideoId, x.TitleEn, x.TitleAr, x.SlugEn, x.SlugAr, x.DescriptionEn, x.DescriptionAr, x.ThumbnailUrl, x.PublishedAt, x.Duration, x.CategoryId, x.Category.NameEn, x.Category.NameAr, x.IsFeatured, x.IsPublished, x.DisplayOrder, x.VideoTags.OrderBy(link => link.Tag.NameEn).Select(link => new AdminVideoTagInput(link.Tag.NameEn, link.Tag.NameAr)).ToArray(), x.ContentType, x.EpisodeNumber, x.SeasonNumber, x.GuestNameEn, x.GuestNameAr, x.SeoTitleEn, x.SeoTitleAr, x.SeoDescriptionEn, x.SeoDescriptionAr, x.Version);
     private static string ToSlug(string value) { var normalized = value.Normalize(NormalizationForm.FormD); var plain = new string(normalized.Where(c => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark).ToArray()).Normalize(NormalizationForm.FormC); var slug = Regex.Replace(plain.Trim().ToLowerInvariant(), @"[^\p{L}\p{Nd}]+", "-").Trim('-'); return string.IsNullOrWhiteSpace(slug) ? Guid.NewGuid().ToString("N") : slug.Length > 120 ? slug[..120].TrimEnd('-') : slug; }
 }

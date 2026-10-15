@@ -13,7 +13,7 @@ public sealed class AdminPortfolioManager(EastWestHubDbContext db) : IAdminPortf
             .Select(x => new AdminServiceContent(x.Id, x.TitleEn, x.TitleAr, x.SlugEn, x.SlugAr,
                 x.ShortDescriptionEn, x.ShortDescriptionAr, x.DescriptionEn, x.DescriptionAr,
                 x.FeaturesEn, x.FeaturesAr, x.ProcessEn, x.ProcessAr, x.ImageUrl,
-                x.DisplayOrder, x.IsPublished, x.SeoTitleEn, x.SeoTitleAr, x.SeoDescriptionEn, x.SeoDescriptionAr))
+                x.DisplayOrder, x.IsPublished, x.SeoTitleEn, x.SeoTitleAr, x.SeoDescriptionEn, x.SeoDescriptionAr, x.Version))
             .ToListAsync(cancellationToken);
 
     public async Task<AdminServiceContent?> SaveServiceAsync(Guid? id, SaveAdminService input, CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ public sealed class AdminPortfolioManager(EastWestHubDbContext db) : IAdminPortf
         entity.SeoDescriptionEn = input.SeoDescriptionEn; entity.SeoDescriptionAr = input.SeoDescriptionAr;
         if (id is null) db.Services.Add(entity);
         await SaveChangesAsync(cancellationToken);
-        return (await GetServicesAsync(cancellationToken)).Single(x => x.Id == entity.Id);
+        return new AdminServiceContent(entity.Id, entity.TitleEn, entity.TitleAr, entity.SlugEn, entity.SlugAr, entity.ShortDescriptionEn, entity.ShortDescriptionAr, entity.DescriptionEn, entity.DescriptionAr, entity.FeaturesEn, entity.FeaturesAr, entity.ProcessEn, entity.ProcessAr, entity.ImageUrl, entity.DisplayOrder, entity.IsPublished, entity.SeoTitleEn, entity.SeoTitleAr, entity.SeoDescriptionEn, entity.SeoDescriptionAr, entity.Version);
     }
 
     public async Task<bool> DeleteServiceAsync(Guid id, CancellationToken cancellationToken)
@@ -71,9 +71,7 @@ public sealed class AdminPortfolioManager(EastWestHubDbContext db) : IAdminPortf
         foreach (var service in services) entity.ServicesUsed.Add(new ServicePortfolioProject { Service = service });
         if (id is null) db.PortfolioProjects.Add(entity);
         await SaveChangesAsync(cancellationToken);
-        var saved = await db.PortfolioProjects.AsNoTracking().Include(x => x.Images).Include(x => x.ServicesUsed)
-            .SingleAsync(x => x.Id == entity.Id, cancellationToken);
-        return ToContent(saved);
+        return ToContent(entity);
     }
 
     public async Task<bool> DeletePortfolioAsync(Guid id, CancellationToken cancellationToken)
@@ -95,5 +93,5 @@ public sealed class AdminPortfolioManager(EastWestHubDbContext db) : IAdminPortf
         x.ChallengeEn, x.ChallengeAr, x.ApproachEn, x.ApproachAr, x.SolutionEn, x.SolutionAr, x.ResultsEn, x.ResultsAr, x.CoverImageUrl,
         x.ProjectDate, x.DisplayOrder, x.IsFeatured, x.IsPublished, x.SeoTitleEn, x.SeoTitleAr, x.SeoDescriptionEn, x.SeoDescriptionAr,
         x.Images.OrderBy(image => image.DisplayOrder).Select(image => new AdminPortfolioImageContent(image.Id, image.ImageUrl, image.AltTextEn, image.AltTextAr, image.DisplayOrder)).ToArray(),
-        x.ServicesUsed.Select(link => link.ServiceId).ToArray());
+        x.ServicesUsed.Select(link => link.ServiceId).ToArray(), x.Version);
 }

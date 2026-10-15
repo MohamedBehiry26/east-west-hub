@@ -5,7 +5,7 @@ public sealed record AdminServiceContent(
     string? ShortDescriptionEn, string? ShortDescriptionAr, string? DescriptionEn, string? DescriptionAr,
     string? FeaturesEn, string? FeaturesAr, string? ProcessEn, string? ProcessAr,
     string? ImageUrl, int DisplayOrder, bool IsPublished,
-    string? SeoTitleEn, string? SeoTitleAr, string? SeoDescriptionEn, string? SeoDescriptionAr);
+    string? SeoTitleEn, string? SeoTitleAr, string? SeoDescriptionEn, string? SeoDescriptionAr, Guid Version = default);
 
 public sealed record AdminPortfolioImageContent(
     Guid Id, string ImageUrl, string? AltTextEn, string? AltTextAr, int DisplayOrder);
@@ -16,7 +16,7 @@ public sealed record AdminPortfolioContent(
     string? SolutionEn, string? SolutionAr, string? ResultsEn, string? ResultsAr,
     string? CoverImageUrl, DateOnly? ProjectDate, int DisplayOrder, bool IsFeatured, bool IsPublished,
     string? SeoTitleEn, string? SeoTitleAr, string? SeoDescriptionEn, string? SeoDescriptionAr,
-    IReadOnlyList<AdminPortfolioImageContent> Images, IReadOnlyList<Guid> ServiceIds);
+    IReadOnlyList<AdminPortfolioImageContent> Images, IReadOnlyList<Guid> ServiceIds, Guid Version = default);
 
 public sealed record SaveAdminService(
     string TitleEn, string TitleAr, string SlugEn, string SlugAr,

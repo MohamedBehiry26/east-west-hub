@@ -1,7 +1,8 @@
 namespace EastWestHub.Domain.Entities;
 
-public sealed class Video : AuditableEntity
+public sealed class Video : AuditableEntity, ICmsVersioned
 {
+    public Guid Version { get; set; } = Guid.NewGuid();
     public Guid Id { get; set; }
     public string? YouTubeVideoId { get; set; }
     public string? YouTubeTitle { get; set; }

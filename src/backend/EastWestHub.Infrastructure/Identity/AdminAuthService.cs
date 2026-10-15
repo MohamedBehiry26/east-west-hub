@@ -6,7 +6,8 @@ namespace EastWestHub.Infrastructure.Identity;
 public sealed class AdminAuthService(
     SignInManager<ApplicationUser> signInManager,
     UserManager<ApplicationUser> userManager,
-    JwtTokenGenerator tokenGenerator) : IAdminAuthService
+    JwtTokenGenerator tokenGenerator,
+    SuperAdminAccount owner) : IAdminAuthService
 {
     public async Task<AdminLoginResult?> LoginAsync(string email, string password)
     {
@@ -29,6 +30,6 @@ public sealed class AdminAuthService(
         }
 
         var (token, expiresAt) = tokenGenerator.CreateToken(user, roles);
-        return new AdminLoginResult(token, expiresAt, user.Email!, user.DisplayName);
+        return new AdminLoginResult(token, expiresAt, user.Email!, user.DisplayName, await owner.CanManageAsync(userManager, user));
     }
 }

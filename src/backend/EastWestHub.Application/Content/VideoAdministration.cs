@@ -3,12 +3,12 @@ namespace EastWestHub.Application.Content;
 using EastWestHub.Domain.Entities;
 
 public sealed record SaveAdminCategory(string NameEn, string NameAr, string SlugEn, string SlugAr, string? DescriptionEn, string? DescriptionAr, string? ImageUrl, int DisplayOrder, bool IsPublished);
-public sealed record AdminCategoryContent(Guid Id, string NameEn, string NameAr, string SlugEn, string SlugAr, string? DescriptionEn, string? DescriptionAr, string? ImageUrl, int DisplayOrder, bool IsPublished);
+public sealed record AdminCategoryContent(Guid Id, string NameEn, string NameAr, string SlugEn, string SlugAr, string? DescriptionEn, string? DescriptionAr, string? ImageUrl, int DisplayOrder, bool IsPublished, Guid Version = default);
 public sealed record AdminVideoTagInput(string NameEn, string NameAr);
 public sealed record SaveAdminVideo(string? YouTubeUrl, string TitleEn, string TitleAr, string SlugEn, string SlugAr, string? DescriptionEn, string? DescriptionAr, string? ThumbnailUrl, Guid CategoryId, bool IsFeatured, bool IsPublished, int DisplayOrder, IReadOnlyList<AdminVideoTagInput> Tags,
     MediaContentType ContentType = MediaContentType.Video, int? EpisodeNumber = null, int? SeasonNumber = null, string? GuestNameEn = null, string? GuestNameAr = null, string? SeoTitleEn = null, string? SeoTitleAr = null, string? SeoDescriptionEn = null, string? SeoDescriptionAr = null);
 public sealed record AdminVideoContent(Guid Id, string? YouTubeVideoId, string TitleEn, string TitleAr, string SlugEn, string SlugAr, string? DescriptionEn, string? DescriptionAr, string? ThumbnailUrl, DateTimeOffset? PublishedAt, TimeSpan? Duration, Guid CategoryId, string CategoryNameEn, string CategoryNameAr, bool IsFeatured, bool IsPublished, int DisplayOrder, IReadOnlyList<AdminVideoTagInput> Tags,
-    MediaContentType ContentType = MediaContentType.Video, int? EpisodeNumber = null, int? SeasonNumber = null, string? GuestNameEn = null, string? GuestNameAr = null, string? SeoTitleEn = null, string? SeoTitleAr = null, string? SeoDescriptionEn = null, string? SeoDescriptionAr = null);
+    MediaContentType ContentType = MediaContentType.Video, int? EpisodeNumber = null, int? SeasonNumber = null, string? GuestNameEn = null, string? GuestNameAr = null, string? SeoTitleEn = null, string? SeoTitleAr = null, string? SeoDescriptionEn = null, string? SeoDescriptionAr = null, Guid Version = default);
 
 public interface IAdminVideoManager
 {
