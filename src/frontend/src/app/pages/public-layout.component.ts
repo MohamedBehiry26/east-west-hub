@@ -5,6 +5,7 @@ import { PublicSiteSettings } from '../core/public-content.models';
 import { Component, DestroyRef, ElementRef, HostListener, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet, ActivatedRoute } from '@angular/router';
 import { AlternateRouteService } from '../core/alternate-route.service';
+import { alternateQuery } from '../core/public-query-state';
 import enResources from '../../assets/i18n/en.json';
 import arResources from '../../assets/i18n/ar.json';
 
@@ -37,9 +38,11 @@ export class PublicLayoutComponent implements OnInit {
   get alternateLocale(): Locale { return this.locale === 'en' ? 'ar' : 'en'; }
   get alternateUrl(): string {
     const override = this.alternateRoute.url();
-    if (override) return override;
-    const current = this.router.url.split(/[?#]/, 1)[0];
-    return current.replace(/^\/(en|ar)(?=\/|$)/, `/${this.alternateLocale}`);
+    return override ?? this.router.url.split(/[?#]/, 1)[0].replace(/^\/(en|ar)(?=\/|$)/, `/${this.alternateLocale}`);
+  }
+  get alternateQueryParams(): Record<string, string> {
+    return alternateQuery(this.alternateUrl, this.router.parseUrl(this.router.url).queryParams,
+      this.alternateRoute.categories?.() ?? [], this.alternateRoute.tags?.() ?? []);
   }
   get navItems() { return [
     { path: '', label: this.copy.home }, { path: 'watch', label: this.copy.watch },

@@ -1,0 +1,42 @@
+:host { display: block; }
+.ewh-cinema { position: relative; isolation: isolate; display: flex; flex-direction: column; justify-content: center; min-block-size: 100vh; min-block-size: 100svh; overflow: clip; background: #080807; color: #faf6f1; padding-block: clamp(8rem, 16vh, 12rem) 7rem; box-sizing: border-box; }
+.ewh-cinema__backdrop,.ewh-cinema__overlay { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.ewh-cinema__backdrop { background: #15110e; }
+.ewh-cinema__poster,.ewh-cinema__video { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 50% 45%; }
+.ewh-cinema__video { opacity: 0; transition: opacity 800ms ease; }
+.ewh-cinema__video.is-ready { opacity: 1; }
+.ewh-cinema__overlay { background: linear-gradient(var(--cinema-gradient,90deg),rgba(4,4,4,.83),rgba(4,4,4,.47) 66%,rgba(4,4,4,.4)),linear-gradient(180deg,rgba(0,0,0,.55),transparent 35%,rgba(0,0,0,.2) 65%,#080807); }
+.ewh-cinema[dir=rtl] { --cinema-gradient: 270deg; }
+.ewh-cinema__content { animation: cinema-arrive 900ms ease both; }
+.ewh-cinema__eyebrow { display: flex; align-items: center; flex-wrap: wrap; gap: .8rem; font-size: .7rem; letter-spacing: .16em; color: #deb18e; margin-block-end: 2rem; }
+.ewh-cinema__eyebrow > span:first-child { inline-size: 2.5rem; block-size: 1px; background: #d4a077; }
+.ewh-cinema h1 { max-inline-size: 15ch; margin: 0; font-size: clamp(2.8rem,5.8vw,6.5rem); font-weight: 500; line-height: 1.06; letter-spacing: -.045em; }
+.ewh-cinema[dir=rtl] h1 { max-inline-size: 20ch; line-height: 1.35; letter-spacing: 0; }
+.ewh-cinema__description { max-inline-size: 53ch; margin-block: 1.8rem 2.5rem; color: #e0d8cf; font-size: clamp(1rem,1.2vw,1.2rem); line-height: 1.8; }
+.ewh-cinema__actions { display: flex; flex-wrap: wrap; gap: .9rem; align-items: center; }
+.ewh-cinema__actions a { display: inline-flex; justify-content: center; align-items: center; gap: 1.5rem; min-block-size: 52px; padding: .9rem 1.5rem; font-size: .9rem; border: 1px solid #ffffff60; transition: background 180ms,color 180ms,border-color 180ms; }
+.ewh-cinema__actions .ewh-cinema__primary { background: #d4a077; border-color: #d4a077; color: #17120e; }
+.ewh-cinema__actions .ewh-cinema__secondary { color: #fff; background: #0a090850; }
+.ewh-cinema__actions a:hover { background: #ecc29f; color: #17120e; border-color: #ecc29f; }
+.ewh-cinema a:focus-visible,.ewh-cinema button:focus-visible { outline: 2px solid #ecc29f; outline-offset: 6px; }
+.ewh-cinema[dir=rtl] .ewh-cinema__actions a span { transform: scaleX(-1); }
+.ewh-cinema__footer { position: absolute; inset-block-end: 1.6rem; inset-inline: 0; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.ewh-cinema__footer .scroll-cue { display: inline-flex; gap: .8rem; align-items: center; min-block-size: 44px; color: #e3d7c9; font-size: .75rem; }
+.ewh-cinema__media-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: .75rem; }
+.ewh-cinema__media-actions button { display: inline-flex; align-items: center; gap: .7rem; min-block-size: 44px; padding: .6rem .9rem; color: #e3d7c9; border: 1px solid #d4a07770; background: #08080770; cursor: pointer; }
+@keyframes cinema-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media(max-width:767px) {
+ .ewh-cinema { padding-block: 8.5rem 8rem; }
+ .ewh-cinema h1 { font-size: clamp(2.4rem,8.4vw,4rem); max-inline-size: 17ch; }
+ .ewh-cinema[dir=rtl] h1 { font-size: clamp(2.2rem,8vw,3.6rem); }
+ .ewh-cinema__description { font-size: 1rem; margin-block: 1.4rem 2rem; }
+ .ewh-cinema__poster,.ewh-cinema__video { object-position: 55% 50%; }
+ .ewh-cinema__overlay { background: linear-gradient(180deg,#050505b0,#0505058f 40%,#050505d9 75%,#080807); }
+ .ewh-cinema__eyebrow { gap: .65rem; margin-block-end: 1.5rem; }
+ .ewh-cinema__footer { flex-wrap: wrap; inset-block-end: 1.2rem; }
+ .ewh-cinema__footer .scroll-cue { display: none; }
+ .ewh-cinema__actions a { flex: 1 1 12rem; }
+ .ewh-cinema__media-actions { justify-content: space-between; inline-size: 100%; }
+ .ewh-cinema__media-actions button > span:last-child { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+@media(prefers-reduced-motion:reduce) { .ewh-cinema__content { animation: none; } .ewh-cinema__video,.ewh-cinema__actions a { transition: none; } }

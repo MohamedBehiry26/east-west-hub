@@ -1,3 +1,4 @@
+import { AdminFieldFeedbackDirective } from './admin-field-feedback.directive';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminTextPipe } from '../core/admin-text.pipe';
@@ -8,11 +9,12 @@ import { AdminLocaleService } from '../core/admin-locale.service';
 
 @Component({
   standalone: true,
-  imports: [FormsModule, RouterLink, AdminTextPipe],
+  imports: [AdminFieldFeedbackDirective, FormsModule, RouterLink, AdminTextPipe],
   templateUrl: './login.page.html',
   styleUrl: './login.page.css'
 })
 export class LoginPage {
+  readonly fieldValidation = () => ({...(!this.email.trim()?{email:['required']}:!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim())?{email:['email']} :{}),...(!this.password?{password:['required']}: {})});
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);

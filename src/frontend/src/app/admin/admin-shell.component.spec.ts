@@ -18,7 +18,7 @@ describe('AdminShellComponent navigation', () => {
           { path: 'admin', component: DestinationPage },
           { path: 'admin/:module', component: DestinationPage }
         ]),
-        { provide: AuthService, useValue: { currentUser: () => null, logout: vi.fn() } },
+        { provide: AuthService, useValue: { currentUser: () => ({ canManageAccounts: true }), logout: vi.fn() } },
         { provide: AdminLocaleService, useValue: { locale, set: vi.fn(), text: (key: string) => key } }
       ]
     });
@@ -26,6 +26,8 @@ describe('AdminShellComponent navigation', () => {
     const fixture = TestBed.createComponent(AdminShellComponent);
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('.cms-brand strong')?.textContent).toBe('EW↔');
+    expect(host.querySelector('.cms-brand img')).toBeNull();
     const router = TestBed.inject(Router);
     const destinations = [
       ['Overview', '/admin'], ['Media', '/admin/videos'], ['Podcasts', '/admin/podcasts'],
@@ -46,3 +48,8 @@ describe('AdminShellComponent navigation', () => {
   });
 });
 
+
+it('hides account management from regular admins even when their email matches the owner',()=>{
+ TestBed.configureTestingModule({providers:[provideRouter([]),{provide:AuthService,useValue:{currentUser:()=>({email:'admin@gmail.com',canManageAccounts:false}),logout:vi.fn()}}]});
+ const f=TestBed.createComponent(AdminShellComponent);f.detectChanges();expect(f.componentInstance.links.some(link=>link.path==='/admin/accounts')).toBe(false);
+});

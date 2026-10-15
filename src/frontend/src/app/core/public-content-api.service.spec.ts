@@ -14,6 +14,13 @@ describe('public content API', () => {
   });
 
   afterEach(() => http.verify());
+  it('refetches articles in both locales after an initially empty listing', () => {
+    for (const lang of ['ar','en']) {
+      api.getArticles(lang).subscribe();http.expectOne(req => req.url.endsWith('/articles')).flush({items:[],totalCount:0});
+      let count=0;api.getArticles(lang).subscribe(page => count=page.totalCount);
+      const request=http.expectOne(req => req.url.endsWith('/articles'));expect(request.request.params.get('lang')).toBe(lang);request.flush({items:[{id:'published'}],totalCount:1});expect(count).toBe(1);
+    }
+  });
 
   it('sends localized search and pagination parameters and reuses cached results', () => {
     let firstTotal = -1;

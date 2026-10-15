@@ -37,6 +37,7 @@ export const onRequest = async ({ request, env, next }: SecurityMiddlewareContex
       "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: https:",
       `connect-src ${[...connectSources].join(' ')}`,
+      "media-src 'self' https:",
       'frame-src https://www.youtube-nocookie.com',
       'upgrade-insecure-requests'
     ].join('; ')

@@ -1,16 +1,19 @@
+import { AboutExperienceComponent } from './about-experience.component';
+import { ContactExperienceComponent } from './contact-experience.component';
 import { ContentBodyComponent } from '../shared/content-body.component';
 import { MediaDepthDirective } from '../shared/media-depth.directive';
 import { RevealDirective } from '../shared/reveal.directive';
 import { ImageFallbackDirective } from '../shared/image-fallback.directive';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, isDevMode, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { catchError, distinctUntilChanged, map, Observable, of, Subscription, switchMap } from 'rxjs';
+import { catchError, finalize, distinctUntilChanged, map, Observable, of, Subscription, switchMap } from 'rxjs';
 import { PublicContentApi } from '../core/public-content-api.service';
 import { PublicArticle, PublicCategory, PublicPortfolioProject, PublicService, PublicSiteSettings, PublicVideo } from '../core/public-content.models';
+import { publicQuery, syncPublicQuery } from '../core/public-query-state';
 import { AlternateRouteService } from '../core/alternate-route.service';
 import { SeoMetadataService } from '../core/seo-metadata.service';
 import enResources from '../../assets/i18n/en.json';
@@ -30,6 +33,7 @@ const labels = { en: enResources.publicContentPages, ar: arResources.publicConte
   templateUrl: './content-list.page.html'
 })
 export class ContentListPage implements OnInit {
+  private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly api = inject(PublicContentApi);
   private readonly seo = inject(SeoMetadataService);
@@ -50,7 +54,14 @@ export class ContentListPage implements OnInit {
   ngOnInit(): void {
     this.alternateRoute.set(null);
     this.seo.update(this.locale, `/${this.locale}/${this.section}`, `${this.pageCopy.title} | East West Hub`, this.pageCopy.intro);
-    this.load();
+    const restore = () => {
+      const map = this.route.snapshot.queryParamMap;
+      const params = publicQuery('/' + this.locale + '/' + this.section, Object.fromEntries(map.keys.map(key => [key, map.getAll(key).length > 1 ? map.getAll(key) : map.get(key)])));
+      this.search = params['q'] ?? '';
+      this.load(Number(params['page'] ?? 1));
+    };
+    if (this.route.queryParamMap) this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(restore);
+    else restore();
   }
 
   readonly page = signal(1);
@@ -63,6 +74,8 @@ export class ContentListPage implements OnInit {
   formatDate(value: string): string { return new Intl.DateTimeFormat(this.locale === 'ar' ? 'ar-EG' : 'en-US', { dateStyle: 'medium' }).format(new Date(value)); }
 
   load(page = 1): void {
+    const params = publicQuery('/' + this.locale + '/' + this.section, { q: this.search, page });
+    if (syncPublicQuery(this.router, this.route, params)) return;
     this.request?.unsubscribe();
     this.page.set(page); this.loading.set(true); this.failed.set(false);
     const category = this.route.snapshot.queryParamMap.get('category') ?? undefined;
@@ -289,37 +302,23 @@ export class ContentDetailPage implements OnInit {
 
 @Component({
   standalone: true,
-  imports: [FormsModule, RouterLink, RevealDirective, ImageFallbackDirective],
+  imports: [RevealDirective, ContactExperienceComponent, AboutExperienceComponent],
   template: `
+    @if (kind === 'about') {
+      <ew-about-experience [locale]="locale" [settings]="settings()" />
+    } @else {
     <div class="info-page-shell" [attr.data-kind]="kind">
     <section ewReveal class="info-page mx-auto" [attr.data-kind]="kind">
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--ew-accent)]">EAST WEST HUB</p>
-      <h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">{{ kind === 'about' ? text.aboutTitle : text.contactTitle }}</h1>
-      <p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300">{{ kind === 'about' ? (settings()?.agencyDescription || text.aboutBody) : text.contactBody }}</p>
+      <h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">{{ text.contactTitle }}</h1>
+      <p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300">{{ text.contactBody }}</p>
 
-      @if (kind === 'about') {<div class="info-visual"><figure><img ewImage src="/assets/demo/east-west-studio.svg" [alt]="design.productionVisualAlt" width="1200" height="1400" loading="lazy" /></figure><div><h2>{{ design.processTitle }}</h2><p class="mt-5 leading-8 text-[#9a9a9a]">{{ design.processIntro }}</p><ol class="process-list">@for (step of design.processSteps; track step) {<li>{{ step }}</li>}</ol><a [routerLink]="'/' + locale + '/services'" class="ew-link mt-5">{{ text.capabilities }} <span class="directional-icon" aria-hidden="true">↗</span></a></div></div>}
       @if (kind === 'contact') {
-        <div class="contact-form">
-          <label class="block text-sm text-slate-300">{{ text.projectType }}
-            <select [(ngModel)]="projectType" name="projectType" class="mt-2 w-full rounded-sm border border-white/15 bg-[#111111] px-4 py-3 text-white">
-              @for (option of text.projectTypes; track option.value) { <option [value]="option.value">{{ option.label }}</option> }
-            </select>
-          </label>
-          @if (settings()?.email; as email) { <a [href]="projectEmailLink(email)" class="mt-4 inline-flex rounded-full bg-[var(--ew-accent)] px-5 py-3 text-sm font-semibold text-[#050505]">{{ text.sendProjectBrief }} <span class="directional-icon" aria-hidden="true">↗</span></a> }
-        </div>
-        @if (settings(); as site) {
-          <div class="contact-details mt-10 grid gap-4 sm:grid-cols-2">
-            @if (site.email) { <a [href]="'mailto:' + site.email" class="rounded-sm border border-white/10 bg-white/[0.03] p-6 hover:border-[var(--ew-accent)]/40"><span class="block text-xs text-[#9a9a9a]">{{ text.contactEmail }}</span><span class="mt-2 block break-all font-medium">{{ site.email }}</span></a> }
-            @if (site.phone) { <a [href]="'tel:' + site.phone" class="rounded-sm border border-white/10 bg-white/[0.03] p-6 hover:border-[var(--ew-accent)]/40"><span class="block text-xs text-[#9a9a9a]">{{ text.phone }}</span><span class="mt-2 block font-medium">{{ site.phone }}</span></a> }
-            @if (site.address) { <div class="rounded-sm border border-white/10 bg-white/[0.03] p-6"><span class="block text-xs text-[#9a9a9a]">{{ text.address }}</span><span class="mt-2 block font-medium">{{ site.address }}</span></div> }
-            @for (link of site.socialLinks; track link.platform) { <a [href]="link.url" target="_blank" rel="noopener noreferrer" class="rounded-sm border border-white/10 bg-white/[0.03] p-6 hover:border-[var(--ew-accent)]/40"><span class="block text-xs text-[#9a9a9a]">{{ text.social }}</span><span class="mt-2 block font-medium">{{ link.platform }} <span class="directional-icon" aria-hidden="true">↗</span></span></a> }
-          </div>
-        } @else {
-          <p class="mt-10 rounded-sm border border-white/10 bg-white/[0.03] p-6 text-[#9a9a9a]">{{ text.noContact }}</p>
-        }
+        <ew-contact-experience [locale]="locale" [settings]="settings()" [loading]="settingsLoading()" [loadError]="settingsError()" (retry)="loadSettings()" />
       }
     </section>
     </div>
+    }
   `
 })
 export class PublicInfoPage implements OnInit {
@@ -330,20 +329,32 @@ export class PublicInfoPage implements OnInit {
   readonly kind = this.route.snapshot.data['kind'] as 'about' | 'contact';
   readonly text = labels[this.locale];
   readonly settings = signal<PublicSiteSettings | null>(null);
-  projectType = 'content-production';
+  private readonly destroyRef = inject(DestroyRef);
+  readonly settingsLoading = signal(false);
+  readonly settingsError = signal(false);
   get design() { return (this.locale === 'ar' ? arResources : enResources).publicDesign; }
-
-  projectEmailLink(email: string): string {
-    const option = this.text.projectTypes.find(item => item.value === this.projectType);
-    const subject = this.locale === 'ar' ? 'استفسار عن مشروع — ' : 'Project enquiry — ';
-    const body = this.locale === 'ar' ? 'نوع المشروع: ' : 'Project type: ';
-    return `mailto:${email}?subject=${encodeURIComponent(subject + (option?.label ?? ''))}&body=${encodeURIComponent(body + (option?.label ?? ''))}`;
-  }
 
   ngOnInit(): void {
     const title = this.kind === 'about' ? this.text.aboutTitle : this.text.contactTitle;
     this.seo.update(this.locale, `/${this.locale}/${this.kind}`, `${title} | East West Hub`, this.kind === 'about' ? this.text.aboutBody : this.text.contactBody);
-    this.api.getSiteSettings(this.locale).pipe(catchError(() => of(null)))
-      .subscribe((settings) => this.settings.set(settings));
+    this.loadSettings();
+  }
+
+  loadSettings(): void {
+    if (this.settingsLoading()) return;
+    this.settingsLoading.set(true);
+    this.settingsError.set(false);
+    this.api.getSiteSettings(this.locale).pipe(
+      catchError(error => {
+        this.settingsError.set(true);
+        // Keep the failing request visible in DevTools without rendering server details or logging response bodies.
+        if (this.kind === 'contact' && isDevMode()) console.warn('[Contact] Site settings request failed.', {
+          status: error instanceof HttpErrorResponse ? error.status : undefined
+        });
+        return of(null);
+      }),
+      finalize(() => this.settingsLoading.set(false)),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(settings => this.settings.set(settings));
   }
 }

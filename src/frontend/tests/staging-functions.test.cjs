@@ -1,4 +1,4 @@
-const {test}=require('node:test');
+﻿const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const path=require('node:path');
 const output=process.env.STAGING_FUNCTIONS_BUILD;
@@ -69,3 +69,17 @@ test('staging returns noindex headers and robots disallow, while non-staging ret
   assert.match(await robots({request,env:{STAGING_NOINDEX:'false'}}).text(),/Sitemap:/);
 });
 
+
+test('CSP permits secure native Hero media without relaxing scripts or frame policy',async()=>{
+  const response=await middleware({request:new Request('https://preview.example.test/en'),env:{},next:async()=>new Response('site')});
+  const policy=response.headers.get('content-security-policy');assert.match(policy,/media-src 'self' https:/);assert.match(policy,/script-src 'self';/);assert.match(policy,/frame-src https:\/\/www.youtube-nocookie.com/);
+});
+
+test('concurrency preconditions and typed 409/428 problems survive the API proxy',async()=>{
+ const original=global.fetch;const version='a1111111-1111-4111-8111-111111111111';
+ try{for(const method of ['PUT','DELETE'])for(const status of [409,428]){
+  const suffix=method==='DELETE'?`?expectedVersion=${version}`:'';
+  global.fetch=async(url,options)=>{assert.equal(url.href,'https://api.example.test/api/admin/videos/id'+suffix);if(method==='PUT')assert.deepEqual(JSON.parse(new TextDecoder().decode(options.body)),{expectedVersion:version});return new Response(JSON.stringify({code:status===409?'cms_concurrency_conflict':'cms_version_required'}),{status,headers:{'Content-Type':'application/problem+json'}});};
+  const response=await proxy({env,request:new Request('https://preview.example.test/api/admin/videos/id'+suffix,{method,headers:{'Content-Type':'application/json'},...(method==='PUT'?{body:JSON.stringify({expectedVersion:version})}:{})})});assert.equal(response.status,status);assert.equal(response.headers.get('Content-Type'),'application/problem+json');assert.equal((await response.json()).code,status===409?'cms_concurrency_conflict':'cms_version_required');
+ }}finally{global.fetch=original;}
+});

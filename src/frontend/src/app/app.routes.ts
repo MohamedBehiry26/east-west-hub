@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth.guard';
+import { authGuard, superAdminGuard } from './core/auth.guard';
 import { PublicLayoutComponent } from './pages/public-layout.component';
 
 const publicLocaleRoutes = (locale: 'en' | 'ar'): Routes => [{
@@ -45,7 +45,7 @@ export const routes: Routes = [
       { path: 'services', loadComponent: () => import('./admin/admin-content.pages').then((m) => m.AdminServicesPage) },
       { path: 'portfolio', loadComponent: () => import('./admin/admin-content.pages').then((m) => m.AdminPortfolioPage) },
       { path: 'articles', loadComponent: () => import('./admin/admin-content.pages').then((m) => m.AdminArticlesPage) },
-      { path: 'accounts', loadComponent: () => import('./admin/admin-accounts.page').then(m => m.AdminAccountsPage) },
+      { path: 'accounts', canActivate: [superAdminGuard], loadComponent: () => import('./admin/admin-accounts.page').then(m => m.AdminAccountsPage) },
       { path: 'settings', loadComponent: () => import('./admin/admin-settings.page').then((m) => m.AdminSettingsPage) },
       { path: 'videos', loadComponent: () => import('./admin/admin-video.pages').then((m) => m.AdminVideosPage) },
       { path: 'podcasts', data: { mediaKind: 'podcast' }, loadComponent: () => import('./admin/admin-video.pages').then((m) => m.AdminVideosPage) },

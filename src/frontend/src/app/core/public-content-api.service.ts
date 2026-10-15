@@ -89,10 +89,10 @@ export class PublicContentApi {
   }
 
   getArticles(lang: string, page = 1, pageSize = 50) {
-    return this.cached(`articles:${lang}:${page}:${pageSize}`, () => this.http.get<PublicPage<PublicArticle>>(`${this.baseUrl}/articles`, { params: { lang, page, pageSize } }));
+    return this.http.get<PublicPage<PublicArticle>>(`${this.baseUrl}/articles`, { params: { lang, page, pageSize } });
   }
 
   getArticle(lang: string, slug: string) {
-    return this.cached(`article:${lang}:${slug}`, () => this.http.get<PublicArticle>(`${this.baseUrl}/articles/${encodeURIComponent(slug)}`, { params: { lang } }));
+    return this.http.get<PublicArticle>(`${this.baseUrl}/articles/${encodeURIComponent(slug)}`, { params: { lang } });
   }
 }

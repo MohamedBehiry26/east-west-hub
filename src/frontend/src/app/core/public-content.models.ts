@@ -96,6 +96,8 @@ export interface PublicArticle {
 }
 
 export interface PublicSiteSettings {
+  heroMp4Url?: string | null;
+  heroPosterImageUrl?: string | null;
   heroYouTubeVideoId?: string | null;
   agencyName: string;
   agencyDescription: string | null;

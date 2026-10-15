@@ -9,6 +9,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly session = signal<AdminLoginResponse | null>(null);
   readonly currentUser = computed(() => this.hasSession() ? this.session()?.user ?? null : null);
+  canManageAccounts(): boolean { return this.currentUser()?.canManageAccounts === true; }
 
   isAuthenticated(): boolean {
     return this.hasSession();

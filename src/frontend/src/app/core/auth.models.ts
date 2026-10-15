@@ -5,6 +5,7 @@ export interface AdminLoginResponse {
   user: {
     email: string;
     displayName: string;
+    canManageAccounts?: boolean;
   };
 }
 

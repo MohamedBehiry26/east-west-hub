@@ -1,4 +1,4 @@
-interface ApiProxyContext { request: Request; env: { API_BASE_URL?: string }; }
+﻿interface ApiProxyContext { request: Request; env: { API_BASE_URL?: string }; }
 
 const MAX_BODY = 1_048_576;
 const METHODS = new Set(['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']);

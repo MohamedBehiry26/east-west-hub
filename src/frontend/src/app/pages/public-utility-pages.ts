@@ -3,7 +3,7 @@ import { ImageFallbackDirective } from '../shared/image-fallback.directive';
 import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable, catchError, distinctUntilChanged, expand, forkJoin, map, of, reduce, Subscription, timer } from 'rxjs';
 import { PublicContentApi } from '../core/public-content-api.service';
 import enResources from '../../assets/i18n/en.json';
@@ -12,6 +12,7 @@ type PublicUiKey = keyof typeof enResources.publicUtility;
 type PublicMetaKey = keyof typeof enResources.publicMeta;
 import { PublicArticle, PublicCategory, PublicPage, PublicPortfolioProject, PublicService, PublicTag, PublicVideo } from '../core/public-content.models';
 import { SeoMetadataService } from '../core/seo-metadata.service';
+import { publicQuery, syncPublicQuery } from '../core/public-query-state';
 import { AlternateRouteService } from '../core/alternate-route.service';
 
 type Locale = 'en' | 'ar';
@@ -55,6 +56,8 @@ function loadEveryPage<T>(load: (page: number) => Observable<PublicPage<T>>): Ob
   `
 })
 export class VideoListPage implements OnInit {
+  private readonly router = inject(Router);
+  private readonly alternateRoute = inject(AlternateRouteService);
   private readonly route = inject(ActivatedRoute);
   private readonly api = inject(PublicContentApi);
   private readonly seo = inject(SeoMetadataService);
@@ -85,11 +88,21 @@ export class VideoListPage implements OnInit {
     document.documentElement.lang = this.locale; document.documentElement.dir = this.locale === 'ar' ? 'rtl' : 'ltr';
     this.seo.update(this.locale, `/${this.locale}/watch`, `${this.metaText('videoTitle')} | East West Hub`, this.metaText('videoDescription'));
     this.category = this.route.snapshot.queryParamMap.get('category') ?? '';
-    this.api.getCategories(this.locale).pipe(catchError(() => of([] as PublicCategory[]))).subscribe(items => this.categories.set(items));
-    this.api.getTags(this.locale).pipe(catchError(() => of([] as PublicTag[]))).subscribe(items => this.tags.set(items));
-    this.load(1);
+    this.api.getCategories(this.locale).pipe(catchError(() => of([] as PublicCategory[]))).subscribe(items => { this.categories.set(items); this.alternateRoute.categories?.set(items); });
+    this.api.getTags(this.locale).pipe(catchError(() => of([] as PublicTag[]))).subscribe(items => { this.tags.set(items); this.alternateRoute.tags?.set(items); });
+    const restore = () => {
+      const map = this.route.snapshot.queryParamMap;
+      const params = publicQuery('/' + this.locale + '/watch', Object.fromEntries(map.keys.map(key => [key, map.getAll(key).length > 1 ? map.getAll(key) : map.get(key)])));
+      this.search = params['q'] ?? ''; this.category = params['category'] ?? ''; this.tag = params['tag'] ?? '';
+      this.order = params['order'] ?? 'featured'; this.featured = params['featured'] === 'true';
+      this.load(Number(params['page'] ?? 1));
+    };
+    if (this.route.queryParamMap) this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(restore);
+    else restore();
   }
   load(page: number): void {
+    const params = publicQuery('/' + this.locale + '/watch', { q: this.search, category: this.category, tag: this.tag, order: this.order, featured: this.featured ? 'true' : '', page });
+    if (syncPublicQuery(this.router, this.route, params)) return;
     this.searchDelay?.unsubscribe();
     this.request?.unsubscribe();
     this.page.set(page); this.loading.set(true); this.error.set(false);
@@ -108,7 +121,7 @@ export class VideoListPage implements OnInit {
       <h1 class="section-title">{{ t('text22') }}</h1>
       <label class="mt-8 flex max-w-3xl items-center gap-3 rounded-sm border border-white/15 bg-white/[.04] px-5 py-4 focus-within:border-[var(--ew-accent)]/60">
         <span aria-hidden="true" class="text-xl text-[var(--ew-accent)]">⌕</span>
-        <input [ngModel]="query()" (ngModelChange)="query.set($event)" type="search" class="w-full bg-transparent text-base outline-none placeholder:text-[#9a9a9a]" [placeholder]="t('text23')" [attr.aria-label]="t('text24')" />
+        <input [ngModel]="query()" (ngModelChange)="queryChanged($event)" type="search" class="w-full bg-transparent text-base outline-none placeholder:text-[#9a9a9a]" [placeholder]="t('text23')" [attr.aria-label]="t('text24')" />
       </label>
       @if (loading()) { <p class="py-16 text-[#9a9a9a]" role="status">{{ t('text25') }}</p> }
       @else if (query().trim() && results().length === 0) { <p class="py-16 text-[#9a9a9a]">{{ t('text26') }}</p> }
@@ -127,6 +140,12 @@ export class VideoListPage implements OnInit {
   `
 })
 export class SearchPage implements OnInit {
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+  queryChanged(value: string): void {
+    this.query.set(value);
+    syncPublicQuery(this.router, this.route, publicQuery('/' + this.locale + '/search', { q: value }));
+  }
   private readonly route = inject(ActivatedRoute);
   private readonly api = inject(PublicContentApi);
   private readonly seo = inject(SeoMetadataService);
@@ -146,6 +165,12 @@ export class SearchPage implements OnInit {
     document.documentElement.lang = this.locale;
     document.documentElement.dir = this.locale === 'ar' ? 'rtl' : 'ltr';
     this.seo.update(this.locale, `/${this.locale}/search`, `${this.metaText('searchTitle')} | East West Hub`, this.metaText('searchDescription'));
+    const restore = () => {
+      const map = this.route.snapshot.queryParamMap;
+      this.query.set(publicQuery('/' + this.locale + '/search', Object.fromEntries(map.keys.map(key => [key, map.getAll(key).length > 1 ? map.getAll(key) : map.get(key)])))['q'] ?? '');
+    };
+    if (this.route.queryParamMap) this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(restore);
+    else restore();
     const other: Locale = this.locale === 'ar' ? 'en' : 'ar';
     forkJoin({
       categories: this.api.getCategories(this.locale).pipe(catchError(() => of([] as PublicCategory[]))),

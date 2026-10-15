@@ -14,7 +14,7 @@ describe('manual YouTube video management', () => {
     http.verify();
   });
   const category={id:'category-1',nameEn:'Media',nameAr:'إعلام',slugEn:'media',slugAr:'media',descriptionEn:null,descriptionAr:null,imageUrl:null,displayOrder:0,isPublished:true};
-  const saved={id:'video-1',youTubeVideoId:'M7lc1UVf-VE',titleEn:'Manual video',titleAr:'فيديو يدوي',slugEn:'manual-video',slugAr:'manual-video-ar',descriptionEn:null,descriptionAr:null,thumbnailUrl:null,publishedAt:null,duration:null,categoryId:category.id,categoryNameEn:'Media',categoryNameAr:'إعلام',isFeatured:false,isPublished:true,displayOrder:0,tags:[],contentType:'video' as const,episodeNumber:null,seasonNumber:null,guestNameEn:null,guestNameAr:null,seoTitleEn:null,seoTitleAr:null,seoDescriptionEn:null,seoDescriptionAr:null};
+  const saved={version:'a1111111-1111-4111-8111-111111111111',id:'video-1',youTubeVideoId:'M7lc1UVf-VE',titleEn:'Manual video',titleAr:'فيديو يدوي',slugEn:'manual-video',slugAr:'manual-video-ar',descriptionEn:null,descriptionAr:null,thumbnailUrl:null,publishedAt:null,duration:null,categoryId:category.id,categoryNameEn:'Media',categoryNameAr:'إعلام',isFeatured:false,isPublished:true,displayOrder:0,tags:[],contentType:'video' as const,episodeNumber:null,seasonNumber:null,guestNameEn:null,guestNameAr:null,seoTitleEn:null,seoTitleAr:null,seoDescriptionEn:null,seoDescriptionAr:null};
   function setup(){TestBed.configureTestingModule({providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([])]});const fixture=TestBed.createComponent(AdminVideosPage);fixture.detectChanges();const http=TestBed.inject(HttpTestingController);http.expectOne('/api/admin/videos').flush([]);http.expectOne('/api/admin/categories').flush([category]);fixture.detectChanges();fixture.componentInstance.startNew();return {fixture,http,component:fixture.componentInstance};}
   function fill(component:AdminVideosPage,url='https://youtu.be/M7lc1UVf-VE'){component.model={...component.model,youTubeUrl:url,titleEn:saved.titleEn,titleAr:saved.titleAr,slugEn:saved.slugEn,slugAr:saved.slugAr,categoryId:category.id,isPublished:true};component.updatePreview();}
   it('shows no preview and sends no request for an invalid YouTube URL',()=>{const {fixture,http,component}=setup();fill(component,'https://example.test/video');component.save({invalid:false});fixture.detectChanges();expect(component.previewUrl).toBeNull();expect(fixture.nativeElement.querySelector('[role=alert]')).not.toBeNull();http.expectNone('/api/admin/videos');http.verify();});
@@ -30,11 +30,11 @@ describe('manual YouTube video management', () => {
       expect(request.request.body[key]).toEqual(item[key]);
     request.flush({...item,titleEn:'Edited'});http.verify();
   });
-  it('keeps an existing poster-only record editable and retains the editor after a failed save',()=>{
+  it('keeps an existing poster-only record editable and retains the editor after a definitive rejected save',()=>{
     const {http,component}=setup();const item={...saved,youTubeVideoId:null,thumbnailUrl:'https://example.test/poster.jpg'};
     component.videos=[item];component.edit(item);component.save({invalid:false});
     const request=http.expectOne('/api/admin/videos/video-1');expect(request.request.body.youTubeUrl).toBe('');
-    request.flush({}, {status:500,statusText:'Error'});expect(component.saving).toBe(false);expect(component.editing).toBe(true);expect(component.videos).toEqual([item]);
+    request.flush({}, {status:403,statusText:'Forbidden'});expect(component.saving).toBe(false);expect(component.editing).toBe(true);expect(component.videos).toEqual([item]);
     component.save({invalid:false});http.expectOne('/api/admin/videos/video-1').flush(item);http.verify();
   });
   it('renders metadata controls and all supported media types',()=>{

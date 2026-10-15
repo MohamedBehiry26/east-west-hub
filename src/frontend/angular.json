@@ -63,7 +63,47 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public/branding",
+                  "output": "branding"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "src/assets/demo",
+                  "output": "assets/demo"
+                },
+                {
+                  "glob": "east-west-hub-hero-*",
+                  "input": "work/hero-preview-assets",
+                  "output": "local-hero-preview"
+                }
+              ]
+            },
+            "hero-preview": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "outputPath": "../../work/brand-showreel/angular-preview-build",
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public/branding",
+                  "output": "branding"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "src/assets/demo",
+                  "output": "assets/demo"
+                },
+                {
+                  "glob": "east-west-hub-hero-*",
+                  "input": "work/hero-preview-assets",
+                  "output": "local-hero-preview"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -71,7 +111,9 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "host": "127.0.0.1",
+            "port": 4330
           },
           "configurations": {
             "production": {
@@ -79,6 +121,9 @@
             },
             "development": {
               "buildTarget": "east-west-hub-web:build:development"
+            },
+            "hero-preview": {
+              "buildTarget": "east-west-hub-web:build:hero-preview"
             }
           },
           "defaultConfiguration": "development"

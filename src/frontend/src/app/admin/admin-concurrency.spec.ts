@@ -1,0 +1,28 @@
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient,HttpClient } from '@angular/common/http';
+import { provideHttpClientTesting,HttpTestingController } from '@angular/common/http/testing';
+import { ChangeDetectorRef } from '@angular/core';
+import { AdminLocaleService } from '../core/admin-locale.service';
+import { createCmsConcurrency,versionedDeleteUrl } from './admin-concurrency-state';
+import { createAdminRequestState } from './admin-request-state';
+const old='a1111111-1111-4111-8111-111111111111',newer='b2222222-2222-4222-8222-222222222222';
+function setup(locale:'ar'|'en'='en'){
+ TestBed.configureTestingModule({providers:[provideHttpClient(),provideHttpClientTesting(),{provide:ChangeDetectorRef,useValue:{markForCheck:vi.fn()}}]});
+ TestBed.inject(AdminLocaleService).locale.set(locale);
+ return {state:TestBed.runInInjectionContext(()=>createCmsConcurrency()),requests:TestBed.runInInjectionContext(()=>createAdminRequestState()),http:TestBed.inject(HttpTestingController),client:TestBed.inject(HttpClient)};
+}
+for(const lang of ['ar','en'] as const)it(`${lang}: two-editor conflict preserves draft; refresh is GET only and replacement requires confirmation`,()=>{
+ const {state,http}=setup(lang),draft={id:'id',titleEn:'Original',titleAr:'الأصل',version:old,tags:[{nameEn:'Tag',nameAr:'وسم'}]};state.open(()=>draft,'/api/admin/videos','id',old);draft.titleEn='My unsaved draft';expect(state.payload(draft).expectedVersion).toBe(old);
+ expect(state.handle({status:409,error:{code:'cms_concurrency_conflict'}})).toBe(true);expect(state.blocked()).toBe(true);expect(draft.titleEn).toBe('My unsaved draft');expect(state.message()).toContain(lang==='ar'?'تعديلاتك':'draft');state.refresh();state.refresh();const request=http.expectOne('/api/admin/videos');expect(request.request.method).toBe('GET');request.flush([{...draft,titleEn:'Other editor',version:newer}]);expect(draft.titleEn).toBe('My unsaved draft');expect(state.comparison.find(x=>x.key==='titleEn')?.before).toBe('"Original"');
+ const confirm=vi.spyOn(window,'confirm').mockReturnValue(false);state.useLatest();expect(state.blocked()).toBe(true);confirm.mockReturnValue(true);state.useLatest();expect(draft.titleEn).toBe('Other editor');expect(state.payload(draft).expectedVersion).toBe(newer);expect(state.blocked()).toBe(false);http.verify();confirm.mockRestore();
+});
+it('does not treat a slug conflict as stale editing',()=>{const {state}=setup();expect(state.handle({status:409,error:{title:'Duplicate slug'}})).toBe(false);});
+it('fails closed without a version and preserves draft after a failed read',()=>{const {state,http}=setup(),draft={titleEn:'Draft'};state.open(()=>draft,'/api/admin/services','id');expect(state.blocked()).toBe(true);state.refresh();http.expectOne('/api/admin/services').flush({}, {status:503,statusText:'Unavailable'});expect(state.blocked()).toBe(true);expect(draft.titleEn).toBe('Draft');http.verify();});
+it('keeps original token pinned when editable or refreshed values change',()=>{const {state}=setup(),draft={version:old,titleEn:'A'};state.open(()=>draft,'/api/admin/articles','id',old);draft.version=newer;expect(state.payload(draft)).toEqual({titleEn:'A',expectedVersion:old});expect(versionedDeleteUrl('/api/admin/articles/id',old)).toContain('expectedVersion='+old);});
+it('does not unlock uncertain update for same-version matching values or automatically resend after observation',()=>{
+ const {requests,http,client}=setup(),observed=vi.fn();requests.save(client.put('/api/admin/portfolio/id',{expectedVersion:old}),{expectedVersion:old,url:'/api/admin/portfolio',find:rows=>rows.find(x=>x.id==='id'),observed},vi.fn(),vi.fn(),vi.fn());http.expectOne('/api/admin/portfolio/id').error(new ProgressEvent('error'));
+ requests.recheck();http.expectOne('/api/admin/portfolio').flush([{id:'id',version:old}]);expect(observed).not.toHaveBeenCalled();expect(requests.saveBlocked()).toBe(true);
+ requests.recheck();http.expectOne('/api/admin/portfolio').flush([{id:'id',version:newer}]);expect(observed).toHaveBeenCalledOnce();expect(requests.saveBlocked()).toBe(true);http.expectNone('/api/admin/portfolio/id');requests.clearUnknownSave();expect(requests.saveBlocked()).toBe(false);http.verify();
+});
+it('locks stale delete and never sends a second DELETE during read-only recovery',()=>{const {requests,http}=setup();const check={url:'/api/admin/services',gone:(rows:any[])=>!rows.some(x=>x.id==='id'),done:vi.fn()};requests.delete('id',versionedDeleteUrl('/api/admin/services/id',old),check,()=>true);http.expectOne(r=>r.method==='DELETE').flush({code:'cms_concurrency_conflict'},{status:409,statusText:'Conflict'});expect(requests.deleteBlocked('id')).toBe(true);requests.delete('id','/api/admin/services/id',check,()=>true);requests.recheck();http.expectOne('/api/admin/services').flush([{id:'id',version:newer}]);expect(check.done).not.toHaveBeenCalled();http.verify();});
+it('safe read-only refresh of a definitively stale delete updates list data without modifying an open draft or retrying',()=>{const {requests,http}=setup();const draft={title:'Unsaved'},review=vi.fn();const check={url:'/api/admin/services',review,gone:()=>false,done:vi.fn()};requests.delete('id',versionedDeleteUrl('/api/admin/services/id',old),check,()=>true);http.expectOne(r=>r.method==='DELETE').flush({code:'cms_concurrency_conflict'},{status:409,statusText:'Conflict'});requests.recheck();http.expectOne('/api/admin/services').flush([{id:'id',version:newer}]);expect(review).toHaveBeenCalledOnce();expect(requests.deleteBlocked('id')).toBe(false);expect(draft.title).toBe('Unsaved');http.expectNone(r=>r.method==='DELETE');http.verify();});

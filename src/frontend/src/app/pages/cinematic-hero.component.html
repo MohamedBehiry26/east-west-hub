@@ -1,0 +1,26 @@
+<section class="ewh-cinema" [attr.dir]="language()==='ar' ? 'rtl' : 'ltr'" [attr.lang]="language()" aria-labelledby="cinematic-headline">
+  <div class="ewh-cinema__backdrop" aria-hidden="true">
+    <img class="ewh-cinema__poster" [src]="posterFailed() ? '/assets/demo/east-west-studio.svg' : poster()" (error)="posterFailed.set(true)" alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
+    @if (mp4() && !reducedMotion() && mediaRequested()) {
+      <video #backgroundVideo id="cinematic-background" class="ewh-cinema__video" [class.is-ready]="ready()" [src]="mp4()" [poster]="poster()" muted loop playsinline preload="metadata" tabindex="-1" aria-hidden="true" disablepictureinpicture disableremoteplayback></video>
+    }
+  </div>
+  <div class="ewh-cinema__overlay" aria-hidden="true"></div>
+  <div class="ewh-cinema__content ew-container">
+    <p class="ewh-cinema__eyebrow"><span aria-hidden="true"></span>EAST WEST HUB <span class="ewh-cinema__studio">MEDIA · CREATIVE · DIGITAL</span></p>
+    <h1 id="cinematic-headline">{{labels().headline}}</h1>
+    <p class="ewh-cinema__description">{{labels().description}}</p>
+    <nav class="ewh-cinema__actions" [attr.aria-label]="language()==='ar' ? 'استكشف إيست ويست هب' : 'Explore East West Hub'">
+      <a [routerLink]="'/' + language() + '/projects'" class="ewh-cinema__primary">{{labels().work}} <span aria-hidden="true">↗</span></a>
+      <a [routerLink]="'/' + language() + '/services'" class="ewh-cinema__secondary">{{labels().services}} <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+  <div class="ewh-cinema__footer ew-container">
+    <a [routerLink]="'/' + language()" fragment="selected-media" class="scroll-cue"><span aria-hidden="true">↓</span>{{labels().scroll}}</a>
+    <div class="ewh-cinema__media-actions">
+      @if (showreel(); as url) {<a [href]="url" target="_blank" rel="noopener noreferrer">{{labels().showreel}} <span aria-hidden="true">↗</span></a>}
+      @if (mp4() && !reducedMotion() && !broken()) {<button type="button" (click)="togglePlayback()" [attr.aria-label]="playing() ? labels().pause : labels().play" [attr.aria-pressed]="playing()" [attr.aria-controls]="mediaRequested() ? 'cinematic-background' : null"><span aria-hidden="true">{{playing() ? 'Ⅱ' : '▶'}}</span><span>{{playing() ? labels().pause : labels().play}}</span></button>}
+      @if (broken()) {<span class="ewh-cinema__status" role="status">{{labels().unavailable}}</span>}
+    </div>
+  </div>
+</section>

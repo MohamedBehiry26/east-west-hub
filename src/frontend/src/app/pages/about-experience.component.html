@@ -1,0 +1,29 @@
+<article class="about-page" [attr.lang]="locale()" [attr.dir]="locale() === 'ar' ? 'rtl' : 'ltr'">
+  <section class="about-hero" aria-labelledby="about-title">
+    <div class="about-intro">
+      <p class="about-kicker">{{ copy().kicker }}</p>
+      <h1 id="about-title" tabindex="-1">{{ copy().title }}</h1>
+      <p class="about-lead">{{ copy().intro }}</p>
+    </div>
+    <figure class="about-visual">
+      <div class="cinematic-study" aria-hidden="true"><div class="study-light"></div><div class="study-frame"><div class="study-aperture"></div></div></div>
+      <figcaption><span>{{ copy().visual }}</span><span>{{ copy().visualCaption }}</span></figcaption>
+    </figure>
+  </section>
+  <section class="about-story" id="about-story" aria-labelledby="story-title">
+    <div><p class="about-kicker">{{ copy().storyKicker }}</p><h2 id="story-title">{{ copy().storyTitle }}</h2></div>
+    <div class="story-copy"><p class="cms-story">{{ story() }}</p><p>{{ copy().approach }}</p></div>
+  </section>
+  <section class="about-process" id="about-process" aria-labelledby="process-title">
+    <div class="process-heading"><p class="about-kicker">{{ copy().processKicker }}</p><h2 id="process-title">{{ copy().processTitle }}</h2></div>
+    <ol class="editorial-process">
+      @for (step of copy().steps; track step.title) {
+        <li><span class="process-number" aria-hidden="true">{{ number($index) }}</span><h3>{{ step.title }}</h3><p>{{ step.body }}</p></li>
+      }
+    </ol>
+  </section>
+  <section class="about-closing" aria-labelledby="closing-title">
+    <div><p class="about-kicker">{{ copy().ctaKicker }}</p><h2 id="closing-title">{{ copy().ctaTitle }}</h2><p>{{ copy().ctaBody }}</p></div>
+    <a class="about-contact" [routerLink]="'/' + locale() + '/contact'">{{ copy().cta }} <span class="directional-icon" aria-hidden="true">↗</span></a>
+  </section>
+</article>

@@ -1,0 +1,33 @@
+:host { display: block; color: #eeeae4; background: radial-gradient(ellipse at 80% 8%,#34251b45,transparent 45%),#080808; }
+.about-page { max-inline-size: 1320px; margin-inline: auto; padding: calc(var(--ew-header-height,88px) + clamp(2rem,4vw,3.5rem)) var(--ew-gutter,1.25rem) 4rem; }
+/* Fixed navigation is outside document flow. Reserve its height, including on refresh and route entry. */
+.about-page :is(section,h1,h2,h3,a) { scroll-margin-block-start: calc(var(--ew-header-height,88px) + 1.5rem); }
+.about-hero { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,1fr); align-items: center; gap: clamp(2rem,5vw,4.5rem); padding-block-end: 3.25rem; }
+.about-kicker { font-size: .75rem; color: var(--ew-accent,#d4a077); margin-block-end: 1rem; }
+h1 { font-size: clamp(2.25rem,3.8vw,3.5rem); line-height: 1.18; font-weight: 500; letter-spacing: -.03em; }
+.about-lead { color: #c0bbb5; font-size: 1.05rem; line-height: 1.85; margin-block-start: 1.5rem; }
+.cinematic-study { position: relative; overflow: hidden; aspect-ratio: 1.35; background: radial-gradient(ellipse at 64% 35%,#8b634350,#23252680 38%,#0b0d0e 75%); border: 1px solid #ffffff12; }
+.study-light { position: absolute; inset: -20%; background: linear-gradient(113deg,transparent 24%,#d4a07718 32%,#efcba038 45%,transparent 68%); }
+.study-frame { position: absolute; inset: 15% 13%; border: 1px solid #e3c2a550; background: linear-gradient(90deg,#d4a07780 18%,transparent 18% 23%,#71818870 23% 40%,transparent 40% 45%,#d4a07745 45% 78%,transparent 78%) center bottom 12%/76% 5px no-repeat,linear-gradient(145deg,#293238,#0b1014); box-shadow: 0 16px 32px #0006; transform: perspective(800px) rotateY(-8deg) rotateX(3deg); }
+.study-aperture { position: absolute; inset: 8% 15% 20%; background: radial-gradient(circle at 42% 35%,#81979c45,transparent 24%),radial-gradient(circle,#071017 24%,#506067 25%,#0b1117 29%,#a78257 30%,#101619 32%,#2b3335 42%,#877455 43%,#070c11 46%,transparent 49%); }
+figcaption { display: flex; justify-content: space-between; gap: 1rem; color: #a49c92; font-size: .7rem; line-height: 1.6; margin-block-start: .8rem; }
+.about-story { display: grid; grid-template-columns: minmax(0,.75fr) minmax(0,1.25fr); gap: clamp(2rem,5vw,5rem); }
+h2 { font-size: clamp(1.8rem,2.6vw,2.5rem); line-height: 1.3; font-weight: 500; white-space: pre-line; }
+.story-copy p { font-size: 1rem; line-height: 1.95; color: #c0bbb5; overflow-wrap: anywhere; }
+.story-copy p + p { margin-block-start: 1.4rem; color: #a39d96; }
+.cms-story { white-space: pre-line; }
+:is(.about-story,.about-process) { padding-block: 3.25rem; border-block-start: 1px solid #ffffff20; }
+.process-heading { max-inline-size: 42rem; }
+.editorial-process { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin: 2.5rem 0 0; padding: 0; list-style: none; gap: 2rem; }
+.editorial-process li { padding-block-start: 1rem; border-block-start: 1px solid #d4a07755; }
+.process-number { color: var(--ew-accent,#d4a077); font-size: .85rem; }
+h3 { font-size: 1.05rem; line-height: 1.6; font-weight: 500; margin-block: 1.2rem .65rem; }
+.editorial-process p { color: #c0bbb5; font-size: .95rem; line-height: 1.85; }
+.about-closing { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding-block: 2.5rem; border-block: 1px solid #ffffff20; }
+.about-closing p:last-child { color: #a9a39b; font-size: .95rem; line-height: 1.8; margin-block-start: 1rem; max-inline-size: 40rem; }
+.about-contact { display: inline-flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: .95rem 1.2rem; border: 1px solid #d4a077a0; color: #f0d0b6; font-size: .9rem; flex-shrink: 0; transition: background 160ms; }
+.about-contact:hover { background: #d4a07712; }.about-contact:focus-visible { outline: 2px solid var(--ew-accent); outline-offset: 5px; }
+[dir="rtl"] h1 { letter-spacing: 0; line-height: 1.4; }
+@media(max-width: 900px) { :is(.about-hero,.about-story) { grid-template-columns: minmax(0,1fr); gap: 2rem; }.cinematic-study { aspect-ratio: 1.85; }.editorial-process { grid-template-columns: repeat(2,minmax(0,1fr)); }.about-closing { align-items: start; flex-direction: column; } }
+@media(max-width: 480px) { .cinematic-study { aspect-ratio: 1.35; }.editorial-process { grid-template-columns: minmax(0,1fr); gap: 1.5rem; }.about-hero { padding-block-end: 2.5rem; }:is(.about-story,.about-process) { padding-block: 2.5rem; } }
+@media(prefers-reduced-motion: reduce) { .about-contact { transition: none; } }

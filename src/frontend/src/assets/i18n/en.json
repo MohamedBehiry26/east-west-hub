@@ -592,5 +592,34 @@
       "Publish and share"
     ],
     "posterOnly": "Poster preview — video not available yet"
+  },
+  "contactExperience": {
+    "companyInfo": "Get in touch",
+    "visitorEmail": "Your email address",
+    "email": "Business email",
+    "phone": "Phone",
+    "location": "Office location",
+    "social": "Social media",
+    "whatsapp": "Chat on WhatsApp",
+    "loading": "Loading contact information…",
+    "loadError": "Our contact details are temporarily unavailable. You can still prepare your project brief here; please check back to open your email draft.",
+    "retry": "Reload contact details",
+    "project": "Your next project",
+    "formTitle": "Let’s create something meaningful.",
+    "draftHelp": "Complete your project brief below. The button opens a draft in your email app for you to review and send. Nothing is sent automatically.",
+    "name": "Your name",
+    "service": "Selected service",
+    "details": "Project details",
+    "optional": "(optional)",
+    "nameError": "Enter your name (2–100 characters).",
+    "emailError": "Enter a valid email address.",
+    "phoneError": "Enter a valid phone number, or leave it empty.",
+    "detailsError": "Tell us about your project (10–2,000 characters).",
+    "opening": "Opening email draft…",
+    "openDraft": "Open draft in my email app",
+    "unavailable": "An email recipient is not available, so the draft action is disabled. Your project details will remain here while you review them.",
+    "draftReady": "Your draft is prepared. Complete and send it in your email app. If no app opened, use the link below.",
+    "openError": "We couldn’t open your email app. Try the draft link below.",
+    "welcome": "Have a story to tell or a project in mind? Share your vision — let’s explore what we can create together."
   }
 }

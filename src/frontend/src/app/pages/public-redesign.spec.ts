@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
 import { of, Subject, throwError } from 'rxjs';
 import { PublicContentApi } from '../core/public-content-api.service';
 import { SeoMetadataService } from '../core/seo-metadata.service';
@@ -35,21 +35,11 @@ function setup(locale: 'en' | 'ar' = 'en', kind = 'podcasts') {
 }
 
 describe('cinematic public experience', () => {
-  it('plays the configured hero only on activation and keeps its iframe stable', () => {
-    setup('ar');
-    const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
-    const component = fixture.componentInstance;
-    component.siteSettings.set({agencyName:'Hub',agencyDescription:null,logoUrl:null,faviconUrl:null,email:null,phone:null,address:null,socialLinks:[],heroYouTubeVideoId:'M7lc1UVf-VE'});
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.hero-video-player')).toBeNull();
-    fixture.nativeElement.querySelector('.hero-video-poster').click(); fixture.detectChanges();
-    const iframe: HTMLIFrameElement = fixture.nativeElement.querySelector('.hero-video-player');
-    expect(iframe.src).toContain('/embed/M7lc1UVf-VE');
-    const setter = vi.spyOn(iframe,'src','set');
-    window.dispatchEvent(new Event('scroll')); fixture.detectChanges();
-    expect(setter).not.toHaveBeenCalled();
-    component.siteSettings.set(null); fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.hero-video-player')).toBeNull();
+  it('preserves YouTube as a showreel link without embedding its branded player', () => {
+    setup('ar'); const fixture=TestBed.createComponent(PublicHomePage);fixture.detectChanges();
+    fixture.componentInstance.siteSettings.set({agencyName:'Hub',agencyDescription:null,logoUrl:null,faviconUrl:null,email:null,phone:null,address:null,socialLinks:[],heroYouTubeVideoId:'M7lc1UVf-VE'});fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('ew-cinematic-hero a[href*="youtube.com/watch"]')?.getAttribute('href')).toContain('M7lc1UVf-VE');
+    expect(fixture.nativeElement.querySelector('iframe')).toBeNull();
   });
   it('debounces watch search and resets pagination while keeping filters', async () => {
     vi.useFakeTimers();
@@ -77,14 +67,67 @@ describe('cinematic public experience', () => {
   afterEach(() => { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; });
 
   for (const locale of ['en', 'ar'] as const) {
-    it(`renders ${locale} homepage without loading an iframe or background video`, () => {
+    it(`renders a valid ${locale} language link with separate compatible query parameters`, () => {
+      setup(locale);
+      vi.spyOn(TestBed.inject(Router), 'url', 'get').mockReturnValue(`/${locale}/search?q=film&category=invalid`);
+      const fixture = TestBed.createComponent(PublicLayoutComponent); fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.locale-link').getAttribute('href')).toBe(`/${locale === 'en' ? 'ar' : 'en'}/search?q=film`);
+      fixture.destroy();
+    });
+    it(`distinguishes every secondary failure from empty ${locale} homepage content`, () => {
+      const { api } = setup(locale);
+      api.getVideos.mockReturnValueOnce(of(page)).mockReturnValueOnce(throwError(() => new Error('offline')));
+      for (const method of [api.getPodcasts, api.getCategories, api.getServices, api.getPortfolio, api.getArticles]) method.mockReturnValueOnce(throwError(() => new Error('offline')));
+      const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
+      expect(fixture.componentInstance.featuredVideo()?.id).toBe('v');
+      expect(fixture.nativeElement.querySelectorAll('[data-section-error]').length).toBe(6);
+      expect(fixture.nativeElement.querySelector('.podcast-empty')).toBeNull();
+      expect(fixture.nativeElement.querySelector('.empty-line')).toBeNull();
+      expect(fixture.nativeElement.querySelector('[data-section-error="services"]').textContent).toContain((locale === 'ar' ? ar : en).publicDesign.loadError);
+      fixture.destroy();
+    });
+    it(`retries only the failed ${locale} section and retains successful sections`, () => {
+      const { api } = setup(locale);
+      api.getServices.mockReturnValueOnce(throwError(() => new Error('offline')));
+      const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
+      const featured = fixture.componentInstance.featuredVideo();
+      const podcast = fixture.componentInstance.featuredPodcast();
+      fixture.nativeElement.querySelector('[data-section-error="services"] button').click(); fixture.detectChanges();
+      expect(api.getServices).toHaveBeenCalledTimes(2);
+      expect(api.getPortfolio).toHaveBeenCalledTimes(1);
+      expect(api.getPodcasts).toHaveBeenCalledTimes(1);
+      expect(api.getSiteSettings).toHaveBeenCalledTimes(1);
+      expect(fixture.componentInstance.featuredVideo()).toBe(featured);
+      expect(fixture.componentInstance.featuredPodcast()).toBe(podcast);
+      expect(fixture.nativeElement.querySelector('[data-section-error="services"]')).toBeNull();
+      expect(fixture.nativeElement.querySelector('.empty-line')).not.toBeNull();
+      fixture.destroy();
+    });
+  }
+  it('prevents duplicate retries and recovers loading state on retry failure', () => {
+    const { api } = setup(); const pending = new Subject<typeof empty>();
+    api.getServices.mockReturnValueOnce(throwError(() => new Error('offline'))).mockReturnValueOnce(pending);
+    const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
+    fixture.componentInstance.retrySection('services'); fixture.componentInstance.retrySection('services');
+    expect(api.getServices).toHaveBeenCalledTimes(2);
+    pending.error(new Error('still offline')); fixture.detectChanges();
+    expect(fixture.componentInstance.sectionPending('services')).toBe(false);
+    expect(fixture.componentInstance.sectionFailed('services')).toBe(true);
+    fixture.componentInstance.retrySection('services'); fixture.detectChanges();
+    expect(api.getServices).toHaveBeenCalledTimes(3);
+    expect(fixture.componentInstance.sectionFailed('services')).toBe(false);
+    fixture.destroy();
+  });
+
+  for (const locale of ['en', 'ar'] as const) {
+    it(`renders ${locale} homepage without embedding a YouTube iframe`, () => {
       setup(locale);
       const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
       const dom: HTMLElement = fixture.nativeElement;
-      expect(dom.querySelector('h1')?.textContent).toContain(locale === 'ar' ? 'حكايات.' : 'Stories.');
-      expect(dom.querySelectorAll('iframe, video').length).toBe(0);
-      expect(dom.querySelector('.media-stack')).not.toBeNull();
-      expect(dom.querySelector('.cinema-hero-shell > .cinema-hero.ew-container')).not.toBeNull();
+      expect(dom.querySelector('h1')?.textContent).toContain(locale === 'ar' ? 'نحوّل الأفكار' : 'We Turn Ideas');
+      expect(dom.querySelectorAll('iframe').length).toBe(0);
+      expect(dom.querySelector('.media-stack')).toBeNull();
+      expect(dom.querySelector('.ewh-cinema')).not.toBeNull();
       expect(dom.querySelector('.stage-bottom')).toBeNull();
       expect(dom.querySelectorAll('main').length).toBe(0);
       expect(document.documentElement.dir).toBe(locale === 'ar' ? 'rtl' : 'ltr');
@@ -101,6 +144,9 @@ describe('cinematic public experience', () => {
       expect(dom.querySelector('.locale-link')?.getAttribute('href')).toContain(locale === 'en' ? '/ar/watch/hikaya' : '/en/watch/story');
       expect(dom.querySelector('.footer-contact a')?.getAttribute('href')).toBe('mailto:qa@example.test');
       expect(dom.querySelector('.site-footer > .ew-container')).not.toBeNull();
+      expect(dom.querySelector('.brand-symbol')?.textContent).toBe('e↔w');
+      expect(dom.querySelector('.footer-wordmark')?.textContent).toBe('EAST WESTHUB.');
+      expect(dom.querySelector('.brand-lockup img, .site-footer img')).toBeNull();
       const toggle = dom.querySelector<HTMLButtonElement>('.menu-toggle')!;
       toggle.click(); fixture.detectChanges();
       expect(toggle.getAttribute('aria-expanded')).toBe('true');
@@ -117,7 +163,7 @@ describe('cinematic public experience', () => {
     const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
     expect(fixture.componentInstance.failed()).toBe(true);
     expect(fixture.nativeElement.querySelector('.empty-feature button')?.textContent).toContain('Try again');
-    expect(fixture.nativeElement.querySelector('.hero-copy a')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.ewh-cinema__actions a')).not.toBeNull();
   });
 
   it('loads Watch with working search, category, tag, ordering and pagination', () => {
@@ -154,11 +200,16 @@ describe('cinematic public experience', () => {
     expect(fixture.componentInstance.totalPages()).toBe(3);
   });
 
-  it('keeps contact briefs as mailto with the configured address', () => {
-    setup('ar','contact'); const fixture = TestBed.createComponent(PublicInfoPage); fixture.detectChanges();
-    const href = fixture.nativeElement.querySelector('a[href^="mailto:"]')?.getAttribute('href');
-    expect(href).toContain('mailto:qa@example.test?subject=');
-    expect(decodeURIComponent(href)).toContain('نوع المشروع');
+  for (const locale of ['ar','en'] as const) it(`opens a ${locale} project email draft with selected service and preserves contact links`, () => {
+    setup(locale,'contact'); const fixture = TestBed.createComponent(PublicInfoPage); fixture.detectChanges();
+    const component=fixture.componentInstance;
+    component.settings.set({agencyName:'East West Hub',agencyDescription:null,logoUrl:null,faviconUrl:null,email:'qa@example.test',phone:'+201000000000',address:null,socialLinks:[{platform:'Instagram',url:'https://instagram.com/example'}]});
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.inquiry-form')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.company-rows a[href="mailto:qa@example.test"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('a[href="tel:+201000000000"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('a[href="https://instagram.com/example"]')?.getAttribute('rel')).toBe('noopener noreferrer');
+    expect(fixture.nativeElement.querySelector('ew-project-inquiry-form')).toBeNull();
     expect(fixture.nativeElement.querySelector('.info-page-shell[data-kind="contact"]')).not.toBeNull();
   });
 
@@ -192,9 +243,9 @@ describe('cinematic public experience', () => {
     expect(Object.values(ar.publicDesign).every(Boolean)).toBe(true);
   });
 
-  it('keeps Arabic hero copy RTL while the desktop composition has a stable physical order', () => {
+  it('keeps Arabic cinematic copy and actions in RTL', () => {
     setup('ar'); const fixture = TestBed.createComponent(PublicHomePage); fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.hero-composition .hero-copy')).not.toBeNull();
-    expect(fixture.nativeElement.querySelector('.hero-composition .media-stage')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.ewh-cinema')?.getAttribute('dir')).toBe('rtl');
+    expect(fixture.nativeElement.querySelector('.ewh-cinema__actions a')?.getAttribute('href')).toBe('/ar/projects');
   });
 });

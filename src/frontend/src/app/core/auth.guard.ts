@@ -9,3 +9,8 @@ export const authGuard: CanActivateFn = (_route, state) => {
     ? true
     : router.createUrlTree(['/admin/login'], { queryParams: { returnUrl: state.url } });
 };
+
+export const superAdminGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  return auth.canManageAccounts() || inject(Router).createUrlTree(['/admin']);
+};

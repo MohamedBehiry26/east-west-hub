@@ -8,6 +8,7 @@ function setup() {
   TestBed.configureTestingModule({providers:[provideHttpClient(),provideHttpClientTesting()]});
   const fixture = TestBed.createComponent(AdminAccountsPage); fixture.detectChanges();
   const c = fixture.componentInstance;
+  TestBed.inject(HttpTestingController).expectOne('/api/admin/accounts').flush([]);
   c.model = {displayName:'Admin',email:'new@example.test',password:'StrongPassword!234'};
   c.confirmPassword = c.model.password;
   const form = {invalid:false, control:{markAllAsTouched:vi.fn()},resetForm:vi.fn()} as unknown as NgForm;
@@ -18,7 +19,7 @@ describe('administrator account creation', () => {
     const {c,form,http}=setup();
     c.save(form); c.save(form);
     const request=http.expectOne('/api/admin/accounts'); expect(request.request.method).toBe('POST');
-    request.flush({email:'new@example.test'});
+    request.flush({email:'new@example.test'}); http.expectOne('/api/admin/accounts').flush([]);
     expect(form.resetForm).toHaveBeenCalled(); expect(c.confirmPassword).toBe(''); expect(c.model.password).toBe(''); expect(c.success).toContain('new@example.test');
     http.verify();
   });

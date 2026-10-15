@@ -1,0 +1,59 @@
+<div class="contact-layout">
+  <form class="inquiry-form" #form="ngForm" (ngSubmit)="submit(form)" (input)="resetDraft()" (change)="resetDraft()" novalidate [attr.aria-busy]="submitting()">
+    <p class="panel-kicker">{{ copy().project }}</p>
+    <h2>{{ copy().formTitle }}</h2>
+    <p class="form-intro" id="draft-help">{{ copy().draftHelp }}</p>
+    <div class="inquiry-fields">
+      <div class="inquiry-field">
+        <label for="inquiry-name">{{ copy().name }} <span aria-hidden="true">*</span></label>
+        <input id="inquiry-name" name="name" [(ngModel)]="name" #nameField="ngModel" required minlength="2" maxlength="100" [pattern]="namePattern" autocomplete="name" [attr.aria-invalid]="nameField.invalid && (nameField.touched || form.submitted)" aria-describedby="name-error" />
+        <span id="name-error" class="field-error">@if (nameField.invalid && (nameField.touched || form.submitted)) { {{ copy().nameError }} }</span>
+      </div>
+      <div class="inquiry-field">
+        <label for="inquiry-email">{{ copy().visitorEmail }} <span aria-hidden="true">*</span></label>
+        <input id="inquiry-email" name="email" [(ngModel)]="visitorEmail" #emailField="ngModel" type="email" required email maxlength="254" autocomplete="email" dir="ltr" [attr.aria-invalid]="emailField.invalid && (emailField.touched || form.submitted)" aria-describedby="email-error" />
+        <span id="email-error" class="field-error">@if (emailField.invalid && (emailField.touched || form.submitted)) { {{ copy().emailError }} }</span>
+      </div>
+      <div class="inquiry-field">
+        <label for="inquiry-phone">{{ copy().phone }} <small>{{ copy().optional }}</small></label>
+        <input id="inquiry-phone" name="phone" [(ngModel)]="visitorPhone" #phoneField="ngModel" type="tel" [pattern]="phonePattern" maxlength="30" autocomplete="tel" dir="ltr" [attr.aria-invalid]="phoneField.invalid && (phoneField.touched || form.submitted)" aria-describedby="phone-error" />
+        <span id="phone-error" class="field-error">@if (phoneField.invalid && (phoneField.touched || form.submitted)) { {{ copy().phoneError }} }</span>
+      </div>
+      <div class="inquiry-field">
+        <label for="inquiry-service">{{ copy().service }} <span aria-hidden="true">*</span></label>
+        <select id="inquiry-service" name="service" [(ngModel)]="service" required>
+          @for (option of services(); track option.value) { <option [value]="option.value">{{ option.label }}</option> }
+        </select>
+      </div>
+      <div class="inquiry-field inquiry-wide">
+        <label for="inquiry-details">{{ copy().details }} <span aria-hidden="true">*</span></label>
+        <textarea id="inquiry-details" name="details" [(ngModel)]="details" #detailsField="ngModel" required minlength="10" maxlength="2000" [pattern]="namePattern" rows="5" [attr.aria-invalid]="detailsField.invalid && (detailsField.touched || form.submitted)" aria-describedby="details-error"></textarea>
+        <span id="details-error" class="field-error">@if (detailsField.invalid && (detailsField.touched || form.submitted)) { {{ copy().detailsError }} }</span>
+      </div>
+    </div>
+    <button class="draft-button" type="submit" [disabled]="submitting() || feedback() === 'draft' || loading() || loadError() || !email()" aria-describedby="draft-help">{{ submitting() ? copy().opening : copy().openDraft }} <span aria-hidden="true">↗</span></button>
+    @if (!loading() && !email()) { <p class="contact-notice" role="status">{{ copy().unavailable }}</p> }
+    @if (feedback()) { <div class="contact-notice" [class.field-error]="feedback() === 'error'" role="status" aria-live="polite"><p>{{ feedback() === 'draft' ? copy().draftReady : copy().openError }}</p>@if (draftUrl()) { <a [href]="draftUrl()">{{ copy().openDraft }}</a> }</div> }
+  </form>
+  <aside class="company-panel" [attr.aria-label]="copy().companyInfo">
+    <p class="panel-kicker">{{ copy().companyInfo }}</p>
+    <h2>{{ company() }}</h2>
+    @if (settings()?.agencyDescription?.trim(); as description) { <p class="company-description">{{ description }}</p> }
+    @if (!settings()?.agencyDescription?.trim()) { <p class="company-description">{{ copy().welcome }}</p> }
+    @if (email() || phone() || whatsapp() || settings()?.address?.trim()) {
+    <dl class="company-rows">
+      @if (email()) { <div><dt>{{ copy().email }}</dt><dd><a [href]="'mailto:' + email()" dir="ltr">{{ email() }}</a></dd></div> }
+      @if (phone()) { <div><dt>{{ copy().phone }}</dt><dd><a [href]="phoneLink()" dir="ltr">{{ phone() }}</a></dd></div> }
+      @if (whatsapp(); as link) { <div><dt>WhatsApp</dt><dd><a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ copy().whatsapp }} ↗</a></dd></div> }
+      @if (settings()?.address?.trim(); as address) { <div><dt>{{ copy().location }}</dt><dd>{{ address }}</dd></div> }
+    </dl>
+    }
+    @if (social().length) {
+      <nav class="contact-social" [attr.aria-label]="copy().social">
+        @for (link of social(); track link.url) { <a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ link.platform }} <span aria-hidden="true">↗</span></a> }
+      </nav>
+    }
+    @if (loading()) { <p role="status" class="contact-notice">{{ copy().loading }}</p> }
+    @if (loadError()) { <div class="contact-notice" role="status"><p>{{ copy().loadError }}</p><button type="button" (click)="retry.emit()">{{ copy().retry }}</button></div> }
+  </aside>
+</div>
