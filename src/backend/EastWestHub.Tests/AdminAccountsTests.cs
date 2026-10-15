@@ -65,5 +65,5 @@ public sealed class AdminAccountsTests
             .AddRoles<IdentityRole<Guid>>().AddEntityFrameworkStores<EastWestHubDbContext>();
         return services.BuildServiceProvider();
     }
-    private static AdminAccountsController Controller(IServiceProvider services) => new(services.GetRequiredService<UserManager<ApplicationUser>>(), services.GetRequiredService<RoleManager<IdentityRole<Guid>>>(), services.GetRequiredService<EastWestHubDbContext>());
+    private static AdminAccountsController Controller(IServiceProvider services) => new(services.GetRequiredService<UserManager<ApplicationUser>>(), services.GetRequiredService<RoleManager<IdentityRole<Guid>>>(), services.GetRequiredService<EastWestHubDbContext>(), new SuperAdminAccount(new Microsoft.Extensions.Configuration.ConfigurationBuilder().Build()));
 }

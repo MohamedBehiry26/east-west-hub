@@ -30,6 +30,17 @@ public sealed class AdminAccountsController(UserManager<ApplicationUser> users, 
         var result = await users.UpdateAsync(user);
         return result.Succeeded ? NoContent() : Problem(statusCode: 500, title: "Could not deactivate the account.");
     }
+    [HttpPost("{id:guid}/reactivate")]
+    public async Task<IActionResult> Reactivate(Guid id)
+    {
+        var user = await users.FindByIdAsync(id.ToString());
+        if (user is null || !await users.IsInRoleAsync(user, AdminRoles.Administrator)) return NotFound();
+        if (user.IsActive) return NoContent();
+        user.IsActive = true;
+        var result = await users.UpdateAsync(user);
+        return result.Succeeded ? NoContent() : Problem(statusCode: 500, title: "Could not reactivate the account.");
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateAdminAccountRequest request)
     {
